@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using P_Entity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +14,7 @@ namespace Pone
 {
     public partial class F_Mian : Form
     {
+        public TB_VailUser Vuser = null;
         public F_Mian()
         {
             InitializeComponent();
@@ -21,5 +24,24 @@ namespace Pone
         {
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Vuser = null;
+            this.Text = "信息验证 (未登录)";
+            MessageBox.Show("注销成功!");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (Vuser == null)
+            {
+                F_InputUCode fu = new F_InputUCode();
+                fu.Tag = this;
+                fu.ShowDialog();
+            }
+        }
     }
+
+
 }
