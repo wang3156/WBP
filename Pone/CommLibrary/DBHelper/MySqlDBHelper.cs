@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Configuration;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using System.Data;
+using Newtonsoft.Json;
 
 namespace CommLibrary.DBHelper
 {
@@ -47,5 +49,56 @@ namespace CommLibrary.DBHelper
         {
             Tran?.Commit();
         }
+
+        public T ExecuteScalar<T>(string sql, params MySqlParameter[] pars) where T : IConvertible
+        {
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+            }
+            MySqlCommand comm = conn.CreateCommand();
+            comm.CommandText = sql;
+            comm.Parameters.AddRange(pars);
+            object o = comm.ExecuteScalar();
+            comm.Dispose();
+            return (T)Convert.ChangeType(o, typeof(T));
+        }
+
+        public DataTable GetDataTable(string sql, CommandType ctype = CommandType.Text, params MySqlParameter[] pars)
+        {
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+            }
+            DataTable dt = new DataTable();
+            using (MySqlCommand comm = conn.CreateCommand())
+            {
+                MySqlDataAdapter mad = new MySqlDataAdapter(comm);
+                comm.CommandText = sql;
+                comm.CommandType = ctype;
+                comm.Parameters.AddRange(pars);
+                mad.Fill(dt);
+            }
+            return dt;
+        }
+        public DataSet GetDataSet(string sql,CommandType ctype=CommandType.Text ,params MySqlParameter[] pars)
+        {
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+            }
+            DataSet ds = new DataSet();
+            using (MySqlCommand comm = conn.CreateCommand())
+            {
+                MySqlDataAdapter mad = new MySqlDataAdapter(comm);
+                comm.CommandText = sql;
+                comm.CommandType = ctype;
+                comm.Parameters.AddRange(pars);
+                mad.Fill(ds);
+            }
+            return ds;
+        }
+
     }
+
 }

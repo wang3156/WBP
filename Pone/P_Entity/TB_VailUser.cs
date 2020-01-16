@@ -11,7 +11,7 @@ namespace P_Entity
     /// <summary>
     /// 用户信息验证
     /// </summary>
-    public class TB_VailUser: DbContext<TB_VailUser>
+    public class TB_VailUser 
     {
         [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
         public int TUID { get; set; }

@@ -1,4 +1,4 @@
-﻿using P_Entity;
+﻿using CommLibrary.DBHelper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace Pone
 {
@@ -18,23 +19,28 @@ namespace Pone
             InitializeComponent();
         }
 
-        public string UCode;
+ 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            UCode = textBox1.Text.Trim();
+            string UCode = textBox1.Text.Trim();
             if (string.IsNullOrWhiteSpace(UCode))
             {
                 MessageBox.Show("请输入账号!", "提示");
             }
             else
             {
-                TB_VailUser Vuser = new TB_VailUser().StudentDb.GetSingle(c => c.UCode == UCode);
-                if (Vuser != null)
+                DataTable dt = new DataTable();
+                using (MySqlDBHelper db=new MySqlDBHelper())
                 {
+                    dt = db.GetDataTable("select * From TB_VailUser where UCode=@code",pars: new MySqlParameter("@code", SqlDbType.VarChar) { Value = UCode });
+                }
+                 
+                if (dt.Rows.Count==0)
+                {
+                    DataRow dr = dt.Rows[0];
                     F_Mian f = (this.Tag as F_Mian);
-                    f.Text = $"信息验证({Vuser.UCode} {Vuser.UName} )";
-                    f.Vuser = Vuser;
+                    f.Text = $"信息验证({UCode} {dr["UName"]} )";                    
                     this.Close();
                 }
                 else
