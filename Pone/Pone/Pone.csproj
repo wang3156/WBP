@@ -37,6 +37,10 @@
       <HintPath>..\packages\MySqlConnector.0.61.0\lib\net45\MySqlConnector.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
@@ -120,7 +124,7 @@
       <Name>CommLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\P_Entity\P_Entity.csproj">
-      <Project>{DEC00F36-B5C7-4C35-94C5-61F35E5E13DD}</Project>
+      <Project>{dec00f36-b5c7-4c35-94c5-61f35e5e13dd}</Project>
       <Name>P_Entity</Name>
     </ProjectReference>
   </ItemGroup>

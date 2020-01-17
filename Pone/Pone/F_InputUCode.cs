@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using P_Entity;
 
 namespace Pone
 {
@@ -19,7 +21,7 @@ namespace Pone
             InitializeComponent();
         }
 
- 
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -31,16 +33,17 @@ namespace Pone
             else
             {
                 DataTable dt = new DataTable();
-                using (MySqlDBHelper db=new MySqlDBHelper())
+                using (MySqlDBHelper db = new MySqlDBHelper())
                 {
-                    dt = db.GetDataTable("select * From TB_VailUser where UCode=@code",pars: new MySqlParameter("@code", SqlDbType.VarChar) { Value = UCode });
+                    dt = db.GetDataTable("select * From TB_VailUser where UCode=@code", pars: new MySqlParameter("@code", SqlDbType.VarChar) { Value = UCode });
                 }
-                 
-                if (dt.Rows.Count==0)
+
+                if (dt.Rows.Count> 0)
                 {
                     DataRow dr = dt.Rows[0];
                     F_Mian f = (this.Tag as F_Mian);
-                    f.Text = $"信息验证({UCode} {dr["UName"]} )";                    
+                    f.Text = $"信息验证({UCode} {dr["UName"]} )";
+                    f.Vuser = JsonConvert.DeserializeObject<TB_VailUser>(JsonConvert.SerializeObject(dr));
                     this.Close();
                 }
                 else

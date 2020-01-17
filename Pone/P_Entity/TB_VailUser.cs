@@ -1,5 +1,5 @@
 ﻿using CommLibrary.DBHelper;
-using SqlSugar;
+ 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace P_Entity
     /// </summary>
     public class TB_VailUser 
     {
-        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+        
         public int TUID { get; set; }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace P_Entity
         /// <summary>
         /// 是否有效
         /// </summary>
-        [SugarColumn(DefaultValue = "true")]
+     
         public bool IsActive { get; set; }
 
     }
