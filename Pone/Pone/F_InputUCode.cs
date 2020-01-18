@@ -44,6 +44,7 @@ namespace Pone
                     F_Mian f = (this.Tag as F_Mian);
                     f.Text = $"信息验证({UCode} {dr["UName"]} )";
                     f.Vuser = JsonConvert.DeserializeObject<TB_VailUser>(JsonConvert.SerializeObject(dr));
+                    this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 else

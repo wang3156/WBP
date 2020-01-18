@@ -57,6 +57,7 @@ namespace CommLibrary.DBHelper
                 conn.Open();
             }
             MySqlCommand comm = conn.CreateCommand();
+            comm.Transaction = Tran;
             comm.CommandText = sql;
             comm.Parameters.AddRange(pars);
             object o = comm.ExecuteScalar();
@@ -74,6 +75,7 @@ namespace CommLibrary.DBHelper
             using (MySqlCommand comm = conn.CreateCommand())
             {
                 MySqlDataAdapter mad = new MySqlDataAdapter(comm);
+                comm.Transaction = Tran;
                 comm.CommandText = sql;
                 comm.CommandType = ctype;
                 comm.Parameters.AddRange(pars);
@@ -91,6 +93,7 @@ namespace CommLibrary.DBHelper
             using (MySqlCommand comm = conn.CreateCommand())
             {
                 MySqlDataAdapter mad = new MySqlDataAdapter(comm);
+                comm.Transaction = Tran;
                 comm.CommandText = sql;
                 comm.CommandType = ctype;
                 comm.Parameters.AddRange(pars);
