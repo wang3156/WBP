@@ -39,7 +39,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.Lab_CreateUser = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.Lab_IsActive = new System.Windows.Forms.Label();
+            this.Lab_StrIsActive = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.Lab_BCount = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -165,7 +165,7 @@
             // 
             this.groupBox3.Controls.Add(this.Lab_CreateUser);
             this.groupBox3.Controls.Add(this.label16);
-            this.groupBox3.Controls.Add(this.Lab_IsActive);
+            this.groupBox3.Controls.Add(this.Lab_StrIsActive);
             this.groupBox3.Controls.Add(this.label14);
             this.groupBox3.Controls.Add(this.Lab_BCount);
             this.groupBox3.Controls.Add(this.label12);
@@ -211,15 +211,15 @@
             this.label16.TabIndex = 42;
             this.label16.Text = "入库经手人：";
             // 
-            // Lab_IsActive
+            // Lab_StrIsActive
             // 
-            this.Lab_IsActive.AutoSize = true;
-            this.Lab_IsActive.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Lab_IsActive.Location = new System.Drawing.Point(92, 213);
-            this.Lab_IsActive.Name = "Lab_IsActive";
-            this.Lab_IsActive.Size = new System.Drawing.Size(20, 19);
-            this.Lab_IsActive.TabIndex = 41;
-            this.Lab_IsActive.Text = "l1";
+            this.Lab_StrIsActive.AutoSize = true;
+            this.Lab_StrIsActive.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_StrIsActive.Location = new System.Drawing.Point(92, 213);
+            this.Lab_StrIsActive.Name = "Lab_StrIsActive";
+            this.Lab_StrIsActive.Size = new System.Drawing.Size(20, 19);
+            this.Lab_StrIsActive.TabIndex = 41;
+            this.Lab_StrIsActive.Text = "l1";
             // 
             // label14
             // 
@@ -665,7 +665,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label Lab_CreateUser;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label Lab_IsActive;
+        private System.Windows.Forms.Label Lab_StrIsActive;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label Lab_BCount;
         private System.Windows.Forms.Label label12;

@@ -31,6 +31,24 @@ namespace Pone
         {
             PB_ProductImg.Image = Properties.Resources.noting;
             ClearLabTxt();
+
+            P_Imgs.Visible = true;
+            LinkLabel ll;
+            for (int i = 0; i < 10; i++)
+            {
+                ll = new LinkLabel();
+                ll.Text = (i + 1).ToString();
+                ll.Tag = i;
+                ll.Top = 5;
+                ll.Width = 15;
+                ll.Left = i * ll.Width;
+                ll.Click += Ll_Click;
+                P_Imgs.Controls.Add(ll);
+                if (i == 0)
+                {
+                    Ll_Click(ll, null);
+                }
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -103,7 +121,7 @@ namespace Pone
         void BindDateToForm()
         {
 
-            Current_Row.Table.Columns.Add("Other");
+            Current_Row.Table.Columns.Add(new DataColumn("StrIsActive", typeof(string)) { Expression = "IIF(IsActive,'有效','无效')" });
 
 
 
@@ -114,7 +132,7 @@ namespace Pone
             //BRID, VerificationCode, BorrowUser, Handler, BorrowTime, BorrowTimeLimit, DateOfReturn, ReturnHandler
             if (imgs.Length > 0)
             {
-                PB_ProductImg.ImageLocation = imgs[0];
+                //PB_ProductImg.ImageLocation = imgs[0];
                 if (imgs.Length > 1)
                 {
                     P_Imgs.Visible = true;
@@ -125,10 +143,14 @@ namespace Pone
                         ll.Text = (i + 1).ToString();
                         ll.Tag = i;
                         ll.Top = 5;
-                        ll.Width = 15;
+                        ll.Width = 20;
                         ll.Left = i * ll.Width;
                         ll.Click += Ll_Click;
                         P_Imgs.Controls.Add(ll);
+                        if (i==0)
+                        {
+                            Ll_Click(ll, null);
+                        }
                     }
                 }
             }
@@ -142,7 +164,9 @@ namespace Pone
             #region 绑定其它固有数据的值 
             FormCot.ForEach(c =>
             {
-                c.Text = Convert.ToString(Current_Row[c.Name.Replace("Lab_", "")]);
+                string cname = c.Name.Replace("Lab_", "");
+                if (Current_Row.Table.Columns.Contains(cname))
+                    c.Text = Convert.ToString(Current_Row[cname]);
             });
 
             #endregion
@@ -159,7 +183,7 @@ namespace Pone
                 {
                     double dbnow = (now - DueTime).TotalMinutes;
                     double hour = Math.Floor((dbnow / 60) % 24);
-                    lother.Text += $" 逾期：{ Math.Floor(dbnow / 60 / 24)}天{hour}小时{(dbnow / 60)}分 \r\n 逾期金额（5元/小时）：{hour * 5}";
+                    lother.Text += $" 逾期：{ Math.Floor(dbnow / 60 / 24)}天{hour}小时{Math.Ceiling((dbnow / 60))}分 \r\n 逾期金额（5元/小时）：{Math.Round((dbnow / 60) * 5, 2, MidpointRounding.AwayFromZero)}";
                     lother.ForeColor = Color.Red;
                 }
             }
