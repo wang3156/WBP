@@ -38,7 +38,7 @@ namespace Pone
                     dt = db.GetDataTable("select * From TB_VailUser where UCode=@code", pars: new MySqlParameter("@code", SqlDbType.VarChar) { Value = UCode });
                 }
 
-                if (dt.Rows.Count> 0)
+                if (dt.Rows.Count > 0)
                 {
                     DataRow dr = dt.Rows[0];
                     F_Mian f = (this.Tag as F_Mian);
@@ -52,6 +52,14 @@ namespace Pone
                     MessageBox.Show("输入的账号有误!");
                 }
 
+            }
+        }
+
+        private void F_InputUCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                button1_Click(this.button1, null);
             }
         }
     }

@@ -48,6 +48,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(196, 20);
             this.textBox1.TabIndex = 1;
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.F_InputUCode_KeyDown);
             // 
             // button1
             // 
@@ -73,6 +74,7 @@
             this.Name = "F_InputUCode";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "请输入账号";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.F_InputUCode_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

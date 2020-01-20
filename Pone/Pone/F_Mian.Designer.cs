@@ -41,7 +41,7 @@
             this.label16 = new System.Windows.Forms.Label();
             this.Lab_IsActive = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.Lab_BCount = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.Lab_CreateTime = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -60,33 +60,31 @@
             this.label5 = new System.Windows.Forms.Label();
             this.Lab_ProductModel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.gp3 = new System.Windows.Forms.GroupBox();
+            this.Lab_ReturnHandler = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
+            this.Lab_DateOfReturn = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
+            this.Lab_BorrowTime = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
+            this.Lab_BorrowTimeLimit = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
+            this.Lab_Handler = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
+            this.Lab_BorrowUser = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
+            this.Lab_VerificationCode = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
+            this.Lab_BRID = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.Lab_Other = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PB_ProductImg)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.gp3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -157,7 +155,7 @@
             // panel2
             // 
             this.panel2.Controls.Add(this.groupBox3);
-            this.panel2.Controls.Add(this.groupBox1);
+            this.panel2.Controls.Add(this.gp3);
             this.panel2.Location = new System.Drawing.Point(12, 61);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(804, 761);
@@ -169,7 +167,7 @@
             this.groupBox3.Controls.Add(this.label16);
             this.groupBox3.Controls.Add(this.Lab_IsActive);
             this.groupBox3.Controls.Add(this.label14);
-            this.groupBox3.Controls.Add(this.label11);
+            this.groupBox3.Controls.Add(this.Lab_BCount);
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.Lab_CreateTime);
             this.groupBox3.Controls.Add(this.label9);
@@ -233,25 +231,25 @@
             this.label14.TabIndex = 40;
             this.label14.Text = "状态：";
             // 
-            // label11
+            // Lab_BCount
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(361, 213);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(20, 19);
-            this.label11.TabIndex = 39;
-            this.label11.Text = "l1";
+            this.Lab_BCount.AutoSize = true;
+            this.Lab_BCount.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_BCount.Location = new System.Drawing.Point(361, 213);
+            this.Lab_BCount.Name = "Lab_BCount";
+            this.Lab_BCount.Size = new System.Drawing.Size(20, 19);
+            this.Lab_BCount.TabIndex = 39;
+            this.Lab_BCount.Text = "l1";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(312, 213);
+            this.label12.Location = new System.Drawing.Point(299, 213);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(48, 19);
+            this.label12.Size = new System.Drawing.Size(61, 19);
             this.label12.TabIndex = 38;
-            this.label12.Text = "产地：";
+            this.label12.Text = "出借数：";
             // 
             // Lab_CreateTime
             // 
@@ -420,204 +418,162 @@
             this.label3.TabIndex = 23;
             this.label3.Text = "类型/型号：";
             // 
-            // groupBox1
+            // gp3
             // 
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Controls.Add(this.label15);
-            this.groupBox1.Controls.Add(this.label17);
-            this.groupBox1.Controls.Add(this.label18);
-            this.groupBox1.Controls.Add(this.label19);
-            this.groupBox1.Controls.Add(this.label20);
-            this.groupBox1.Controls.Add(this.label21);
-            this.groupBox1.Controls.Add(this.label22);
-            this.groupBox1.Controls.Add(this.label23);
-            this.groupBox1.Controls.Add(this.label24);
-            this.groupBox1.Controls.Add(this.label25);
-            this.groupBox1.Controls.Add(this.label26);
-            this.groupBox1.Controls.Add(this.label27);
-            this.groupBox1.Controls.Add(this.label28);
-            this.groupBox1.Controls.Add(this.label29);
-            this.groupBox1.Controls.Add(this.label30);
-            this.groupBox1.Controls.Add(this.label31);
-            this.groupBox1.Controls.Add(this.label32);
-            this.groupBox1.Controls.Add(this.label33);
-            this.groupBox1.Location = new System.Drawing.Point(6, 375);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(798, 383);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "租借信息";
+            this.gp3.Controls.Add(this.Lab_Other);
+            this.gp3.Controls.Add(this.label11);
+            this.gp3.Controls.Add(this.Lab_ReturnHandler);
+            this.gp3.Controls.Add(this.label13);
+            this.gp3.Controls.Add(this.Lab_DateOfReturn);
+            this.gp3.Controls.Add(this.label21);
+            this.gp3.Controls.Add(this.Lab_BorrowTime);
+            this.gp3.Controls.Add(this.label23);
+            this.gp3.Controls.Add(this.Lab_BorrowTimeLimit);
+            this.gp3.Controls.Add(this.label25);
+            this.gp3.Controls.Add(this.Lab_Handler);
+            this.gp3.Controls.Add(this.label27);
+            this.gp3.Controls.Add(this.Lab_BorrowUser);
+            this.gp3.Controls.Add(this.label29);
+            this.gp3.Controls.Add(this.Lab_VerificationCode);
+            this.gp3.Controls.Add(this.label31);
+            this.gp3.Controls.Add(this.Lab_BRID);
+            this.gp3.Controls.Add(this.label33);
+            this.gp3.Location = new System.Drawing.Point(6, 375);
+            this.gp3.Name = "gp3";
+            this.gp3.Size = new System.Drawing.Size(798, 383);
+            this.gp3.TabIndex = 0;
+            this.gp3.TabStop = false;
+            this.gp3.Text = "租借信息";
             // 
-            // label4
+            // Lab_ReturnHandler
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(503, 230);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(20, 19);
-            this.label4.TabIndex = 63;
-            this.label4.Text = "l1";
+            this.Lab_ReturnHandler.AutoSize = true;
+            this.Lab_ReturnHandler.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_ReturnHandler.Location = new System.Drawing.Point(516, 230);
+            this.Lab_ReturnHandler.Name = "Lab_ReturnHandler";
+            this.Lab_ReturnHandler.Size = new System.Drawing.Size(20, 19);
+            this.Lab_ReturnHandler.TabIndex = 63;
+            this.Lab_ReturnHandler.Text = "l1";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(413, 230);
+            this.label13.Location = new System.Drawing.Point(449, 230);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(87, 19);
+            this.label13.Size = new System.Drawing.Size(61, 19);
             this.label13.TabIndex = 62;
-            this.label13.Text = "入库经手人：";
+            this.label13.Text = "接收人：";
             // 
-            // label15
+            // Lab_DateOfReturn
             // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(113, 286);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(20, 19);
-            this.label15.TabIndex = 61;
-            this.label15.Text = "l1";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(64, 286);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(48, 19);
-            this.label17.TabIndex = 60;
-            this.label17.Text = "状态：";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(503, 286);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(20, 19);
-            this.label18.TabIndex = 59;
-            this.label18.Text = "l1";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(449, 286);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(48, 19);
-            this.label19.TabIndex = 58;
-            this.label19.Text = "产地：";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(113, 230);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(20, 19);
-            this.label20.TabIndex = 57;
-            this.label20.Text = "l1";
+            this.Lab_DateOfReturn.AutoSize = true;
+            this.Lab_DateOfReturn.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_DateOfReturn.Location = new System.Drawing.Point(118, 230);
+            this.Lab_DateOfReturn.Name = "Lab_DateOfReturn";
+            this.Lab_DateOfReturn.Size = new System.Drawing.Size(20, 19);
+            this.Lab_DateOfReturn.TabIndex = 57;
+            this.Lab_DateOfReturn.Text = "l1";
             // 
             // label21
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(40, 230);
+            this.label21.Location = new System.Drawing.Point(38, 230);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(74, 19);
             this.label21.TabIndex = 56;
-            this.label21.Text = "入库时间：";
+            this.label21.Text = "归还时间：";
             // 
-            // label22
+            // Lab_BorrowTime
             // 
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(503, 174);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(20, 19);
-            this.label22.TabIndex = 55;
-            this.label22.Text = "l1";
+            this.Lab_BorrowTime.AutoSize = true;
+            this.Lab_BorrowTime.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_BorrowTime.Location = new System.Drawing.Point(516, 174);
+            this.Lab_BorrowTime.Name = "Lab_BorrowTime";
+            this.Lab_BorrowTime.Size = new System.Drawing.Size(20, 19);
+            this.Lab_BorrowTime.TabIndex = 55;
+            this.Lab_BorrowTime.Text = "l1";
             // 
             // label23
             // 
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(449, 174);
+            this.label23.Location = new System.Drawing.Point(436, 174);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(48, 19);
+            this.label23.Size = new System.Drawing.Size(74, 19);
             this.label23.TabIndex = 54;
-            this.label23.Text = "数量：";
+            this.label23.Text = "出借时间：";
             // 
-            // label24
+            // Lab_BorrowTimeLimit
             // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(503, 118);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(20, 19);
-            this.label24.TabIndex = 53;
-            this.label24.Text = "l1";
+            this.Lab_BorrowTimeLimit.AutoSize = true;
+            this.Lab_BorrowTimeLimit.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_BorrowTimeLimit.Location = new System.Drawing.Point(516, 118);
+            this.Lab_BorrowTimeLimit.Name = "Lab_BorrowTimeLimit";
+            this.Lab_BorrowTimeLimit.Size = new System.Drawing.Size(20, 19);
+            this.Lab_BorrowTimeLimit.TabIndex = 53;
+            this.Lab_BorrowTimeLimit.Text = "l1";
             // 
             // label25
             // 
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(449, 118);
+            this.label25.Location = new System.Drawing.Point(436, 118);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(48, 19);
+            this.label25.Size = new System.Drawing.Size(74, 19);
             this.label25.TabIndex = 52;
-            this.label25.Text = "颜色：";
+            this.label25.Text = "借用天数：";
             // 
-            // label26
+            // Lab_Handler
             // 
-            this.label26.AutoSize = true;
-            this.label26.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(113, 174);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(20, 19);
-            this.label26.TabIndex = 51;
-            this.label26.Text = "l1";
+            this.Lab_Handler.AutoSize = true;
+            this.Lab_Handler.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_Handler.Location = new System.Drawing.Point(118, 174);
+            this.Lab_Handler.Name = "Lab_Handler";
+            this.Lab_Handler.Size = new System.Drawing.Size(20, 19);
+            this.Lab_Handler.TabIndex = 51;
+            this.Lab_Handler.Text = "l1";
             // 
             // label27
             // 
             this.label27.AutoSize = true;
             this.label27.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.Location = new System.Drawing.Point(64, 174);
+            this.label27.Location = new System.Drawing.Point(51, 174);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(48, 19);
+            this.label27.Size = new System.Drawing.Size(61, 19);
             this.label27.TabIndex = 50;
-            this.label27.Text = "产地：";
+            this.label27.Text = "借出人：";
             // 
-            // label28
+            // Lab_BorrowUser
             // 
-            this.label28.AutoSize = true;
-            this.label28.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label28.Location = new System.Drawing.Point(113, 118);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(20, 19);
-            this.label28.TabIndex = 49;
-            this.label28.Text = "l1";
+            this.Lab_BorrowUser.AutoSize = true;
+            this.Lab_BorrowUser.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_BorrowUser.Location = new System.Drawing.Point(118, 118);
+            this.Lab_BorrowUser.Name = "Lab_BorrowUser";
+            this.Lab_BorrowUser.Size = new System.Drawing.Size(20, 19);
+            this.Lab_BorrowUser.TabIndex = 49;
+            this.Lab_BorrowUser.Text = "l1";
             // 
             // label29
             // 
             this.label29.AutoSize = true;
             this.label29.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label29.Location = new System.Drawing.Point(40, 118);
+            this.label29.Location = new System.Drawing.Point(51, 118);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(74, 19);
+            this.label29.Size = new System.Drawing.Size(61, 19);
             this.label29.TabIndex = 48;
-            this.label29.Text = "产品编码：";
+            this.label29.Text = "借用人：";
             // 
-            // label30
+            // Lab_VerificationCode
             // 
-            this.label30.AutoSize = true;
-            this.label30.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label30.Location = new System.Drawing.Point(503, 62);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(20, 19);
-            this.label30.TabIndex = 47;
-            this.label30.Text = "l1";
+            this.Lab_VerificationCode.AutoSize = true;
+            this.Lab_VerificationCode.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_VerificationCode.Location = new System.Drawing.Point(516, 62);
+            this.Lab_VerificationCode.Name = "Lab_VerificationCode";
+            this.Lab_VerificationCode.Size = new System.Drawing.Size(20, 19);
+            this.Lab_VerificationCode.TabIndex = 47;
+            this.Lab_VerificationCode.Text = "l1";
             // 
             // label31
             // 
@@ -625,29 +581,49 @@
             this.label31.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label31.Location = new System.Drawing.Point(449, 62);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(48, 19);
+            this.label31.Size = new System.Drawing.Size(61, 19);
             this.label31.TabIndex = 46;
-            this.label31.Text = "名称：";
+            this.label31.Text = "验证码：";
             // 
-            // label32
+            // Lab_BRID
             // 
-            this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.Location = new System.Drawing.Point(113, 62);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(20, 19);
-            this.label32.TabIndex = 45;
-            this.label32.Text = "l1";
+            this.Lab_BRID.AutoSize = true;
+            this.Lab_BRID.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_BRID.Location = new System.Drawing.Point(118, 62);
+            this.Lab_BRID.Name = "Lab_BRID";
+            this.Lab_BRID.Size = new System.Drawing.Size(20, 19);
+            this.Lab_BRID.TabIndex = 45;
+            this.Lab_BRID.Text = "l1";
             // 
             // label33
             // 
             this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.Location = new System.Drawing.Point(35, 62);
+            this.label33.Location = new System.Drawing.Point(51, 62);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(80, 19);
+            this.label33.Size = new System.Drawing.Size(61, 19);
             this.label33.TabIndex = 44;
-            this.label33.Text = "类型/型号：";
+            this.label33.Text = "订单号：";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(38, 284);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(74, 19);
+            this.label11.TabIndex = 64;
+            this.label11.Text = "其它信息：";
+            // 
+            // Lab_Other
+            // 
+            this.Lab_Other.AutoSize = true;
+            this.Lab_Other.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_Other.Location = new System.Drawing.Point(118, 284);
+            this.Lab_Other.Name = "Lab_Other";
+            this.Lab_Other.Size = new System.Drawing.Size(20, 19);
+            this.Lab_Other.TabIndex = 65;
+            this.Lab_Other.Text = "l1";
             // 
             // F_Mian
             // 
@@ -669,8 +645,8 @@
             this.groupBox3.PerformLayout();
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PB_ProductImg)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gp3.ResumeLayout(false);
+            this.gp3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -683,7 +659,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox Txt_VerificationCode;
         private System.Windows.Forms.TextBox Txt_BRID;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gp3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -691,7 +667,7 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label Lab_IsActive;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label Lab_BCount;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label Lab_CreateTime;
         private System.Windows.Forms.Label label9;
@@ -710,26 +686,24 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label Lab_ProductModel;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label Lab_ReturnHandler;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label Lab_DateOfReturn;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label Lab_BorrowTime;
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label Lab_BorrowTimeLimit;
         private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label Lab_Handler;
         private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label Lab_BorrowUser;
         private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label Lab_VerificationCode;
         private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label Lab_BRID;
         private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label Lab_Other;
     }
 }
 

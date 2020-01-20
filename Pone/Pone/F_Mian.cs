@@ -24,13 +24,21 @@ namespace Pone
 
         private void F_Mian_Load(object sender, EventArgs e)
         {
+            InitFormPanlControl();
+        }
+
+        private void InitFormPanlControl()
+        {
             PB_ProductImg.Image = Properties.Resources.noting;
+            ClearLabTxt();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Current_Row = null;
             Vuser = null;
             this.Text = "信息验证 (未登录)";
+
             MessageBox.Show("注销成功!");
         }
 
@@ -51,42 +59,58 @@ namespace Pone
                 }
                 else
                 {
-                    List<MySqlParameter> pars = new List<MySqlParameter>();
-                    string sql = "select a.*,b.BRID,b.VerificationCode,b.BorrowUser,b.Handler,b.BorrowTime,b.BorrowTimeLimit,b.DateOfReturn,b.ReturnHandler From TB_Goods a,TB_BorrowRecord b where a.TID=b.TID ";
-                    if (!string.IsNullOrWhiteSpace(Txt_BRID.Text))
-                    {
-                        sql += " and b.BRID =@brid ";
-                        pars.Add(new MySqlParameter("@brid", Txt_BRID.Text.Trim()));
-                    }
-                    if (!string.IsNullOrWhiteSpace(Txt_VerificationCode.Text))
-                    {
-                        sql += " and b.VerificationCode =@vcode ";
-                        pars.Add(new MySqlParameter("@vcode", Txt_VerificationCode.Text.Trim()));
-                    }
-                    DataTable dt = new DataTable();
-                    using (MySqlDBHelper mydb = new MySqlDBHelper())
-                    {
-                        dt = mydb.GetDataTable(sql, pars: pars.ToArray());
-                    }
-                    if (dt.Rows.Count == 0)
-                    {
-                        MessageBox.Show("验证信息有误!");
-                    }
-                    else
-                    {
-                        BindDateToForm(dt.Rows[0]);
-                    }
+                    Current_Row = null;
+                    GetDataAndBindToForm();
                 }
             }
         }
 
-        string[] imgs = new string[] { @"D:\a\img\a.jpg", @"D:\a\img\b.jpg" };
-
-        void BindDateToForm(DataRow row)
+        private void GetDataAndBindToForm()
         {
+            List<MySqlParameter> pars = new List<MySqlParameter>();
+            string sql = "  select a.*,b.BRID,b.VerificationCode,b.BorrowUser,b.Handler,b.BorrowTime,b.BorrowTimeLimit,b.DateOfReturn,b.ReturnHandler,  (select count(1) From TB_BorrowRecord c where c.TID = b.TID and c.DateOfReturn is null) as `BCount`  From TB_Goods a,TB_BorrowRecord b where a.TID = b.TID ";
+            if (!string.IsNullOrWhiteSpace(Txt_BRID.Text))
+            {
+                sql += " and b.BRID =@brid ";
+                pars.Add(new MySqlParameter("@brid", Txt_BRID.Text.Trim()));
+            }
+            if (!string.IsNullOrWhiteSpace(Txt_VerificationCode.Text))
+            {
+                sql += " and b.VerificationCode =@vcode ";
+                pars.Add(new MySqlParameter("@vcode", Txt_VerificationCode.Text.Trim()));
+            }
+            sql += ";";
+            DataTable dt = new DataTable();
+            using (MySqlDBHelper mydb = new MySqlDBHelper())
+            {
+                dt = mydb.GetDataTable(sql, pars: pars.ToArray());
+            }
+            if (dt.Rows.Count == 0)
+            {
+                MessageBox.Show("验证信息有误!");
+            }
+            else
+            {
+                Current_Row = dt.Rows[0];
+                BindDateToForm();
+            }
+        }
+
+        string[] imgs = new string[] { @"D:\a\img\a.jpg", @"D:\a\img\b.jpg" };
+        DataRow Current_Row;
+        List<Control> FormCot = new List<Control>(30);
+
+        void BindDateToForm()
+        {
+
+            Current_Row.Table.Columns.Add("Other");
+
+
+
+            #region 处理预览图
             P_Imgs.Visible = false;
             P_Imgs.Controls.Clear();
-
+            imgs = Convert.ToString(Current_Row["ProductImg"]).Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
             //BRID, VerificationCode, BorrowUser, Handler, BorrowTime, BorrowTimeLimit, DateOfReturn, ReturnHandler
             if (imgs.Length > 0)
             {
@@ -113,7 +137,49 @@ namespace Pone
                 PB_ProductImg.Image = Properties.Resources.noting;
 
             }
+            #endregion
 
+            #region 绑定其它固有数据的值 
+            FormCot.ForEach(c =>
+            {
+                c.Text = Convert.ToString(Current_Row[c.Name.Replace("Lab_", "")]);
+            });
+
+            #endregion
+
+            //绑定其它信息的值 
+            Label lother = (this.panel2.Controls.Find("Lab_Other", true).FirstOrDefault() as Label);
+            if (Current_Row["DateOfReturn"] == DBNull.Value)
+            {
+                DateTime now = DateTime.Now;
+                lother.Text = "尚未归还";
+                DateTime DueTime = Convert.ToDateTime(Current_Row["BorrowTime"]).AddDays(Convert.ToInt32(Current_Row["BorrowTimeLimit"]));
+                lother.Text += $",应归还日期为：{ DueTime.ToString("yyyy年MM月dd日")}。";
+                if (DueTime < now)
+                {
+                    double dbnow = (now - DueTime).TotalMinutes;
+                    double hour = Math.Floor((dbnow / 60) % 24);
+                    lother.Text += $" 逾期：{ Math.Floor(dbnow / 60 / 24)}天{hour}小时{(dbnow / 60)}分 \r\n 逾期金额（5元/小时）：{hour * 5}";
+                    lother.ForeColor = Color.Red;
+                }
+            }
+
+        }
+
+        void ClearLabTxt()
+        {
+
+            foreach (Control item in this.panel2.Controls)
+            {
+                foreach (Control lab in item.Controls)
+                {
+                    if (lab.Name.StartsWith("Lab_"))
+                    {
+                        lab.Text = "";
+                        FormCot.Add(lab);
+                    }
+                }
+            }
         }
 
         private void Ll_Click(object sender, EventArgs e)
@@ -138,7 +204,7 @@ namespace Pone
                 }
             }
         }
- 
+
     }
 
 
