@@ -16,7 +16,7 @@ namespace Pone
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new F_Mian());
+            Application.Run(new F_Main1());
         }
     }
 }

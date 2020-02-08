@@ -78,6 +78,12 @@
     <Compile Include="F_InputUCode.Designer.cs">
       <DependentUpon>F_InputUCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="F_Main1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Main1.Designer.cs">
+      <DependentUpon>F_Main1.cs</DependentUpon>
+    </Compile>
     <Compile Include="F_Mian.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,6 +94,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="F_InputUCode.resx">
       <DependentUpon>F_InputUCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Main1.resx">
+      <DependentUpon>F_Main1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="F_Mian.resx">
       <DependentUpon>F_Mian.cs</DependentUpon>
