@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,7 +20,7 @@ namespace Pone
 
         public TB_VailUser Vuser = null;
         DataRow Current_Row;
-        string[] imgs = new string[] { @"D:\a\img\a.jpg", @"D:\a\img\b.jpg" };
+        string[] imgs = new string[0];// new string[] { @"D:\a\img\a.jpg", @"D:\a\img\b.jpg" };
 
         public F_Main1()
         {
@@ -107,37 +109,28 @@ namespace Pone
             #region 处理预览图
             P_Imgs.Visible = false;
             P_Imgs.Controls.Clear();
-            imgs = Convert.ToString(Current_Row["pic"]).Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+            // imgs = Convert.ToString(Current_Row["pic"]).Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
             //BRID, VerificationCode, BorrowUser, Handler, BorrowTime, BorrowTimeLimit, DateOfReturn, ReturnHandler
-            if (imgs.Length > 0)
+            string pic = Regex.Replace(Convert.ToString(Current_Row["pic"]), "data:.+;base64,", "");
+            if (!string.IsNullOrWhiteSpace(pic))
             {
-                PB_ProductImg.ImageLocation = imgs[0];
-                if (imgs.Length > 1)
+                if (pic.Length % 4!=0)
                 {
-                    P_Imgs.Visible = true;
-                    LinkLabel ll;
-                    for (int i = 0; i < imgs.Length; i++)
-                    {
-                        ll = new LinkLabel();
-                        ll.Text = (i + 1).ToString();
-                        ll.Tag = i;
-                        ll.Top = 5;
-                        ll.Width = 20;
-                        ll.Left = i * ll.Width;
-                        ll.Click += Ll_Click;
-                        P_Imgs.Controls.Add(ll);
-                        if (i == 0)
-                        {
-                            Ll_Click(ll, null);
-                        }
-                    }
+                    pic += "=";
+
                 }
-            }
-            else
-            {//无预览的图
-                PB_ProductImg.Image = Properties.Resources.noting;
+               
+                byte[] bys = Convert.FromBase64String(pic);
+                PB_ProductImg.Image = Image.FromStream(new MemoryStream(bys));
+
 
             }
+            else
+            {
+                PB_ProductImg.Image = Properties.Resources.noting;
+            }
+
+
             #endregion
 
             #region 绑定其它固有数据的值 
@@ -146,8 +139,8 @@ namespace Pone
                 string cname = c.Name.Replace("Lab_", "");
                 if (cname == "ostatus")
                 {
-                    
-                     
+
+
                     c.ForeColor = Color.FromName(os.Split('_')[1]);
                 }
                 if (Current_Row.Table.Columns.Contains(cname))
@@ -157,7 +150,7 @@ namespace Pone
             #endregion
 
             //绑定其它信息的值 
-            if (webBrowser1.Document==null)
+            if (webBrowser1.Document == null)
             {
                 webBrowser1.Navigate("");
                 webBrowser1.Document.Write(Convert.ToString(Current_Row["details"]));
@@ -166,8 +159,8 @@ namespace Pone
             {
                 webBrowser1.Document.Body.InnerHtml = Convert.ToString(Current_Row["details"]);
             }
-           
-            
+
+
 
 
         }
