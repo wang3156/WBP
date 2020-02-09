@@ -111,7 +111,7 @@ namespace Pone
             P_Imgs.Controls.Clear();
             // imgs = Convert.ToString(Current_Row["pic"]).Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
             //BRID, VerificationCode, BorrowUser, Handler, BorrowTime, BorrowTimeLimit, DateOfReturn, ReturnHandler
-            string pic = Regex.Replace(Convert.ToString(Current_Row["pic"]), "data:.+;base64,", "");
+            string pic = Regex.Replace(Convert.ToString(Current_Row["pic"]), "data:.+;base64,", "").Trim();
             if (!string.IsNullOrWhiteSpace(pic))
             {
                 if (pic.Length % 4!=0)
