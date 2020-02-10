@@ -38,9 +38,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.Lab_eno = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.Lab_eprice = new System.Windows.Forms.Label();
+            this.Lab_deposit = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.Lab_start_time = new System.Windows.Forms.Label();
+            this.Lab_create_time = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.Lab_ono = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -48,6 +48,8 @@
             this.label14 = new System.Windows.Forms.Label();
             this.Lab_estatus = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.Lab_start_time = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.Lab_vcode = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -56,15 +58,12 @@
             this.Lab_ostatus = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
-            this.Lab_oprice = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
+            this.Btn_Return = new System.Windows.Forms.Button();
+            this.Btn_Active = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.Txt_VerificationCode = new System.Windows.Forms.TextBox();
-            this.Txt_BRID = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PB_ProductImg)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -162,21 +161,21 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(13, 191);
+            this.label8.Location = new System.Drawing.Point(45, 191);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(108, 19);
+            this.label8.Size = new System.Drawing.Size(74, 19);
             this.label8.TabIndex = 30;
-            this.label8.Text = "设备租金(每天)：";
+            this.label8.Text = "设备订金：";
             // 
-            // Lab_eprice
+            // Lab_deposit
             // 
-            this.Lab_eprice.AutoSize = true;
-            this.Lab_eprice.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Lab_eprice.Location = new System.Drawing.Point(127, 191);
-            this.Lab_eprice.Name = "Lab_eprice";
-            this.Lab_eprice.Size = new System.Drawing.Size(20, 19);
-            this.Lab_eprice.TabIndex = 31;
-            this.Lab_eprice.Text = "l1";
+            this.Lab_deposit.AutoSize = true;
+            this.Lab_deposit.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_deposit.Location = new System.Drawing.Point(127, 191);
+            this.Lab_deposit.Name = "Lab_deposit";
+            this.Lab_deposit.Size = new System.Drawing.Size(20, 19);
+            this.Lab_deposit.TabIndex = 31;
+            this.Lab_deposit.Text = "l1";
             // 
             // label10
             // 
@@ -188,15 +187,15 @@
             this.label10.TabIndex = 32;
             this.label10.Text = "租赁日期：";
             // 
-            // Lab_start_time
+            // Lab_create_time
             // 
-            this.Lab_start_time.AutoSize = true;
-            this.Lab_start_time.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Lab_start_time.Location = new System.Drawing.Point(420, 142);
-            this.Lab_start_time.Name = "Lab_start_time";
-            this.Lab_start_time.Size = new System.Drawing.Size(20, 19);
-            this.Lab_start_time.TabIndex = 33;
-            this.Lab_start_time.Text = "l1";
+            this.Lab_create_time.AutoSize = true;
+            this.Lab_create_time.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_create_time.Location = new System.Drawing.Point(420, 142);
+            this.Lab_create_time.Name = "Lab_create_time";
+            this.Lab_create_time.Size = new System.Drawing.Size(20, 19);
+            this.Lab_create_time.TabIndex = 33;
+            this.Lab_create_time.Text = "l1";
             // 
             // label7
             // 
@@ -222,17 +221,17 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(45, 285);
+            this.label12.Location = new System.Drawing.Point(327, 191);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(74, 19);
+            this.label12.Size = new System.Drawing.Size(87, 19);
             this.label12.TabIndex = 38;
-            this.label12.Text = "订单总价：";
+            this.label12.Text = "订单总金额：";
             // 
             // Lab_total
             // 
             this.Lab_total.AutoSize = true;
             this.Lab_total.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Lab_total.Location = new System.Drawing.Point(125, 285);
+            this.Lab_total.Location = new System.Drawing.Point(420, 191);
             this.Lab_total.Name = "Lab_total";
             this.Lab_total.Size = new System.Drawing.Size(20, 19);
             this.Lab_total.TabIndex = 39;
@@ -242,7 +241,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(340, 191);
+            this.label14.Location = new System.Drawing.Point(47, 240);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(74, 19);
             this.label14.TabIndex = 40;
@@ -252,7 +251,7 @@
             // 
             this.Lab_estatus.AutoSize = true;
             this.Lab_estatus.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Lab_estatus.Location = new System.Drawing.Point(420, 191);
+            this.Lab_estatus.Location = new System.Drawing.Point(127, 240);
             this.Lab_estatus.Name = "Lab_estatus";
             this.Lab_estatus.Size = new System.Drawing.Size(20, 19);
             this.Lab_estatus.TabIndex = 41;
@@ -260,6 +259,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.Lab_start_time);
+            this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.webBrowser1);
             this.groupBox3.Controls.Add(this.Lab_vcode);
             this.groupBox3.Controls.Add(this.label4);
@@ -274,11 +275,9 @@
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.Lab_ono);
             this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Controls.Add(this.Lab_start_time);
+            this.groupBox3.Controls.Add(this.Lab_create_time);
             this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Controls.Add(this.Lab_oprice);
-            this.groupBox3.Controls.Add(this.Lab_eprice);
-            this.groupBox3.Controls.Add(this.label15);
+            this.groupBox3.Controls.Add(this.Lab_deposit);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.Lab_eno);
             this.groupBox3.Controls.Add(this.label6);
@@ -293,6 +292,26 @@
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "基础信息";
+            // 
+            // Lab_start_time
+            // 
+            this.Lab_start_time.AutoSize = true;
+            this.Lab_start_time.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Lab_start_time.Location = new System.Drawing.Point(127, 285);
+            this.Lab_start_time.Name = "Lab_start_time";
+            this.Lab_start_time.Size = new System.Drawing.Size(20, 19);
+            this.Lab_start_time.TabIndex = 46;
+            this.Lab_start_time.Text = "l1";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(47, 285);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(74, 19);
+            this.label13.TabIndex = 45;
+            this.label13.Text = "激活时间：";
             // 
             // webBrowser1
             // 
@@ -374,90 +393,65 @@
             this.label17.TabIndex = 40;
             this.label17.Text = "订单状态：";
             // 
-            // Lab_oprice
-            // 
-            this.Lab_oprice.AutoSize = true;
-            this.Lab_oprice.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Lab_oprice.Location = new System.Drawing.Point(127, 240);
-            this.Lab_oprice.Name = "Lab_oprice";
-            this.Lab_oprice.Size = new System.Drawing.Size(20, 19);
-            this.Lab_oprice.TabIndex = 31;
-            this.Lab_oprice.Text = "l1";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(11, 240);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(108, 19);
-            this.label15.TabIndex = 30;
-            this.label15.Text = "实际租金(每天)：";
-            // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button2);
+            this.panel1.Controls.Add(this.Btn_Return);
+            this.panel1.Controls.Add(this.Btn_Active);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.Txt_VerificationCode);
-            this.panel1.Controls.Add(this.Txt_BRID);
             this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(833, 38);
+            this.panel1.Size = new System.Drawing.Size(920, 38);
             this.panel1.TabIndex = 24;
             // 
-            // button2
+            // Btn_Return
             // 
-            this.button2.Location = new System.Drawing.Point(705, 8);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 21);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "注销账号";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.Btn_Return.Enabled = false;
+            this.Btn_Return.Location = new System.Drawing.Point(802, 8);
+            this.Btn_Return.Name = "Btn_Return";
+            this.Btn_Return.Size = new System.Drawing.Size(75, 21);
+            this.Btn_Return.TabIndex = 5;
+            this.Btn_Return.Text = "归还";
+            this.Btn_Return.UseVisualStyleBackColor = true;
+            this.Btn_Return.Click += new System.EventHandler(this.Btn_Return_Click);
+            // 
+            // Btn_Active
+            // 
+            this.Btn_Active.Enabled = false;
+            this.Btn_Active.Location = new System.Drawing.Point(667, 8);
+            this.Btn_Active.Name = "Btn_Active";
+            this.Btn_Active.Size = new System.Drawing.Size(75, 21);
+            this.Btn_Active.TabIndex = 5;
+            this.Btn_Active.Text = "激活";
+            this.Btn_Active.UseVisualStyleBackColor = true;
+            this.Btn_Active.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(619, 8);
+            this.button1.Location = new System.Drawing.Point(532, 8);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 21);
             this.button1.TabIndex = 4;
-            this.button1.Text = "验证";
+            this.button1.Text = "查询";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Txt_VerificationCode
             // 
-            this.Txt_VerificationCode.Location = new System.Drawing.Point(372, 10);
+            this.Txt_VerificationCode.Location = new System.Drawing.Point(93, 8);
             this.Txt_VerificationCode.Name = "Txt_VerificationCode";
-            this.Txt_VerificationCode.Size = new System.Drawing.Size(219, 21);
+            this.Txt_VerificationCode.Size = new System.Drawing.Size(347, 21);
             this.Txt_VerificationCode.TabIndex = 3;
-            // 
-            // Txt_BRID
-            // 
-            this.Txt_BRID.Location = new System.Drawing.Point(75, 10);
-            this.Txt_BRID.Name = "Txt_BRID";
-            this.Txt_BRID.Size = new System.Drawing.Size(207, 21);
-            this.Txt_BRID.TabIndex = 2;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(311, 13);
+            this.label2.Location = new System.Drawing.Point(32, 11);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 1;
             this.label2.Text = "验证码：";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "订单号：";
             // 
             // F_Main1
             // 
@@ -470,7 +464,7 @@
             this.MaximizeBox = false;
             this.Name = "F_Main1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "信息验证 (未登录)";
+            this.Text = "租用管理";
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PB_ProductImg)).EndInit();
             this.groupBox3.ResumeLayout(false);
@@ -493,9 +487,9 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label Lab_eno;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label Lab_eprice;
+        private System.Windows.Forms.Label Lab_deposit;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label Lab_start_time;
+        private System.Windows.Forms.Label Lab_create_time;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label Lab_ono;
         private System.Windows.Forms.Label label12;
@@ -504,21 +498,20 @@
         private System.Windows.Forms.Label Lab_estatus;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button Btn_Active;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox Txt_VerificationCode;
-        private System.Windows.Forms.TextBox Txt_BRID;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label Lab_end_time;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label Lab_ostatus;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label Lab_oprice;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label Lab_vcode;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.Button Btn_Return;
+        private System.Windows.Forms.Label Lab_start_time;
+        private System.Windows.Forms.Label label13;
     }
 }

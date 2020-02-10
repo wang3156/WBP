@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -26,42 +27,34 @@ namespace Pone
         {
             InitializeComponent();
             ClearLabTxt();
-        }
 
+
+
+        }
+        Thread t;
         private void button1_Click(object sender, EventArgs e)
         {
-            if (Vuser == null)
+
+            if (string.IsNullOrWhiteSpace(Txt_VerificationCode.Text))
             {
-                F_InputUCode fu = new F_InputUCode();
-                fu.Tag = this;
-                fu.ShowDialog();
+                MessageBox.Show("请输入查询条件!");
+                return;
             }
-            if (Vuser != null)
+            else
             {
-                if (string.IsNullOrWhiteSpace(Txt_BRID.Text) && string.IsNullOrWhiteSpace(Txt_VerificationCode.Text))
-                {
-                    MessageBox.Show("请输入验证条件!");
-                    return;
-                }
-                else
-                {
-                    Current_Row = null;
-                    GetDataAndBindToForm();
-                }
+                Current_Row = null;
+                GetDataAndBindToForm();
             }
+
         }
         private void GetDataAndBindToForm()
         {
             List<MySqlParameter> pars = new List<MySqlParameter>();
-            string sql = @" select b.`name`,b.eno,b.price as eprice,a.start_time,a.end_time,a.ono,cast(b.`status` as char) as estatus,b.pic,a.total,c.`name` as uname,CAST(a.`status` as char) as ostatus,a.price as oprice,a.vcode,b.details  From db_order a 
+            string sql = @" select a.id,a.duration,a.eid,a.deposit,a.create_time,b.`name`,b.eno,b.price as eprice,a.start_time,a.end_time,a.ono,cast(b.`status` as char) as estatus,b.pic,a.total,c.`name` as uname,CAST(a.`status` as char) as ostatus,a.price as oprice,a.vcode,b.details  From db_order a 
   inner join db_equipment b on a.eid=b.id
 	inner join db_user c on c.id=a.uid
 	where  1=1  ";
-            if (!string.IsNullOrWhiteSpace(Txt_BRID.Text))
-            {
-                sql += " and a.ono =@brid ";
-                pars.Add(new MySqlParameter("@brid", Txt_BRID.Text.Trim()));
-            }
+
             if (!string.IsNullOrWhiteSpace(Txt_VerificationCode.Text))
             {
                 sql += " and a.vcode =@vcode ";
@@ -75,18 +68,32 @@ namespace Pone
             }
             if (dt.Rows.Count == 0)
             {
+                ClearLabTxt();
+                Current_Row = null;
                 MessageBox.Show("验证信息有误!");
             }
             else
             {
                 Current_Row = dt.Rows[0];
-                BindDateToForm();
+
             }
+            BindDateToForm();
+
+
         }
         List<Control> FormCot = new List<Control>(30);
 
-        DateTime ConvertMySqlDateTime(string timeStamp)
+        object ConvertMySqlDateTime(string timeStamp)
         {
+            if (string.IsNullOrWhiteSpace(timeStamp))
+            {
+                return DBNull.Value;
+            }
+            long lll = 0;
+            if (!long.TryParse(timeStamp, out lll))
+            {
+                return timeStamp;
+            }
             DateTime dateTimeStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
             long lTime = long.Parse(timeStamp + "0000000");
             TimeSpan toNow = new TimeSpan(lTime);
@@ -95,17 +102,26 @@ namespace Pone
 
         void BindDateToForm()
         {
+            SetButtonStatus();
+            if (Current_Row == null)
+            {
+                return;
+            }
+            t?.Abort();
+            t = null;
+            CheckOutTime();
+
             string[] estatus = new string[] { "删除状态", "空闲", "租借" };
-            string[] ostatus = new string[] { "管理员关闭_Red", "进行中_Orange", "已完成_Green" };
+            string[] ostatus = new string[] { "管理员关闭_Red", "进行中_Orange", "已完成_Green", "待激活_SkyBlue" };
 
             string os = ostatus[Convert.ToInt32(Current_Row["ostatus"])];
 
-            Current_Row["estatus"] = estatus[Convert.ToInt32(Current_Row["estatus"])];
-            Current_Row["ostatus"] = os.Split('_')[0];
+            //Current_Row["estatus"] = estatus[Convert.ToInt32(Current_Row["estatus"])];
+            //Current_Row["ostatus"] = os.Split('_')[0];
 
             Current_Row["start_time"] = ConvertMySqlDateTime(Convert.ToString(Current_Row["start_time"]));
             Current_Row["end_time"] = ConvertMySqlDateTime(Convert.ToString(Current_Row["end_time"]));
-
+            Current_Row["create_time"] = ConvertMySqlDateTime(Convert.ToString(Current_Row["create_time"]));
             #region 处理预览图
             P_Imgs.Visible = false;
             P_Imgs.Controls.Clear();
@@ -114,12 +130,12 @@ namespace Pone
             string pic = Regex.Replace(Convert.ToString(Current_Row["pic"]), "data:.+;base64,", "").Trim();
             if (!string.IsNullOrWhiteSpace(pic))
             {
-                if (pic.Length % 4!=0)
+                if (pic.Length % 4 != 0)
                 {
                     pic += "=";
 
                 }
-               
+
                 byte[] bys = Convert.FromBase64String(pic);
                 PB_ProductImg.Image = Image.FromStream(new MemoryStream(bys));
 
@@ -139,12 +155,20 @@ namespace Pone
                 string cname = c.Name.Replace("Lab_", "");
                 if (cname == "ostatus")
                 {
-
-
                     c.ForeColor = Color.FromName(os.Split('_')[1]);
+                    c.Text = os.Split('_')[0];
                 }
-                if (Current_Row.Table.Columns.Contains(cname))
-                    c.Text = Convert.ToString(Current_Row[cname]);
+                else if (cname == "estatus")
+                {
+                    c.Text = estatus[Convert.ToInt32(Current_Row["estatus"])];
+
+                }
+                else
+                {
+                    if (Current_Row.Table.Columns.Contains(cname))
+                        c.Text = Convert.ToString(Current_Row[cname]);
+                }
+
             });
 
             #endregion
@@ -165,6 +189,56 @@ namespace Pone
 
         }
 
+        private void CheckOutTime()
+        {
+            if (t != null && t.ThreadState == ThreadState.Background)
+            {
+                return;
+            }
+
+            t = new Thread(() =>
+            {
+                while (true)
+                {
+                    string ostatus = Convert.ToString(Current_Row["ostatus"]);
+                    switch (ostatus)
+                    {
+                        //进行中
+                        case "1":
+                        case "3":
+                            if (string.IsNullOrWhiteSpace(Convert.ToString(Current_Row["start_time"])))
+                            {
+                                break;
+                            }
+                            int duration = Convert.ToInt32(Current_Row["duration"]);
+                            DateTime zore = new DateTime(1970, 1, 1);
+                            DateTime activeTime = Convert.ToDateTime(ConvertMySqlDateTime(Convert.ToString(Current_Row["start_time"])));
+
+                            if (activeTime.AddMinutes(duration) <= DateTime.Now)
+                            {
+
+                                Btn_Return.Invoke((Action)delegate
+                                {
+                                    istip = false;
+                                    ReturnPC();
+                                    MessageBox.Show("订单已经超时.自动完成!");
+
+                                });                               
+                                return;
+                            }
+                            break;
+                        default:
+                            return;
+                    }
+                    //5秒检查一次
+                    Thread.Sleep(5 * 1000);
+                }
+            });
+            t.IsBackground = true;
+            t.Start();
+
+        }
+
         void ClearLabTxt()
         {
 
@@ -176,6 +250,32 @@ namespace Pone
                     FormCot.Add(item);
                 }
             }
+        }
+
+        bool istip = true;
+        void SetButtonStatus()
+        {
+            Btn_Active.Enabled = false;
+            Btn_Return.Enabled = false;
+            if (Current_Row == null)
+            {
+                return;
+            }
+            string ostatus = Convert.ToString(Current_Row["ostatus"]);
+
+            switch (ostatus)
+            {
+                //进行中
+                case "1":
+                    Btn_Return.Enabled = true;
+                    break;
+                case "3":
+                    Btn_Active.Enabled = true;
+                    break;
+                default:
+                    break;
+            }
+
         }
 
         private void Ll_Click(object sender, EventArgs e)
@@ -203,11 +303,67 @@ namespace Pone
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Current_Row = null;
-            Vuser = null;
-            this.Text = "信息验证 (未登录)";
 
-            MessageBox.Show("注销成功!");
+
+            int duration = Convert.ToInt32(Current_Row["duration"]);
+
+            DateTime now = DateTime.Now;
+            DateTime zore = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+            Current_Row["start_time"] = (int)(now - zore).TotalSeconds;
+            Current_Row["end_time"] = (int)(now.AddMinutes(duration) - zore).TotalSeconds;
+
+            List<MySqlParameter> pars = new List<MySqlParameter>();
+            string sql = @"  update db_order set `status`=1,start_time=@st,end_time=@et where id=@id ;";
+            pars.Add(new MySqlParameter("@id", MySqlDbType.Int32) { Value = Current_Row["id"] });
+            pars.Add(new MySqlParameter("@st", MySqlDbType.Int32) { Value = Current_Row["start_time"] });
+            pars.Add(new MySqlParameter("@et", MySqlDbType.Int32) { Value = Current_Row["end_time"] });
+
+
+            using (MySqlDBHelper mydb = new MySqlDBHelper())
+            {
+                mydb.ExecuteNonQuery(sql, pars: pars.ToArray());
+            }
+
+            Current_Row["ostatus"] = "1";
+            BindDateToForm();
+            MessageBox.Show("激活成功!");
+        }
+
+        private void Btn_Return_Click(object sender, EventArgs e)
+        {
+            istip = true;
+            ReturnPC();
+
+        }
+
+        private void ReturnPC()
+        {
+            int duration = Convert.ToInt32(Current_Row["duration"]);
+            DateTime now = DateTime.Now;
+            DateTime zore = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+
+            Current_Row["end_time"] = (int)(now - zore).TotalSeconds;
+
+            List<MySqlParameter> pars = new List<MySqlParameter>();
+            string sql = @"  update db_order set `status`=2,end_time=@et where id=@id ;";
+            pars.Add(new MySqlParameter("@id", MySqlDbType.Int32) { Value = Current_Row["id"] });
+            pars.Add(new MySqlParameter("@et", MySqlDbType.Int32) { Value = Current_Row["end_time"] });
+
+            sql += " update db_equipment set `status`=1 where id=@eid  ;";
+            pars.Add(new MySqlParameter("@eid", MySqlDbType.Int32) { Value = Current_Row["eid"] });
+
+            using (MySqlDBHelper mydb = new MySqlDBHelper())
+            {
+                mydb.ExecuteNonQuery(sql, pars: pars.ToArray());
+            }
+
+            Current_Row["ostatus"] = "2";
+            Current_Row["estatus"] = "1";
+            BindDateToForm();
+            if (istip)
+            {
+                MessageBox.Show("已归还!");
+            }
         }
     }
 }

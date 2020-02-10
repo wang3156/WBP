@@ -50,6 +50,20 @@ namespace CommLibrary.DBHelper
             Tran?.Commit();
         }
 
+        public void ExecuteNonQuery(string sql, params MySqlParameter[] pars)
+        {
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+            }
+            MySqlCommand comm = conn.CreateCommand();
+            comm.Transaction = Tran;
+            comm.CommandText = sql;
+            comm.Parameters.AddRange(pars);
+            comm.ExecuteNonQuery();
+            comm.Dispose();
+
+        }
         public T ExecuteScalar<T>(string sql, params MySqlParameter[] pars) where T : IConvertible
         {
             if (conn.State == ConnectionState.Closed)
@@ -83,7 +97,7 @@ namespace CommLibrary.DBHelper
             }
             return dt;
         }
-        public DataSet GetDataSet(string sql,CommandType ctype=CommandType.Text ,params MySqlParameter[] pars)
+        public DataSet GetDataSet(string sql, CommandType ctype = CommandType.Text, params MySqlParameter[] pars)
         {
             if (conn.State == ConnectionState.Closed)
             {
