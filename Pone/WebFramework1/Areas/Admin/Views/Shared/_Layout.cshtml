@@ -1,0 +1,76 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="-1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>后台管理</title>
+    <link href="~/Scripts/lib/ViewUI/css/iview.css" rel="stylesheet" />
+    <link href="~/Css/custom/layout/main.css" rel="stylesheet" />
+    <style scoped>
+    </style>
+    @RenderSection("styles", required: false)
+    <script src="~/Scripts/lib/Jquery/jquery-3.4.1.js"></script>
+
+</head>
+<body>
+    <div class="layout" id="div_content">       
+        @RenderBody()
+    </div>
+
+    <script src="~/Scripts/lib/vue.min.js"></script>
+    <script src="~/Scripts/lib/ViewUI/iview.min.js"></script>
+    <script src="~/Scripts/jsObjectExtend.js"></script>
+    <!--Vue使用的基本对象-->
+    <script type="text/javascript">
+        let vue_data = {
+           baseUrl:'@Url.Content("~/")'
+        };
+
+        let vue_methods = {
+           
+        }
+        let vue_computed = {
+           
+        };
+
+        //vue加载完后执行的事件(里面只能给方法对象),方法里的this为vue对象
+        let vue_mounted = {
+           
+        }
+
+
+    </script>
+    @RenderSection("scripts", required: false)
+
+    <script>
+
+        window.$Vue = new Vue({
+            el: '#div_content',
+            data: vue_data,
+            methods: vue_methods,
+            computed: vue_computed,
+            mounted: function () {
+                for (var i in vue_mounted) {
+                    if ((typeof vue_mounted[i]) == 'function')
+                        vue_mounted[i].call(this);
+                }
+
+            }
+        });
+    </script>
+
+
+</body>
+</html>
