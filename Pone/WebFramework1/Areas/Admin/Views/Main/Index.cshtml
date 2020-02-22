@@ -1,0 +1,201 @@
+﻿
+@section styles{
+
+    <style>
+    </style>
+}
+
+<Layout class="cut_layout">
+    <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
+        <div class="cut_logo">
+            <div class="layout-logo">
+                <img v-bind:src="isCollapsed?'@Url.Content("~/images/layout/logo-Collapsed.png")':'@Url.Content("~/images/layout/logo-unCollapsed.png")'" />
+            </div>
+        </div>
+
+        <i-menu v-bind:active-name="menuObj.active_name"
+                v-bind:open-names="menuObj.open_names"
+                v-bind:theme="menuObj.menuTheme"
+                width="auto"
+                v-bind:class="menuitemClasses"
+                accordion ref="leftmenu">
+            <template v-for="(item, componentIndex) in menuObj.Data">
+                <div v-if="item.children.length">
+                    <!-- 展开并且有子菜单 -->
+                    <Submenu v-if="!isCollapsed" v-bind:key="item.key" v-bind:name="item.key">
+                        <template slot="title">
+                            <Icon v-bind:type="item.icon"></Icon>
+                            <span>{{ item.name }}</span>
+                        </template>
+                        <Menu-item v-for="(children, index) in item.children" v-bind:key="index" v-bind:name="children.key" v-bind:to="children.to" v-on:click.native="setBreadcrumb(children,item)">
+                            {{ children.name }}
+                        </Menu-item>
+                    </Submenu>
+                    <!-- 不展开有子菜单 -->
+                    <Dropdown v-else="isCollapsed && item.children.length" v-bind:key="item.key" placement="right-start" class="menu-dropdown">
+                        <Menu-item v-bind:name="item.key">
+                            <Icon v-bind:type="item.icon"></Icon>
+                        </Menu-item>
+                        <Dropdown-menu slot="list">
+                            <Dropdown-item v-for="(children, index) in item.children" v-bind:key="index">
+                                <Menu-item v-bind:name="children.key" v-bind:to="children.to" v-on:click.native="setBreadcrumb(children,item)">{{ children.name }}</Menu-item>
+                            </Dropdown-item>
+                        </Dropdown-menu>
+                    </Dropdown>
+                </div>
+                <!-- 展开但没有子菜单 -->
+                <Menu-item v-else :name="item.key" v-bind:to="item.to" v-bind:key="item.key" v-on:click.native="setBreadcrumb(item)">
+                    <Icon :type="item.icon"></Icon>
+                    <span v-if="!isCollapsed">{{ item.name }}</span>
+                </Menu-item>
+            </template>
+        </i-menu>
+    </Sider>
+    <Layout>
+        <i-header :style="{padding: 0}" class="layout-header-bar">
+            <span class="cut_rotateIcon">
+                <Icon @@click.native="collapsedSider" v-bind:class="rotateIcon" size="24"></Icon>
+            </span>
+            <Breadcrumb separator=">">
+                <breadcrumb-item v-for="(item,index) in breadcrumb">{{item}}</breadcrumb-item>
+            </Breadcrumb>
+        </i-header>
+        <i-content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
+            <iframe id="ifr_content" style="width:100%;min-height:100%;border:none;" onload="frameLoad()"></iframe>
+        </i-content>
+    </Layout>
+</Layout>
+
+
+
+
+
+@section scripts{
+
+    <script>
+        function LoadingBar(o) {
+            if (!o) {
+                //开始显示加载进度
+                iview.LoadingBar.start();
+
+            } else {
+                //开始显示加载进度
+                iview.LoadingBar.finish();
+
+            }
+
+        }
+
+        LoadingBar();
+
+        function frameLoad() {
+            LoadingBar(1);
+        }
+
+
+    </script>
+    @*iview相关的对象*@
+    <script type="text/javascript">
+
+
+        //本页面使用的data
+        $.extend(vue_data, {
+
+            isCollapsed: false,
+            menuObj: {
+                Data: [
+           {
+               key: 'home',
+               name: "主页",
+               to: "/Admin",
+               icon: "md-apps",
+               children: []
+           },
+           {
+               key: 'UserManager',
+               name: "用户管理",
+               icon: "ios-people",
+               children: [
+                 {
+                     key: 'UserInfo',
+                     name: "用户列表",
+                     url: 'Admin/UserManager/'
+                     // ,to:''
+                 },
+                 {
+                     key: 'PermissionInfo',
+                     name: "权限管理",
+                     url: 'Admin/UserManager/'
+                     // ,to:'' 点击时直接 跳转的地址
+                 }
+               ]
+           },
+           {
+               key: 'menu2',
+               name: "菜单分类2",
+               to: "user2",
+               icon: "ios-archive-outline",
+               children: [
+                 {
+                     key: 'menu2-1',
+                     name: "子菜单2-1"
+                     //,to: "firewall"
+                 },
+                 {
+                     key: 'menu2-2',
+                     name: "子菜单2-2",
+                     to: "navi_page"
+                 }
+               ]
+           }
+                ],
+                menuTheme: "dark",
+                open_names: ['home'],
+                active_name: 'home',
+                canClickMenu: true
+
+            },
+            breadcrumb: ['主页'],
+        });
+
+
+        $.extend(vue_computed, {
+            rotateIcon () {
+                return [this.isCollapsed ? "ivu-icon-md-list" : "ivu-icon-ios-list"]
+            },
+            menuitemClasses () {
+                return [
+                    this.isCollapsed ? 'collapsed-menu' : ''
+                ]
+            }
+
+        });
+
+        $.extend(vue_methods, {
+            collapsedSider: function () {
+                this.$refs.side1.toggleCollapse();
+            },
+            setBreadcrumb: function (cself, cparent) {
+                vue_data.breadcrumb = [];
+                if (cparent) {
+                    vue_data.breadcrumb.push(cparent.name);
+                }
+                vue_data.breadcrumb.push(cself.name);
+                if (cself.url) {
+                    LoadingBar();
+                    //跳转代码
+                    $("#ifr_content").attr("src", vue_data.baseUrl + cself.url + cself.key);
+                }
+
+
+            }
+        });
+
+        $.extend(vue_mounted, {
+            pageLoadDone: function () {
+                LoadingBar(1);
+            }
+        });
+
+    </script>
+}

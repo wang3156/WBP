@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommLibrary", "CommLibrary\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P_Entity", "P_Entity\P_Entity.csproj", "{DEC00F36-B5C7-4C35-94C5-61F35E5E13DD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebFramework", "WebFramework", "{3DC945FB-896B-434F-BC2F-F30461CC32CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFramework1", "WebFramework1\WebFramework1.csproj", "{00787E29-06F3-409D-BDAC-BE1597FCB708}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +31,15 @@ Global
 		{DEC00F36-B5C7-4C35-94C5-61F35E5E13DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEC00F36-B5C7-4C35-94C5-61F35E5E13DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEC00F36-B5C7-4C35-94C5-61F35E5E13DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00787E29-06F3-409D-BDAC-BE1597FCB708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00787E29-06F3-409D-BDAC-BE1597FCB708}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00787E29-06F3-409D-BDAC-BE1597FCB708}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00787E29-06F3-409D-BDAC-BE1597FCB708}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{00787E29-06F3-409D-BDAC-BE1597FCB708} = {3DC945FB-896B-434F-BC2F-F30461CC32CA}
 	EndGlobalSection
 EndGlobal

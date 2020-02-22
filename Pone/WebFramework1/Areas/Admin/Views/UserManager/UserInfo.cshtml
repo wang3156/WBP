@@ -1,0 +1,246 @@
+﻿
+@section styles{
+    <style>
+        .card_header {
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .header_button {
+            float: right;
+            margin-right: 24px;
+        }
+    </style>
+
+
+
+}
+
+
+<Card :bordered="false" id="div_card">
+    <div class="card_header">
+        <div class="header_button">
+            <i-button type="primary" icon="md-add" size="small" v-on:click="addData">添加</i-button>
+        </div>
+    </div>
+    @*<p slot="title">Borderless card</p>*@
+    <i-table v-bind:data="tableData" stripe v-bind:height="tableHeight" v-bind:columns="tableColumns">
+        <i-column prop="name" lable="name"></i-column>
+    </i-table>
+    <div style="margin: 10px;overflow: hidden" id="card_foot">
+        <div style="float: right;">
+            <Page :total="100" :current="1" @@on-change="changePage"></Page>
+        </div>
+    </div>
+</Card>
+
+<Modal v-model="editWin"
+       title="Common Modal dialog box title" v-bind:mask-closable="false">
+    <p>Content of dialog</p>
+    <p>Content of dialog</p>
+    <p>Content of dialog</p>
+</Modal>
+
+ 
+
+@section scripts{
+
+    <script>
+        window.onresize = function () {
+            setTimeout(function () {
+                vmounted.countTableHeight();
+            });
+        }
+
+    </script>
+    @*iview相关的对象*@
+    <script type="text/javascript">
+
+
+
+
+
+        $.extend(vue_methods, {
+            mockTableData1 () {
+                let data = [];
+                for (let i = 0; i < 50; i++) {
+                    data.push({
+                        name: 'Business' + Math.floor(Math.random() * 100 + 1),
+                        status: Math.floor(Math.random() * 3 + 1),
+                        portrayal: ['City', 'People', 'Cost', 'Life', 'Entertainment'],
+                        people: [
+                            {
+                                n: 'People' + Math.floor(Math.random() * 100 + 1),
+                                c: Math.floor(Math.random() * 1000000 + 100000)
+                            },
+                            {
+                                n: 'People' + Math.floor(Math.random() * 100 + 1),
+                                c: Math.floor(Math.random() * 1000000 + 100000)
+                            },
+                            {
+                                n: 'People' + Math.floor(Math.random() * 100 + 1),
+                                c: Math.floor(Math.random() * 1000000 + 100000)
+                            }
+                        ],
+                        time: Math.floor(Math.random() * 7 + 1),
+                        update: new Date(),
+                        index: 0
+                    })
+                }
+                return data;
+            },
+            formatDate (date) {
+                const y = date.getFullYear();
+                let m = date.getMonth() + 1;
+                m = m < 10 ? '0' + m : m;
+                let d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+                return y + '-' + m + '-' + d;
+            },
+            changePage () {
+                // The simulated data is changed directly here, and the actual usage scenario should fetch the data from the server
+                this.tableData = this.mockTableData1();
+            },
+            addData: function () {
+                this.editWin = true;
+            }
+        });
+
+        //本页面使用的data
+        $.extend(vue_data, {
+            tableData: vue_methods.mockTableData1(),
+            tableColumns: [
+                {
+                    title: '账号',
+                    key: 'UID'
+                },
+                 {
+                     title: '角色',
+                     key: 'URole',
+                     render: (h, params) => {
+                         return h('Poptip', {
+                             props: {
+                                 trigger: 'hover',
+                                 title: params.row.portrayal.length + 'portrayals',
+                                 placement: 'bottom'
+                             }
+                         }, [
+                             h('Tag', params.row.portrayal.length),
+                             h('div', {
+                                 slot: 'content'
+                             }, [
+                                 h('ul', this.tableData[params.index].portrayal.map(item => {
+                                     return h('li', {
+                                         style: {
+                                             textAlign: 'center',
+                                             padding: '4px'
+                                         }
+                                     }, item)
+                                 }))
+                             ])
+                         ]);
+                     }
+                 },
+                {
+                    title: 'Status',
+                    key: 'status',
+                    render: (h, params) => {
+                        const row = params.row;
+                        const color = row.status === 1 ? 'primary' : row.status === 2 ? 'success' : 'error';
+                        const text = row.status === 1 ? 'Working' : row.status === 2 ? 'Success' : 'Fail';
+
+                        return h('Tag', {
+                            props: {
+                                type: 'dot',
+                                color: color
+                            }
+                        }, text);
+                    }
+                },
+
+                {
+                    title: '邮箱',
+                    key: 'UEmail',
+                    render: (h, params) => {
+                        return h('Poptip', {
+                            props: {
+                                trigger: 'hover',
+                                title: params.row.people.length + 'customers',
+                                placement: 'bottom'
+                            }
+                        }, [
+                            h('Tag', params.row.people.length),
+                            h('div', {
+                                slot: 'content'
+                            }, [
+                                h('ul', this.tableData[params.index].people.map(item => {
+                                    return h('li', {
+                                        style: {
+                                            textAlign: 'center',
+                                            padding: '4px'
+                                        }
+                                    }, item.n + '：' + item.c + 'People')
+                                }))
+                            ])
+                        ]);
+                    }
+                },
+                {
+                    title: '电话',
+                    key: 'time',
+                    render: (h, params) => {
+                        return h('div', 'Almost' + params.row.time + 'days');
+                    }
+                },
+                {
+                    title: '有效',
+                    key: 'Active',
+                    render: (h, params) => {
+                        try {
+                            return h('div', this.formatDate(this.tableData[params.index].update));
+
+                        } catch (e) {
+
+                        }
+                    }
+                },
+                 {
+                     title: '操作',
+                     width: 100,
+                     align: 'center',
+                     slot: 'action',
+                     render: (h, params) => {
+                         try {
+                             return h('div', this.formatDate(this.tableData[params.index].update));
+
+                         } catch (e) {
+
+                         }
+                     }
+                 }
+            ],
+            tableHeight: 500,
+            //编辑窗口开关
+            editWin: false
+
+
+        });
+
+        $.extend(vue_computed, {
+
+
+        });
+
+        var vmounted = {
+            countTableHeight: function () {
+                console.log("div_card  :" + $("#div_card").height());
+                console.log("card_foot :" + $("#card_foot").outerHeight(true));
+                vue_data.tableHeight = $("#div_card").height() - $("#card_foot").outerHeight(true) - 35 - $(".card_header").outerHeight(true);
+                console.log("tableHeight :" + vue_data.tableHeight);
+
+            }
+        }
+        $.extend(vue_mounted, vmounted);
+
+    </script>
+}

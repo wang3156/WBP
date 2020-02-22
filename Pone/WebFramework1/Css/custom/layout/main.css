@@ -1,0 +1,107 @@
+﻿
+
+/*有页面大小*/
+#div_content {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+}
+    /*页面高度*/
+    #div_content > .ivu-layout {
+        height: 100%;
+    }
+
+/*====================左边一条的样式===================================================================================================*/
+.cut_logo {
+    text-align: center;
+    position: relative;
+}
+
+.layout-logo {
+    vertical-align: middle;
+    display: inline-block;
+    height: 50px;
+}
+
+    .layout-logo > img {
+        height: 100%;
+    }
+
+
+
+/*左边的一整条样式*/
+.cut_layout > .ivu-layout-sider {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Microsoft YaHei';
+    font-size: 14px;
+}
+
+/*右边头部*/
+.ivu-layout-header {
+    background-color: #fff;
+    height: 64px;
+    line-height: 64px;
+}
+
+/*左边菜单*/
+#leftmenu {
+    background-color: #000;
+}
+
+    /*菜单的外层div*/
+    #leftmenu .ivu-dropdown {
+        display: block;
+    }
+    /*收缩状态下出现的二级菜单的li */
+    #leftmenu .ivu-dropdown-item {
+        background-color: transparent !important;
+        padding: 0px;
+    }
+    /*收缩状态下出现的二级菜单的ul的父*/
+    #leftmenu .ivu-select-dropdown {
+        background-color: #000;
+        margin-left: 3px;
+    }
+
+/*左边菜单收缩时样式*/
+.collapsed-menu span {
+    width: 0px;
+    transition: width .2s ease;
+}
+/*左边菜单收缩时放大图标样式*/
+.collapsed-menu i {
+    transform: translateX(5px);
+    transition: font-size .2s ease .2s, transform .2s ease .2s;
+    vertical-align: middle;
+    font-size: 22px;
+}
+
+
+/*====================右边的样式===================================================================================================*/
+/*收缩和展开的按钮*/
+.cut_rotateIcon > .ivu-icon:before {
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+.cut_rotateIcon {
+    padding: 0px 8px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+    .cut_rotateIcon:hover {
+        background-color: rgb(248, 248, 249);
+    }
+/*导航条的面包屑*/
+.ivu-breadcrumb {
+    display: inline-block;
+}
+
+/*右边内容调试设置*/ 
+#div_card {
+    height: 100%;
+}
