@@ -25,7 +25,9 @@
     </div>
     @*<p slot="title">Borderless card</p>*@
     <i-table v-bind:data="tableData" stripe v-bind:height="tableHeight" v-bind:columns="tableColumns">
-        <i-column prop="name" lable="name"></i-column>
+        <template slot-scope="{ row, index }" slot="action">         
+            <i-button type="error" size="small" icon="ios-trash"></i-button>
+        </template>
     </i-table>
     <div style="margin: 10px;overflow: hidden" id="card_foot">
         <div style="float: right;">
@@ -34,14 +36,12 @@
     </div>
 </Card>
 
-<Modal v-model="editWin"
-       title="Common Modal dialog box title" v-bind:mask-closable="false">
-    <p>Content of dialog</p>
-    <p>Content of dialog</p>
-    <p>Content of dialog</p>
+<Modal v-model="editObj.editWin"
+       v-bind:title="editObj.title" v-bind:mask-closable="false">
+ 这里是弹窗的内容
 </Modal>
 
- 
+
 
 @section scripts{
 
@@ -52,57 +52,51 @@
             });
         }
 
+        //生成从minNum到maxNum的随机数
+        function randomNum(minNum, maxNum) {
+            switch (arguments.length) {
+                case 1:
+                    return parseInt(Math.random() * minNum + 1, 10);
+                    break;
+                case 2:
+                    return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+                    break;
+                default:
+                    return 0;
+                    break;
+            }
+        }
+
     </script>
     @*iview相关的对象*@
     <script type="text/javascript">
 
 
 
-
+        let uRole = ['管理员', 'vip', '会员']
 
         $.extend(vue_methods, {
             mockTableData1 () {
                 let data = [];
                 for (let i = 0; i < 50; i++) {
                     data.push({
-                        name: 'Business' + Math.floor(Math.random() * 100 + 1),
-                        status: Math.floor(Math.random() * 3 + 1),
-                        portrayal: ['City', 'People', 'Cost', 'Life', 'Entertainment'],
-                        people: [
-                            {
-                                n: 'People' + Math.floor(Math.random() * 100 + 1),
-                                c: Math.floor(Math.random() * 1000000 + 100000)
-                            },
-                            {
-                                n: 'People' + Math.floor(Math.random() * 100 + 1),
-                                c: Math.floor(Math.random() * 1000000 + 100000)
-                            },
-                            {
-                                n: 'People' + Math.floor(Math.random() * 100 + 1),
-                                c: Math.floor(Math.random() * 1000000 + 100000)
-                            }
-                        ],
-                        time: Math.floor(Math.random() * 7 + 1),
-                        update: new Date(),
-                        index: 0
+                        UID: 'ZH00' + ('0' + i).substr(-2, 2),
+                        URole: randomNum(0, 2),
+                        Active: randomNum(0, 1),
+                        UEmail: 'xxx' + i + '@@xx.com',
+                        Tel: '135' + randomNum(10000000, 99999999)
                     })
                 }
                 return data;
-            },
-            formatDate (date) {
-                const y = date.getFullYear();
-                let m = date.getMonth() + 1;
-                m = m < 10 ? '0' + m : m;
-                let d = date.getDate();
-                d = d < 10 ? ('0' + d) : d;
-                return y + '-' + m + '-' + d;
             },
             changePage () {
                 // The simulated data is changed directly here, and the actual usage scenario should fetch the data from the server
                 this.tableData = this.mockTableData1();
             },
             addData: function () {
-                this.editWin = true;
+                var edit = this.editObj;
+                edit.editWin = true;
+                eidt.title = '新增';
             }
         });
 
@@ -118,110 +112,44 @@
                      title: '角色',
                      key: 'URole',
                      render: (h, params) => {
-                         return h('Poptip', {
-                             props: {
-                                 trigger: 'hover',
-                                 title: params.row.portrayal.length + 'portrayals',
-                                 placement: 'bottom'
-                             }
-                         }, [
-                             h('Tag', params.row.portrayal.length),
-                             h('div', {
-                                 slot: 'content'
-                             }, [
-                                 h('ul', this.tableData[params.index].portrayal.map(item => {
-                                     return h('li', {
-                                         style: {
-                                             textAlign: 'center',
-                                             padding: '4px'
-                                         }
-                                     }, item)
-                                 }))
-                             ])
-                         ]);
+                         return h('span', uRole[params.row.URole]);
                      }
                  },
-                {
-                    title: 'Status',
-                    key: 'status',
-                    render: (h, params) => {
-                        const row = params.row;
-                        const color = row.status === 1 ? 'primary' : row.status === 2 ? 'success' : 'error';
-                        const text = row.status === 1 ? 'Working' : row.status === 2 ? 'Success' : 'Fail';
 
-                        return h('Tag', {
-                            props: {
-                                type: 'dot',
-                                color: color
-                            }
-                        }, text);
-                    }
-                },
 
                 {
                     title: '邮箱',
                     key: 'UEmail',
-                    render: (h, params) => {
-                        return h('Poptip', {
-                            props: {
-                                trigger: 'hover',
-                                title: params.row.people.length + 'customers',
-                                placement: 'bottom'
-                            }
-                        }, [
-                            h('Tag', params.row.people.length),
-                            h('div', {
-                                slot: 'content'
-                            }, [
-                                h('ul', this.tableData[params.index].people.map(item => {
-                                    return h('li', {
-                                        style: {
-                                            textAlign: 'center',
-                                            padding: '4px'
-                                        }
-                                    }, item.n + '：' + item.c + 'People')
-                                }))
-                            ])
-                        ]);
-                    }
+
                 },
                 {
                     title: '电话',
-                    key: 'time',
-                    render: (h, params) => {
-                        return h('div', 'Almost' + params.row.time + 'days');
-                    }
+                    key: 'Tel'
                 },
                 {
                     title: '有效',
                     key: 'Active',
                     render: (h, params) => {
-                        try {
-                            return h('div', this.formatDate(this.tableData[params.index].update));
-
-                        } catch (e) {
-
-                        }
+                        return h('span', {
+                            style: {
+                                color:params.row.Active ?'green':'red'
+                            }
+                        }, params.row.Active ? '有效' : '无效');
                     }
                 },
                  {
                      title: '操作',
                      width: 100,
                      align: 'center',
-                     slot: 'action',
-                     render: (h, params) => {
-                         try {
-                             return h('div', this.formatDate(this.tableData[params.index].update));
-
-                         } catch (e) {
-
-                         }
-                     }
+                     slot: 'action'
                  }
             ],
             tableHeight: 500,
-            //编辑窗口开关
-            editWin: false
+            //编辑窗口对象            
+            editObj: {
+                editWin: false,
+                title:'这里是标题'
+            }
 
 
         });
