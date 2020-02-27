@@ -20,13 +20,15 @@
 <Card :bordered="false" id="div_card">
     <div class="card_header">
         <div class="header_button">
-            <i-button type="primary" icon="md-add" size="small" v-on:click="addData">添加</i-button>
+            <i-button type="primary" icon="md-add" size="small" v-on:click="onAdd">添加</i-button>
         </div>
     </div>
     @*<p slot="title">Borderless card</p>*@
     <i-table v-bind:data="tableData" stripe v-bind:height="tableHeight" v-bind:columns="tableColumns">
-        <template slot-scope="{ row, index }" slot="action">         
-            <i-button type="error" size="small" icon="ios-trash"></i-button>
+        <template slot-scope="{ row, index }" slot="action">
+            <i-button v-bind:type="row.Active?'error':'success'" size="small" v-bind:icon="row.Active?'ios-trash':'ios-refresh'" v-on:click="onDR(row)"></i-button>
+            <i-button type="default" size="small" icon="ios-create-outline" v-on:click="onEdit(row)"></i-button>
+
         </template>
     </i-table>
     <div style="margin: 10px;overflow: hidden" id="card_foot">
@@ -37,8 +39,33 @@
 </Card>
 
 <Modal v-model="editObj.editWin"
-       v-bind:title="editObj.title" v-bind:mask-closable="false">
- 这里是弹窗的内容
+       v-bind:title="editObj.title" v-bind:mask-closable="false"   >
+    <i-form ref="editForm" v-bind:model="editObj.formEneity" v-bind:rules="editObj.eneityValidate" v-bind:label-width="80">
+        <form-item label="账号" prop="UID">
+            <i-input v-model="editObj.formEneity.UID" placeholder="账号" v-bind:disabled="editObj.isEdit"></i-input>
+        </form-item>
+        <form-item label="角色" prop="URole">
+            <i-select v-model="editObj.formEneity.URole" placeholder="请选择角色">
+                <i-option v-bind:value="index" v-for="(item,index) in uRole">{{item}}</i-option>
+            </i-select>
+        </form-item>
+        <form-item label="用户邮箱" prop="UEmail">
+            <i-input v-model="editObj.formEneity.UEmail" placeholder="用户邮箱"></i-input>
+        </form-item>
+        <form-item label="联系电话" prop="Tel">
+            <i-input v-model="editObj.formEneity.Tel" placeholder="联系电话"></i-input>
+        </form-item>
+        <form-item label="是否有效" prop="Active">
+            <Checkbox v-model="editObj.formEneity.Active">有效</Checkbox>
+        </form-item>
+        <form-item label="联系电话" prop="Tel">
+            <i-input v-model="editObj.formEneity.Tel" placeholder="联系电话"></i-input>
+        </form-item>
+    </i-form>
+    <div slot="footer">
+        <i-button v-on:click="editObj.editWin=false">取消</i-button>
+        <i-button type="primary" v-on:click="onSave">保存</i-button>
+    </div>
 </Modal>
 
 
@@ -75,14 +102,17 @@
 
         let uRole = ['管理员', 'vip', '会员']
 
+
+
         $.extend(vue_methods, {
             mockTableData1 () {
                 let data = [];
+                var bools = [true, false]
                 for (let i = 0; i < 50; i++) {
                     data.push({
                         UID: 'ZH00' + ('0' + i).substr(-2, 2),
                         URole: randomNum(0, 2),
-                        Active: randomNum(0, 1),
+                        Active: bools[randomNum(0, 1)],
                         UEmail: 'xxx' + i + '@@xx.com',
                         Tel: '135' + randomNum(10000000, 99999999)
                     })
@@ -93,10 +123,52 @@
                 // The simulated data is changed directly here, and the actual usage scenario should fetch the data from the server
                 this.tableData = this.mockTableData1();
             },
-            addData: function () {
+            onAdd: function () {
                 var edit = this.editObj;
+                this.editRow = null;
                 edit.editWin = true;
-                eidt.title = '新增';
+                edit.title = '新增';
+                edit.isEdit = false;
+                this.$refs.editForm.resetFields();
+            },
+            onEdit: function (rowData) {
+                this.onAdd();
+                this.editRow = rowData;
+                var edit = this.editObj;
+                edit.title = "编辑";
+                for (var i in rowData) {
+                    if (edit.formEneity[i] != undefined) {
+                        edit.formEneity[i] = rowData[i];
+                    }
+                }
+                edit.isEdit = true;
+            },
+            onSave: function () {
+                var self = this;
+            
+                self.$refs.editForm.validate(function (ok) {
+                    if (!ok) {
+                        return false;
+                    }
+                    $.extend(self.editRow, self.editObj.formEneity);
+                    self.editRow = null;
+                    self.$Notice.info({
+                        title: '提示',
+                        desc: "保存成功!",
+                        duration: 2
+                    });
+                    self.editObj.editWin = false;
+                });
+
+
+            },
+            onDR: function (rowData) {
+                rowData.Active = !rowData.Active;
+                this.$Notice.info({
+                    title: '提示',
+                    desc: "操作成功!",
+                    duration: 2
+                });
             }
         });
 
@@ -105,12 +177,21 @@
             tableData: vue_methods.mockTableData1(),
             tableColumns: [
                 {
+                    title: '索引',
+                    type: 'index',
+                    width: 80
+                },
+                {
                     title: '账号',
-                    key: 'UID'
+                    key: 'UID',
+                    toForm: true,
+                    tType: 'string'
                 },
                  {
                      title: '角色',
                      key: 'URole',
+                     toForm: true,
+                     tType: 'int',
                      render: (h, params) => {
                          return h('span', uRole[params.row.URole]);
                      }
@@ -120,19 +201,25 @@
                 {
                     title: '邮箱',
                     key: 'UEmail',
+                    toForm: true,
+                    tType: 'string'
 
                 },
                 {
                     title: '电话',
-                    key: 'Tel'
+                    key: 'Tel',
+                    toForm: true,
+                    tType: 'string'
                 },
                 {
                     title: '有效',
                     key: 'Active',
+                    toForm: true,
+                    tType: 'bool',
                     render: (h, params) => {
                         return h('span', {
                             style: {
-                                color:params.row.Active ?'green':'red'
+                                color: params.row.Active ? 'green' : 'red'
                             }
                         }, params.row.Active ? '有效' : '无效');
                     }
@@ -145,12 +232,29 @@
                  }
             ],
             tableHeight: 500,
-            //编辑窗口对象            
+            //编辑窗口对象
             editObj: {
+                isEdit: false,
                 editWin: false,
-                title:'这里是标题'
-            }
+                title: '这里是标题',
+                formEneity: {
+                    UID: '',
+                    URole: 0,
+                    Active: false,
+                    UEmail: '',
+                    Tel: ''
 
+                },
+                eneityValidate: {
+                    UID: [{ required: true, message: '账号不能为空,最小8位最大16位!', trigger: 'blur', pattern: /^[A-Za-z0-9][A-Za-z0-9_@@]{5,16}$/ }],
+                    URole: [{ required: true, type: 'integer', pattern: /[0-2]/, message: '角色不能为空!', trigger: 'blur' }],
+                    UEmail: [{ type: 'email', required: true, message: '邮箱不能为空!', trigger: 'blur' }],
+                    Tel: [],
+                    Active: []
+                }
+
+            },
+            editRow: null
 
         });
 
