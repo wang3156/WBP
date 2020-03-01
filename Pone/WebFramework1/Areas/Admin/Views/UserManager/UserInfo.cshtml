@@ -196,36 +196,48 @@
             },
             //只查询本页面的
             onSearch: function () {
-                var self = this;                 
+                var self = this;
                 var searchEneity = self.searchEneity, c;
                 var ok = false;
+                var where = [];
+                var like = ['UID', 'UEmail']
                 for (var i in searchEneity) {
-                    if (searchEneity[i]) {
+                    if (i == 'needActive' || (i == 'Active' && !searchEneity['needActive'])) {
+                        continue;
+                    }
+                    if (searchEneity[i]!='' || (i == 'URole' && searchEneity[i] == 0)) {
                         ok = true;
-                        break;
+                        where.push({ key: i, val: searchEneity[i] });
                     }
                 }
                 if (!ok) {
-                    if (self.currentPageData && self.currentPageData.length>0) {
+                    if (self.currentPageData && self.currentPageData.length > 0) {
                         self.tableData = self.currentPageData;
                     } else {
                         self.tableData = self.currentPageData = self.mockTableData1();
                     }
-                  
+
                     return;
                 }
                 var overdata = [];
+                var reg = null;
 
                 for (var i = 0; i < self.currentPageData.length; i++) {
                     ok = true;
                     c = self.currentPageData[i];
-                    for (var j in searchEneity) {
-                        if (c[j] != undefined && c[j] == searchEneity[j]) {
-                            overdata.push(c);
-                        } else {
+                    for (var j = 0; j < where.length; j++) {
+                        
+                        if (like.indexOf(where[j].key) > -1) {
+                            reg = new RegExp(where[j].val, 'ig');
+                        }
+                        if (reg != null ? !reg.test(c[where[j].key]) : c[where[j].key] != where[j].val) {
                             ok = false;
                             break;
                         }
+
+                    }
+                    if (ok) {
+                        overdata.push(c);
                     }
                 }
                 this.tableData = overdata;

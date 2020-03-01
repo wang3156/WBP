@@ -9,112 +9,114 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Data;
 using Newtonsoft.Json;
+using CommLibrary.DBHelper.BaseClass;
 
 namespace CommLibrary.DBHelper
 {
-    public class MySqlDBHelper : IDisposable
+    public class MySqlDBHelper : BaseDBHelper<MySqlConnection>, IDisposable
     {
-        MySqlConnection conn;
-        MySqlTransaction Tran;
-        public MySqlDBHelper(string connStr = "")
-        {
-            if (string.IsNullOrWhiteSpace(connStr))
-            {
-                connStr = ConfigurationManager.AppSettings["ConStr"];
-            }
-            conn = new MySqlConnection(connStr);
+        //使用父类的
+        //MySqlConnection conn;
+        //MySqlTransaction tran;
+        //public MySqlDBHelper(string connStr = "")
+        //{
+        //    if (string.IsNullOrWhiteSpace(connStr))
+        //    {
+        //        connStr = ConfigurationManager.AppSettings["ConStr"];
+        //    }
+        //    conn = new MySqlConnection(connStr);
 
-        }
+        //}
 
-        public void Dispose()
-        {
-            Tran?.Commit();
-            conn?.Dispose();
-        }
+        //public void Dispose()
+        //{
+        //    tran?.Commit();
+        //    conn?.Dispose();
+        //}
 
-        public void BeginTransaction()
-        {
-            if (Tran == null)
-            {
-                Tran = conn.BeginTransaction();
-            }
-        }
+        //public void BeginTransaction()
+        //{
+        //    if (tran == null)
+        //    {
+        //        tran = conn.BeginTransaction();
+        //    }
+        //}
 
-        public void Rollback()
-        {
-            Tran?.Rollback();
-        }
+        //public void Rollback()
+        //{
+        //    tran?.Rollback();
+        //}
 
-        public void Commit()
-        {
-            Tran?.Commit();
-        }
+        //public void Commit()
+        //{
+        //    tran?.Commit();
+        //}
 
-        public void ExecuteNonQuery(string sql, params MySqlParameter[] pars)
-        {
-            if (conn.State == ConnectionState.Closed)
-            {
-                conn.Open();
-            }
-            MySqlCommand comm = conn.CreateCommand();
-            comm.Transaction = Tran;
-            comm.CommandText = sql;
-            comm.Parameters.AddRange(pars);
-            comm.ExecuteNonQuery();
-            comm.Dispose();
+        //public void ExecuteNonQuery(string sql, params MySqlParameter[] pars)
+        //{
+        //    if (conn.State == ConnectionState.Closed)
+        //    {
+        //        conn.Open();
+        //    }
+        //    MySqlCommand comm = conn.CreateCommand();
+        //    comm.Transaction = tran;
+        //    comm.CommandText = sql;
+        //    comm.Parameters.AddRange(pars);
+        //    comm.ExecuteNonQuery();
+        //    comm.Dispose();
 
-        }
-        public T ExecuteScalar<T>(string sql, params MySqlParameter[] pars) where T : IConvertible
-        {
-            if (conn.State == ConnectionState.Closed)
-            {
-                conn.Open();
-            }
-            MySqlCommand comm = conn.CreateCommand();
-            comm.Transaction = Tran;
-            comm.CommandText = sql;
-            comm.Parameters.AddRange(pars);
-            object o = comm.ExecuteScalar();
-            comm.Dispose();
-            return (T)Convert.ChangeType(o, typeof(T));
-        }
+        //}
+        //public T ExecuteScalar<T>(string sql, params MySqlParameter[] pars) where T : IConvertible
+        //{
+        //    if (conn.State == ConnectionState.Closed)
+        //    {
+        //        conn.Open();
+        //    }
+        //    MySqlCommand comm = conn.CreateCommand();
+        //    comm.Transaction = tran;
+        //    comm.CommandText = sql;
+        //    comm.Parameters.AddRange(pars);
+        //    object o = comm.ExecuteScalar();
+        //    comm.Dispose();
+        //    return (T)Convert.ChangeType(o, typeof(T));
+        //}
 
-        public DataTable GetDataTable(string sql, CommandType ctype = CommandType.Text, params MySqlParameter[] pars)
-        {
-            if (conn.State == ConnectionState.Closed)
-            {
-                conn.Open();
-            }
-            DataTable dt = new DataTable();
-            using (MySqlCommand comm = conn.CreateCommand())
-            {
-                MySqlDataAdapter mad = new MySqlDataAdapter(comm);
-                comm.Transaction = Tran;
-                comm.CommandText = sql;
-                comm.CommandType = ctype;
-                comm.Parameters.AddRange(pars);
-                mad.Fill(dt);
-            }
-            return dt;
-        }
-        public DataSet GetDataSet(string sql, CommandType ctype = CommandType.Text, params MySqlParameter[] pars)
-        {
-            if (conn.State == ConnectionState.Closed)
-            {
-                conn.Open();
-            }
-            DataSet ds = new DataSet();
-            using (MySqlCommand comm = conn.CreateCommand())
-            {
-                MySqlDataAdapter mad = new MySqlDataAdapter(comm);
-                comm.Transaction = Tran;
-                comm.CommandText = sql;
-                comm.CommandType = ctype;
-                comm.Parameters.AddRange(pars);
-                mad.Fill(ds);
-            }
-            return ds;
-        }
+        //public DataTable GetDataTable(string sql, CommandType ctype = CommandType.Text, params MySqlParameter[] pars)
+        //{
+        //    if (conn.State == ConnectionState.Closed)
+        //    {
+        //        conn.Open();
+        //    }
+        //    DataTable dt = new DataTable();
+        //    using (MySqlCommand comm = conn.CreateCommand())
+        //    {
+        //        MySqlDataAdapter mad = new MySqlDataAdapter(comm);
+        //        comm.Transaction = tran;
+        //        comm.CommandText = sql;
+        //        comm.CommandType = ctype;
+        //        comm.Parameters.AddRange(pars);
+        //        mad.Fill(dt);
+        //    }
+        //    return dt;
+        //}
+        //public DataSet GetDataSet(string sql, CommandType ctype = CommandType.Text, params MySqlParameter[] pars)
+        //{
+        //    if (conn.State == ConnectionState.Closed)
+        //    {
+        //        conn.Open();
+        //    }
+        //    DataSet ds = new DataSet();
+        //    using (MySqlCommand comm = conn.CreateCommand())
+        //    {
+        //        MySqlDataAdapter mad = new MySqlDataAdapter(comm);
+        //        comm.Transaction = tran;
+        //        comm.CommandText = sql;
+        //        comm.CommandType = ctype;
+        //        comm.Parameters.AddRange(pars);
+        //        mad.Fill(ds);
+        //    }
+        //    return ds;
+        //}
 
     }
 

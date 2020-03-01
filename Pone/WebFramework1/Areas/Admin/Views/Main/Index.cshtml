@@ -3,6 +3,9 @@
 
     <style>
     </style>
+
+
+
 }
 
 <Layout class="cut_layout">
@@ -61,7 +64,7 @@
             </Breadcrumb>
         </i-header>
         <i-content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
-            <iframe id="ifr_content" style="width:100%;min-height:100%;border:none;" onload="frameLoad()"></iframe>
+            <iframe id="ifr_content" style="width:100%;min-height:100%;border:none;" ></iframe>
         </i-content>
     </Layout>
 </Layout>
@@ -71,8 +74,7 @@
 
 
 @section scripts{
-
-    <script>
+<script>
         function LoadingBar(o) {
             if (!o) {
                 //开始显示加载进度
@@ -93,7 +95,7 @@
         }
 
 
-    </script>
+</script>
     @*iview相关的对象*@
     <script type="text/javascript">
 
@@ -192,8 +194,10 @@
         });
 
         $.extend(vue_mounted, {
+          
             pageLoadDone: function () {
                 LoadingBar(1);
+                $("#ifr_content").bind("load", frameLoad);
             }
         });
 
