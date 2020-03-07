@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CommLibrary.DBHelper
 {
-    public class SqlServerDBHelper : BaseDBHelper<SqlConnection>, IDisposable
+    public class SqlServerDBHelper : BaseDBHelper, IDisposable
     {
 
     }

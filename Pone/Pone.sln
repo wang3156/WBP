@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebFramework", "WebFramewor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFramework1", "WebFramework1\WebFramework1.csproj", "{00787E29-06F3-409D-BDAC-BE1597FCB708}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFrameworkBLL", "WebFrameworkBLL\WebFrameworkBLL.csproj", "{1C29241C-A9DD-437C-BEEA-89E8A66A1CCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,11 +37,16 @@ Global
 		{00787E29-06F3-409D-BDAC-BE1597FCB708}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00787E29-06F3-409D-BDAC-BE1597FCB708}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00787E29-06F3-409D-BDAC-BE1597FCB708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C29241C-A9DD-437C-BEEA-89E8A66A1CCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C29241C-A9DD-437C-BEEA-89E8A66A1CCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C29241C-A9DD-437C-BEEA-89E8A66A1CCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C29241C-A9DD-437C-BEEA-89E8A66A1CCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{00787E29-06F3-409D-BDAC-BE1597FCB708} = {3DC945FB-896B-434F-BC2F-F30461CC32CA}
+		{1C29241C-A9DD-437C-BEEA-89E8A66A1CCE} = {3DC945FB-896B-434F-BC2F-F30461CC32CA}
 	EndGlobalSection
 EndGlobal
