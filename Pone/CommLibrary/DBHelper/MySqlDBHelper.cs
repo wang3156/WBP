@@ -13,7 +13,7 @@ using CommLibrary.DBHelper.BaseClass;
 
 namespace CommLibrary.DBHelper
 {
-    public class MySqlDBHelper : BaseDBHelper<MySqlConnection>, IDisposable
+    public class MySqlDBHelper : BaseDBHelper, IDisposable
     {
         //使用父类的
         //MySqlConnection conn;

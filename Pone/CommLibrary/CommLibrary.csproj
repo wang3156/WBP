@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\CommLibrary.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -85,10 +86,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLLBase\BaseBLL.cs" />
+    <Compile Include="DALBase\BaseDAL.cs" />
     <Compile Include="DBHelper\BaseClass\BaseDBHelper.cs" />
     <Compile Include="DBHelper\MySqlDBHelper.cs" />
     <Compile Include="DBHelper\SqlServerDBHelper.cs" />
     <Compile Include="OfficeHelper\Excel\NPOIHelper.cs" />
+    <Compile Include="Extension\StringExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

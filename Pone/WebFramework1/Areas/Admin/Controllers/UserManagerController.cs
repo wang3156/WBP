@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Dynamic;
 
 namespace WebFramework1.Areas.Admin.Controllers.UserManagerView
 {
@@ -12,6 +13,10 @@ namespace WebFramework1.Areas.Admin.Controllers.UserManagerView
         public ActionResult UserInfo()
         {
             return View();
+        }
+
+        public ActionResult GetUserInfo(ExpandoObject where) {
+            
         }
 
         // GET: Admin/UserManager/PermissionInfo

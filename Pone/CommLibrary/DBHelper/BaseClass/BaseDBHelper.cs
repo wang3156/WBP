@@ -1,67 +1,107 @@
-﻿using MySql.Data.MySqlClient;
+﻿
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CommLibrary.DBHelper.BaseClass
 {
-    //public interface IBaseDBHelper
-    //{
-    //    void BeginTransaction();
+    using CommLibrary.Extension;
+    using MySql.Data.MySqlClient;
+    using System.Data;
+    using System.Data.Common;
+    using System.Data.SqlClient;
+    using System.Configuration;
 
-    //    void Rollback();
-    //    void Commit();
 
-    //    void ExecuteNonQuery(string sql, params IDataParameter[] pars);
-    //    T ExecuteScalar<T>(string sql, params IDataParameter[] pars);
-
-    //    DataTable GetDataTable(string sql, CommandType ctype = CommandType.Text, params IDataParameter[] pars);
-    //    DataSet GetDataSet(string sql, CommandType ctype = CommandType.Text, params IDataParameter[] pars);
-
-    //}
-
-    public class BaseDBHelper<T> where T : DbConnection, new()
+    /// <summary>
+    /// 使用时请先在config的AppSettings里配置数据库类型 可选类型:sqlserver,mysql
+    /// 连接字符串由AppSettings中的ConStr配置 或 实例化对象时传入
+    /// </summary>
+    public class BaseDBHelper
     {
         DbConnection conn;
         DbTransaction tran;
+        string DBType = "sqlserver";
+        string[] Supported_DB = new string[] { "sqlserver", "mysql" };
+
+        /// <summary>
+        /// 实例化数据库操作对象 
+        /// </summary>
+        /// <param name="connStr">连接传,如果不传则默认取AppSettings中的ConStr配置</param>
         public BaseDBHelper(string connStr = "")
         {
+            DBType = ConfigurationManager.AppSettings["DBType"];
+
+            #region 检查参数是否正确
+            if (string.IsNullOrWhiteSpace(DBType) || !Supported_DB.Contains(DBType, true))
+            {
+                throw new Exception("AppSetting中未配置DBType节点指定DB类型或类型不被支持.可选类型:sqlserver,mysql. ");
+            }
             if (string.IsNullOrWhiteSpace(connStr))
             {
                 connStr = ConfigurationManager.AppSettings["ConStr"];
             }
-            Type tp = typeof(T);
-            conn = Activator.CreateInstance(tp, connStr) as T;
+            #endregion
+
+            #region 创建连接对象
+            switch (DBType.ToLower())
+            {
+                case "sqlserver":
+                    conn = new SqlConnection(connStr);
+                    break;
+                case "mysql":
+                    conn = new MySqlConnection(connStr);
+                    break;
+            }
+            #endregion
+
 
         }
 
+
+        /// <summary>
+        /// 释放使用的实例 ,连接释放时会先尝试提交事务(未开事务不会抛出异常)
+        /// </summary>
         public void Dispose()
         {
-            tran?.Commit();
-            conn?.Dispose();
+            //如果有事务就尝试提交一下再释放连接,防止用户开了连接池,事务没有提交.而连接被放回连接池影响后续使用的问题.
+            try
+            {
+                tran?.Commit();
+            }
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                conn?.Dispose();
+            }
+
+
         }
         /// <summary>
         /// 开启事务
         /// </summary>
-        public void BeginTransaction()
+        /// <param name="level">事务级别,默认为ReadCommitted </param>
+        public void BeginTransaction(IsolationLevel level= IsolationLevel.ReadCommitted)
         {
             if (tran == null)
             {
                 tran = conn.BeginTransaction();
             }
         }
-
+        /// <summary>
+        /// 回滚事务,如果未开不会抛出异常
+        /// </summary>
         public void Rollback()
         {
             tran?.Rollback();
         }
-
+        /// <summary>
+        /// 提交事务,如果未开不会抛出异常
+        /// </summary>
         public void Commit()
         {
             tran?.Commit();
@@ -111,32 +151,32 @@ namespace CommLibrary.DBHelper.BaseClass
             return (N)Convert.ChangeType(o, typeof(N));
         }
 
-        /// <summary>
-        /// 执行一个sql并返回一个DataTable
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="ctype">执行Sql的类型,默认为Sql语句</param>
-        /// <param name="pars">查询参数</param>
-        /// <returns></returns>
-        public DataTable GetDataTable(string sql, CommandType ctype = CommandType.Text, params IDataParameter[] pars)
-        {
-            if (conn.State == ConnectionState.Closed)
-            {
-                conn.Open();
-            }
-            DataTable dt = new DataTable();
-            using (DbCommand comm = conn.CreateCommand())
-            {
-                DbDataAdapter mad = GetDbDataAdapter();
-                comm.Transaction = tran;
-                comm.CommandText = sql;
-                comm.CommandType = ctype;
-                comm.Parameters.AddRange(pars);
-                mad.SelectCommand = comm;
-                mad.Fill(dt);
-            }
-            return dt;
-        }
+        ///// <summary>
+        ///// 执行一个sql并返回一个DataTable
+        ///// </summary>
+        ///// <param name="sql"></param>
+        ///// <param name="ctype">执行Sql的类型,默认为Sql语句</param>
+        ///// <param name="pars">查询参数</param>
+        ///// <returns></returns>
+        //public DataTable GetDataTable(string sql, CommandType ctype = CommandType.Text, params IDataParameter[] pars)
+        //{
+        //    if (conn.State == ConnectionState.Closed)
+        //    {
+        //        conn.Open();
+        //    }
+        //    DataTable dt = new DataTable();
+        //    using (DbCommand comm = conn.CreateCommand())
+        //    {
+        //        DbDataAdapter mad = GetDbDataAdapter();
+        //        comm.Transaction = tran;
+        //        comm.CommandText = sql;
+        //        comm.CommandType = ctype;
+        //        comm.Parameters.AddRange(pars);
+        //        mad.SelectCommand = comm;
+        //        mad.Fill(dt);
+        //    }
+        //    return dt;
+        //}
 
         /// <summary>
         /// 执行一个sql并返回一个DataSet
@@ -163,25 +203,51 @@ namespace CommLibrary.DBHelper.BaseClass
             }
             return ds;
         }
-        
+        /// <summary>
+        /// 将数据批量插入到指定表(该连接上如果存在事务则会被使用)
+        /// </summary>
+        /// <param name="data">数据源</param>
+        /// <param name="tbName">数据库表名称</param>
+        /// <param name="mapping">列映射,不传则默认为数据源中的所有列</param>      
+        /// <returns></returns>
+        public string BulkCopyToDB(DataTable data, string tbName = "", Dictionary<string, object> mapping = null)
+        {
+            string error = "";
 
+            switch (DBType.ToLower())
+            {
+                case "sqlserver":
+                    return new MySqlBatch();
+                case "mysql":
+                    return new SqlBulkCopy();
+                default:
+                    return null;
+            }
+
+            if (mapping==null)
+            {
+                
+            }
+
+        }
+        
         /// <summary>
         /// 按连接对象的类型返回一个适配器类型
         /// </summary>
         /// <returns></returns>
         DbDataAdapter GetDbDataAdapter()
         {
-            string dbname = typeof(T).Name.Replace("Connection", "").ToUpper();
-            switch (dbname)
+            switch (DBType.ToLower())
             {
-                case "MYSQL":
+                case "sqlserver":
                     return new MySqlDataAdapter();
-                case "SQL":
+                case "mysql":
                     return new SqlDataAdapter();
                 default:
                     return null;
-
             }
+
         }
+
     }
 }
