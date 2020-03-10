@@ -19,19 +19,29 @@ namespace CommLibrary.DBHelper.BaseClass
     /// 使用时请先在config的AppSettings里配置数据库类型 可选类型:sqlserver,mysql
     /// 连接字符串由AppSettings中的ConStr配置 或 实例化对象时传入
     /// </summary>
-    public class BaseDBHelper
+    public abstract class BaseDBHelper
     {
-        DbConnection conn;
-        DbTransaction tran;
+        /// <summary>
+        /// 连接对象
+        /// </summary>
+        protected DbConnection conn;
+        /// <summary>
+        /// 事务对象
+        /// </summary>
+        protected DbTransaction tran;
+        /// <summary>
+        /// 连接字符串
+        /// </summary>
+        protected string connStr;
         string DBType = "sqlserver";
         string[] Supported_DB = new string[] { "sqlserver", "mysql" };
 
         /// <summary>
         /// 实例化数据库操作对象 
-        /// </summary>
-        /// <param name="connStr">连接传,如果不传则默认取AppSettings中的ConStr配置</param>
-        public BaseDBHelper(string connStr = "")
+        /// </summary>       
+        public BaseDBHelper()
         {
+
             DBType = ConfigurationManager.AppSettings["DBType"];
 
             #region 检查参数是否正确
@@ -39,25 +49,27 @@ namespace CommLibrary.DBHelper.BaseClass
             {
                 throw new Exception("AppSetting中未配置DBType节点指定DB类型或类型不被支持.可选类型:sqlserver,mysql. ");
             }
-            if (string.IsNullOrWhiteSpace(connStr))
-            {
-                connStr = ConfigurationManager.AppSettings["ConStr"];
-            }
+
+            connStr = ConfigurationManager.AppSettings["ConStr"];
             #endregion
 
-            #region 创建连接对象
+        }
+        /// <summary>
+        /// 根据配置的DBType获取一个数据库操作对象
+        /// </summary>
+        /// <returns></returns>
+        public BaseDBHelper GetDBHelper()
+        {
             switch (DBType.ToLower())
             {
                 case "sqlserver":
-                    conn = new SqlConnection(connStr);
-                    break;
+                    return new SqlServerDBHelper();
                 case "mysql":
-                    conn = new MySqlConnection(connStr);
-                    break;
+                    return new MySqlDBHelper();
+                default:
+                    return null;
+
             }
-            #endregion
-
-
         }
 
 
@@ -85,7 +97,7 @@ namespace CommLibrary.DBHelper.BaseClass
         /// 开启事务
         /// </summary>
         /// <param name="level">事务级别,默认为ReadCommitted </param>
-        public void BeginTransaction(IsolationLevel level= IsolationLevel.ReadCommitted)
+        public void BeginTransaction(IsolationLevel level = IsolationLevel.ReadCommitted)
         {
             if (tran == null)
             {
@@ -210,27 +222,27 @@ namespace CommLibrary.DBHelper.BaseClass
         /// <param name="tbName">数据库表名称</param>
         /// <param name="mapping">列映射,不传则默认为数据源中的所有列</param>      
         /// <returns></returns>
-        public string BulkCopyToDB(DataTable data, string tbName = "", Dictionary<string, object> mapping = null)
-        {
-            string error = "";
+        public abstract string BulkCopyToDB(DataTable data, string tbName = "", Dictionary<string, object> mapping = null);
+        //{
+        //    string error = "";
 
-            switch (DBType.ToLower())
-            {
-                case "sqlserver":
-                    return new MySqlBatch();
-                case "mysql":
-                    return new SqlBulkCopy();
-                default:
-                    return null;
-            }
+        //    switch (DBType.ToLower())
+        //    {
+        //        case "sqlserver":
+        //            return new MySqlBatch();
+        //        case "mysql":
+        //            return new SqlBulkCopy();
+        //        default:
+        //            return null;
+        //    }
 
-            if (mapping==null)
-            {
-                
-            }
+        //    if (mapping==null)
+        //    {
 
-        }
-        
+        //    }
+
+        //}
+
         /// <summary>
         /// 按连接对象的类型返回一个适配器类型
         /// </summary>

@@ -15,6 +15,18 @@ namespace CommLibrary.DBHelper
 {
     public class MySqlDBHelper : BaseDBHelper, IDisposable
     {
+        /// <summary>
+        /// 初始化一个MySql操作对象
+        /// </summary>
+        /// <param name="connStr">连接字符串,不传则使用config中配置的</param>
+        public MySqlDBHelper(string connStr = "")
+        {
+            if (!string.IsNullOrWhiteSpace(connStr))
+            {
+                base.connStr = connStr;
+            }
+            conn = new MySqlConnection(base.connStr);
+        }
         //使用父类的
         //MySqlConnection conn;
         //MySqlTransaction tran;
@@ -118,6 +130,17 @@ namespace CommLibrary.DBHelper
         //    return ds;
         //}
 
+        /// <summary>
+        /// 批量插入数据到
+        /// </summary>
+        /// <param name="data">需要插入的数据</param>
+        /// <param name="tbName">数据库表名称默认使用数据源Table的Name</param>
+        /// <param name="mapping">key(数据源列名)和value(表列名)映射关系.默认使用数据源Table的列名</param>
+        /// <returns></returns>
+        public override string BulkCopyToDB(DataTable data, string tbName = "", Dictionary<string, object> mapping = null)
+        {
+            return "";
+        }
     }
 
 }
