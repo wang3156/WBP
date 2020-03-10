@@ -13,9 +13,15 @@ namespace CommLibrary.OfficeHelper.Excel
     using System.Text;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// 通过NPOI操作Excel的帮助类
+    /// </summary>
     public class NPOIHelper
     {
-        public string SheetName { get; set; }
+        /// <summary>
+        /// Excel生成或获取数据的SheetName,默认为 sheet1
+        /// </summary>
+        public string SheetName = "sheet1";
         //public string FileName { get; set; }
 
         //public List<T> DataList { get; set; }
@@ -112,7 +118,6 @@ namespace CommLibrary.OfficeHelper.Excel
             ISheet sheet = workbook.CreateSheet(SheetName);
             IRow row = sheet.CreateRow(row_index);
             row_index++;
-
             ICell cell;
 
             #region 生成第一行表头信息
@@ -153,6 +158,14 @@ namespace CommLibrary.OfficeHelper.Excel
                 }
                 row_index++;
             });
+
+            //设置单元格自动列宽(未实用过不知道有没效 2020年3月10日16:57:23 mw )
+            col_index = 0;
+            foreach (var item in dic)
+            {
+                sheet.AutoSizeColumn(col_index);
+                col_index++;
+            }
 
             #region 返回数据
             if (string.IsNullOrWhiteSpace(FilePath))
