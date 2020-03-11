@@ -32,14 +32,24 @@ namespace CommLibrary.DBHelper.BaseClass
         /// <summary>
         /// 连接字符串
         /// </summary>
-        protected string connStr;
-        string DBType = "sqlserver";
-        string[] Supported_DB = new string[] { "sqlserver", "mysql" };
+        protected  static string connStr;
+
+        static string DBType = "sqlserver";
+        static readonly string[] Supported_DB = new string[] { "sqlserver", "mysql" };
 
         /// <summary>
         /// 实例化数据库操作对象 
         /// </summary>       
         public BaseDBHelper()
+        {
+
+
+        }
+        /// <summary>
+        /// 根据配置的DBType获取一个数据库操作对象
+        /// </summary>
+        /// <returns></returns>
+        public static BaseDBHelper GetDBHelper(string connstr = "")
         {
 
             DBType = ConfigurationManager.AppSettings["DBType"];
@@ -50,16 +60,17 @@ namespace CommLibrary.DBHelper.BaseClass
                 throw new Exception("AppSetting中未配置DBType节点指定DB类型或类型不被支持.可选类型:sqlserver,mysql. ");
             }
 
-            connStr = ConfigurationManager.AppSettings["ConStr"];
+            if (string.IsNullOrWhiteSpace(connStr = connstr))
+            {
+                connStr = ConfigurationManager.AppSettings["ConStr"];
+            }
+            if (string.IsNullOrWhiteSpace(connStr))
+            {
+                throw new Exception("未检测到连接字符串!");
+            }
+
             #endregion
 
-        }
-        /// <summary>
-        /// 根据配置的DBType获取一个数据库操作对象
-        /// </summary>
-        /// <returns></returns>
-        public BaseDBHelper GetDBHelper()
-        {
             switch (DBType.ToLower())
             {
                 case "sqlserver":

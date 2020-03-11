@@ -22,9 +22,9 @@ namespace CommLibrary.DBHelper
         {
             if (!string.IsNullOrWhiteSpace(connStr))
             {
-                base.connStr = connStr;
+                BaseDBHelper.connStr = connStr;
             }
-            conn = new SqlConnection(base.connStr);
+            conn = new SqlConnection(BaseDBHelper.connStr);
         }
         /// <summary>
         /// 批量插入数据到

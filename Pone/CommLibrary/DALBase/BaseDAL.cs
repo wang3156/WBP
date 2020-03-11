@@ -12,7 +12,17 @@ namespace CommLibrary.DALBase
     /// </summary>
     public class BaseDAL : IDisposable
     {
-        BaseDBHelper db = new BaseDBHelper();
+        BaseDBHelper db;
+
+        /// <summary>
+        /// 创建一个baseDAL对象.
+        /// </summary>
+        /// <param name="connStr">初始化对象时用的连接串.不传则使用配置信息</param>
+        public BaseDAL(string connStr = "")
+        {
+            db = BaseDBHelper.GetDBHelper(connStr);
+             
+        }
 
         /// <summary>
         /// 释放使用的实例 

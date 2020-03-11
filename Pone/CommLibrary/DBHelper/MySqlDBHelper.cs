@@ -23,9 +23,9 @@ namespace CommLibrary.DBHelper
         {
             if (!string.IsNullOrWhiteSpace(connStr))
             {
-                base.connStr = connStr;
+                BaseDBHelper.connStr = connStr;
             }
-            conn = new MySqlConnection(base.connStr);
+            conn = new MySqlConnection(BaseDBHelper.connStr);
         }
         //使用父类的
         //MySqlConnection conn;

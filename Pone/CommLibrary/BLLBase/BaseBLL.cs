@@ -13,7 +13,16 @@ namespace CommLibrary.BLLBase
     /// </summary>
     public class BaseBLL
     {
-        BaseDAL dal = new BaseDAL();
+        BaseDAL dal;
+        /// <summary>
+        /// 创建一个baseDAL对象.
+        /// </summary>
+        /// <param name="connStr">初始化对象时用的连接串.不传则使用配置信息</param>
+        public BaseBLL(string connStr = "")
+        {
+            dal = new BaseDAL(connStr);
+        }
+
         /// <summary>
         /// 释放Dal
         /// </summary>
