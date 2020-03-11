@@ -32,7 +32,7 @@ namespace CommLibrary.DBHelper.BaseClass
         /// <summary>
         /// 连接字符串
         /// </summary>
-        protected  static string connStr;
+        protected static string connStr;
 
         static string DBType = "sqlserver";
         static readonly string[] Supported_DB = new string[] { "sqlserver", "mysql" };
@@ -51,10 +51,14 @@ namespace CommLibrary.DBHelper.BaseClass
         /// <returns></returns>
         public static BaseDBHelper GetDBHelper(string connstr = "")
         {
-
-            DBType = ConfigurationManager.AppSettings["DBType"];
-
+            
             #region 检查参数是否正确
+            string d = ConfigurationManager.AppSettings["DBType"];
+            if (!string.IsNullOrWhiteSpace(d))
+            {
+                DBType = d;
+            }
+
             if (string.IsNullOrWhiteSpace(DBType) || !Supported_DB.Contains(DBType, true))
             {
                 throw new Exception("AppSetting中未配置DBType节点指定DB类型或类型不被支持.可选类型:sqlserver,mysql. ");
