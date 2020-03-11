@@ -43,50 +43,51 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(41, 79);
+            this.label1.Location = new System.Drawing.Point(41, 73);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "账号：";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(41, 121);
+            this.label2.Location = new System.Drawing.Point(41, 112);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.Size = new System.Drawing.Size(41, 12);
             this.label2.TabIndex = 0;
             this.label2.Text = "密码：";
             // 
             // Txt_User
             // 
-            this.Txt_User.Location = new System.Drawing.Point(90, 76);
+            this.Txt_User.Location = new System.Drawing.Point(90, 70);
             this.Txt_User.Name = "Txt_User";
-            this.Txt_User.Size = new System.Drawing.Size(253, 20);
+            this.Txt_User.Size = new System.Drawing.Size(253, 21);
             this.Txt_User.TabIndex = 1;
             // 
             // Txt_PassWord
             // 
-            this.Txt_PassWord.Location = new System.Drawing.Point(90, 118);
+            this.Txt_PassWord.Location = new System.Drawing.Point(90, 109);
             this.Txt_PassWord.Name = "Txt_PassWord";
             this.Txt_PassWord.PasswordChar = '#';
-            this.Txt_PassWord.Size = new System.Drawing.Size(253, 20);
+            this.Txt_PassWord.Size = new System.Drawing.Size(253, 21);
             this.Txt_PassWord.TabIndex = 1;
             // 
             // Btn_Exit
             // 
-            this.Btn_Exit.Location = new System.Drawing.Point(294, 172);
+            this.Btn_Exit.Location = new System.Drawing.Point(294, 159);
             this.Btn_Exit.Name = "Btn_Exit";
-            this.Btn_Exit.Size = new System.Drawing.Size(75, 23);
+            this.Btn_Exit.Size = new System.Drawing.Size(75, 21);
             this.Btn_Exit.TabIndex = 2;
             this.Btn_Exit.Text = "退出";
             this.Btn_Exit.UseVisualStyleBackColor = true;
+            this.Btn_Exit.Click += new System.EventHandler(this.Btn_Exit_Click);
             // 
             // Btn_Login
             // 
-            this.Btn_Login.Location = new System.Drawing.Point(189, 172);
+            this.Btn_Login.Location = new System.Drawing.Point(189, 159);
             this.Btn_Login.Name = "Btn_Login";
-            this.Btn_Login.Size = new System.Drawing.Size(75, 23);
+            this.Btn_Login.Size = new System.Drawing.Size(75, 21);
             this.Btn_Login.TabIndex = 2;
             this.Btn_Login.Text = "登录";
             this.Btn_Login.UseVisualStyleBackColor = true;
@@ -96,7 +97,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(144, 19);
+            this.label3.Location = new System.Drawing.Point(144, 18);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(172, 27);
             this.label3.TabIndex = 3;
@@ -105,18 +106,18 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(71, 11);
+            this.pictureBox1.Location = new System.Drawing.Point(71, 10);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(67, 50);
+            this.pictureBox1.Size = new System.Drawing.Size(67, 46);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             // 
             // Login
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(381, 207);
+            this.ClientSize = new System.Drawing.Size(381, 191);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.Btn_Login);
@@ -129,7 +130,9 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Login";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "登录";
+            this.Load += new System.EventHandler(this.Login_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

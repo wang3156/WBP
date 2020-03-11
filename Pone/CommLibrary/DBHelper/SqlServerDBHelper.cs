@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
+using System.Configuration;
 
 namespace CommLibrary.DBHelper
 {
@@ -20,12 +21,15 @@ namespace CommLibrary.DBHelper
         /// <param name="connStr">连接字符串,不传则使用config中配置的</param>
         public SqlServerDBHelper(string connStr = "")
         {
-            if (!string.IsNullOrWhiteSpace(connStr))
+            if (string.IsNullOrWhiteSpace(connStr))
             {
-                BaseDBHelper.connStr = connStr;
+                connStr = ConfigurationManager.AppSettings["ConStr"];
             }
+            BaseDBHelper.connStr = connStr;
             conn = new SqlConnection(BaseDBHelper.connStr);
         }
+
+
         /// <summary>
         /// 批量插入数据到
         /// </summary>

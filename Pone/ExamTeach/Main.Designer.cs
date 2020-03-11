@@ -28,20 +28,87 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.MQuestion = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddSelect = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddTK = new System.Windows.Forms.ToolStripMenuItem();
+            this.MZJ = new System.Windows.Forms.ToolStripMenuItem();
+            this.MSetExam = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // Form1
+            // menuStrip1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MQuestion,
+            this.MZJ,
+            this.MSetExam});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1344, 25);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // MQuestion
+            // 
+            this.MQuestion.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddSelect,
+            this.AddTK});
+            this.MQuestion.Name = "MQuestion";
+            this.MQuestion.Size = new System.Drawing.Size(68, 21);
+            this.MQuestion.Text = "添加试题";
+            // 
+            // AddSelect
+            // 
+            this.AddSelect.Name = "AddSelect";
+            this.AddSelect.Size = new System.Drawing.Size(152, 22);
+            this.AddSelect.Text = "选择题";
+            this.AddSelect.Click += new System.EventHandler(this.AddSelect_Click);
+            // 
+            // AddTK
+            // 
+            this.AddTK.Name = "AddTK";
+            this.AddTK.Size = new System.Drawing.Size(152, 22);
+            this.AddTK.Text = "填空题";
+            // 
+            // MZJ
+            // 
+            this.MZJ.Name = "MZJ";
+            this.MZJ.Size = new System.Drawing.Size(44, 21);
+            this.MZJ.Text = "组卷";
+            // 
+            // MSetExam
+            // 
+            this.MSetExam.Name = "MSetExam";
+            this.MSetExam.Size = new System.Drawing.Size(68, 21);
+            this.MSetExam.Text = "设置考试";
+            // 
+            // Main
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1344, 861);
-            this.Name = "Form1";
+            this.ClientSize = new System.Drawing.Size(1344, 795);
+            this.Controls.Add(this.menuStrip1);
+            this.IsMdiContainer = true;
+            this.MainMenuStrip = this.menuStrip1;
+            this.Name = "Main";
             this.Text = "教师端";
+            this.Load += new System.EventHandler(this.Main_Load);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem MQuestion;
+        private System.Windows.Forms.ToolStripMenuItem MZJ;
+        private System.Windows.Forms.ToolStripMenuItem MSetExam;
+        private System.Windows.Forms.ToolStripMenuItem AddSelect;
+        private System.Windows.Forms.ToolStripMenuItem AddTK;
     }
 }
 

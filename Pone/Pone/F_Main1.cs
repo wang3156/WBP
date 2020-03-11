@@ -64,7 +64,7 @@ namespace Pone
             DataTable dt = new DataTable();
             using (MySqlDBHelper mydb = new MySqlDBHelper())
             {
-                dt = mydb.GetDataTable(sql, pars: pars.ToArray());
+                dt = mydb.GetDataSet(sql, pars: pars.ToArray()).Tables[0];
             }
             if (dt.Rows.Count == 0)
             {

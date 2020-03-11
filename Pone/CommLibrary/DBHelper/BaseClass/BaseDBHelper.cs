@@ -29,10 +29,26 @@ namespace CommLibrary.DBHelper.BaseClass
         /// 事务对象
         /// </summary>
         protected DbTransaction tran;
+
+        static string _connStr;
         /// <summary>
         /// 连接字符串
         /// </summary>
-        protected static string connStr;
+        protected static string connStr
+        {
+            get
+            {
+                return _connStr;
+            }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new Exception("未检测到连接字符串!");
+                }
+                _connStr = value;
+            }
+        }
 
         static string DBType = "sqlserver";
         static readonly string[] Supported_DB = new string[] { "sqlserver", "mysql" };
@@ -51,7 +67,7 @@ namespace CommLibrary.DBHelper.BaseClass
         /// <returns></returns>
         public static BaseDBHelper GetDBHelper(string connstr = "")
         {
-            
+
             #region 检查参数是否正确
             string d = ConfigurationManager.AppSettings["DBType"];
             if (!string.IsNullOrWhiteSpace(d))
@@ -68,10 +84,7 @@ namespace CommLibrary.DBHelper.BaseClass
             {
                 connStr = ConfigurationManager.AppSettings["ConStr"];
             }
-            if (string.IsNullOrWhiteSpace(connStr))
-            {
-                throw new Exception("未检测到连接字符串!");
-            }
+         
 
             #endregion
 
@@ -161,7 +174,7 @@ namespace CommLibrary.DBHelper.BaseClass
         /// <param name="sql"></param>
         /// <param name="ctp">执行Sql的类型,默认为Sql语句</param>
         /// <param name="pars">查询参数</param>
-        /// <returns></returns>
+        /// <returns>如果不能转成指定类型则返回指定类型的默认值 </returns>
         public N ExecuteScalar<N>(string sql, CommandType ctp = CommandType.Text, params IDataParameter[] pars) where N : IConvertible
         {
             if (conn.State == ConnectionState.Closed)
@@ -175,7 +188,16 @@ namespace CommLibrary.DBHelper.BaseClass
             comm.CommandType = ctp;
             object o = comm.ExecuteScalar();
             comm.Dispose();
-            return (N)Convert.ChangeType(o, typeof(N));
+
+            try
+            {
+                return (N)Convert.ChangeType(o, typeof(N));
+            }
+            catch (Exception ex)
+            {
+                return default(N);
+            }
+
         }
 
         ///// <summary>

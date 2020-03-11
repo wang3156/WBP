@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExamTeach.WQuestions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,30 @@ namespace ExamTeach
 {
     public partial class Main : Form
     {
+        public string UName;
         public Main()
         {
             InitializeComponent();
         }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(UName))
+            {
+                Login l = new Login();
+                l.Tag = this;
+                l.ShowDialog();
+            }
+        }
+
+        private void AddSelect_Click(object sender, EventArgs e)
+        {
+            AddSelect.Enabled = false;
+            SelectQuestions sq = new SelectQuestions();
+            sq.MdiParent = this;
+            sq.Show();
+        }
     }
+
+
 }

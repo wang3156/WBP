@@ -21,10 +21,11 @@ namespace CommLibrary.DBHelper
         /// <param name="connStr">连接字符串,不传则使用config中配置的</param>
         public MySqlDBHelper(string connStr = "")
         {
-            if (!string.IsNullOrWhiteSpace(connStr))
+            if (string.IsNullOrWhiteSpace(connStr))
             {
-                BaseDBHelper.connStr = connStr;
+                connStr = ConfigurationManager.AppSettings["ConStr"];
             }
+            BaseDBHelper.connStr = connStr;
             conn = new MySqlConnection(BaseDBHelper.connStr);
         }
         //使用父类的
