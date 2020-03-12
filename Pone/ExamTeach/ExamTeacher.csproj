@@ -46,6 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExamSystemDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExamSystemDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +71,12 @@
     <Compile Include="WQuestions\SelectQuestions.Designer.cs">
       <DependentUpon>SelectQuestions.cs</DependentUpon>
     </Compile>
+    <Compile Include="WQuestions\WSelectEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WQuestions\WSelectEdit.Designer.cs">
+      <DependentUpon>WSelectEdit.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
@@ -85,6 +96,20 @@
     <EmbeddedResource Include="WQuestions\SelectQuestions.resx">
       <DependentUpon>SelectQuestions.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="WQuestions\WSelectEdit.resx">
+      <DependentUpon>WSelectEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="ExamSystemDataSet.xsc">
+      <DependentUpon>ExamSystemDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="ExamSystemDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ExamSystemDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExamSystemDataSet.xss">
+      <DependentUpon>ExamSystemDataSet.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

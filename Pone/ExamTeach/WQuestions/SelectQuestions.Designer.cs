@@ -28,214 +28,276 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.components = new System.ComponentModel.Container();
             this.Btn_Add = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.eSelectQuestionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.examSystemDataSet = new ExamTeach.ExamSystemDataSet();
+            this.e_SelectQuestionsTableAdapter = new ExamTeach.ExamSystemDataSetTableAdapters.E_SelectQuestionsTableAdapter();
+            this.P_Answer = new System.Windows.Forms.Panel();
+            this.Txt_Anwser_E = new System.Windows.Forms.TextBox();
+            this.CK_E = new System.Windows.Forms.CheckBox();
+            this.Txt_Anwser_D = new System.Windows.Forms.TextBox();
+            this.CK_D = new System.Windows.Forms.CheckBox();
+            this.Txt_Anwser_C = new System.Windows.Forms.TextBox();
+            this.CK_C = new System.Windows.Forms.CheckBox();
+            this.Txt_Anwser_B = new System.Windows.Forms.TextBox();
+            this.CK_B = new System.Windows.Forms.CheckBox();
+            this.Txt_Anwser_A = new System.Windows.Forms.TextBox();
+            this.CK_A = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.Txt_Questions = new System.Windows.Forms.RichTextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Lab_CanADD = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.eSelectQuestionsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.examSystemDataSet)).BeginInit();
+            this.P_Answer.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Location = new System.Drawing.Point(17, 37);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(871, 82);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 25);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "题面：";
             // 
             // Btn_Add
             // 
             this.Btn_Add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Add.Location = new System.Drawing.Point(825, 296);
+            this.Btn_Add.Location = new System.Drawing.Point(822, 377);
             this.Btn_Add.Name = "Btn_Add";
             this.Btn_Add.Size = new System.Drawing.Size(65, 23);
             this.Btn_Add.TabIndex = 2;
-            this.Btn_Add.Text = "添加试题";
+            this.Btn_Add.Text = "保存试题";
             this.Btn_Add.UseVisualStyleBackColor = true;
+            this.Btn_Add.Click += new System.EventHandler(this.Btn_Add_Click);
             // 
-            // panel1
+            // listBox1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.listBox1.DataSource = this.eSelectQuestionsBindingSource;
+            this.listBox1.DisplayMember = "Questions";
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 12;
+            this.listBox1.Location = new System.Drawing.Point(12, 12);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(254, 388);
+            this.listBox1.TabIndex = 3;
+            this.listBox1.ValueMember = "QID";
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            // 
+            // eSelectQuestionsBindingSource
+            // 
+            this.eSelectQuestionsBindingSource.DataMember = "E_SelectQuestions";
+            this.eSelectQuestionsBindingSource.DataSource = this.examSystemDataSet;
+            // 
+            // examSystemDataSet
+            // 
+            this.examSystemDataSet.DataSetName = "ExamSystemDataSet";
+            this.examSystemDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // e_SelectQuestionsTableAdapter
+            // 
+            this.e_SelectQuestionsTableAdapter.ClearBeforeFill = true;
+            // 
+            // P_Answer
+            // 
+            this.P_Answer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.textBox5);
-            this.panel1.Controls.Add(this.checkBox5);
-            this.panel1.Controls.Add(this.textBox4);
-            this.panel1.Controls.Add(this.checkBox4);
-            this.panel1.Controls.Add(this.textBox3);
-            this.panel1.Controls.Add(this.checkBox3);
-            this.panel1.Controls.Add(this.textBox2);
-            this.panel1.Controls.Add(this.checkBox2);
-            this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Controls.Add(this.checkBox1);
-            this.panel1.Location = new System.Drawing.Point(13, 125);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(875, 165);
-            this.panel1.TabIndex = 4;
+            this.P_Answer.Controls.Add(this.Txt_Anwser_E);
+            this.P_Answer.Controls.Add(this.CK_E);
+            this.P_Answer.Controls.Add(this.Txt_Anwser_D);
+            this.P_Answer.Controls.Add(this.CK_D);
+            this.P_Answer.Controls.Add(this.Txt_Anwser_C);
+            this.P_Answer.Controls.Add(this.CK_C);
+            this.P_Answer.Controls.Add(this.Txt_Anwser_B);
+            this.P_Answer.Controls.Add(this.CK_B);
+            this.P_Answer.Controls.Add(this.Txt_Anwser_A);
+            this.P_Answer.Controls.Add(this.CK_A);
+            this.P_Answer.Location = new System.Drawing.Point(295, 180);
+            this.P_Answer.Name = "P_Answer";
+            this.P_Answer.Size = new System.Drawing.Size(592, 164);
+            this.P_Answer.TabIndex = 10;
             // 
-            // checkBox1
+            // Txt_Anwser_E
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(17, 19);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.Txt_Anwser_E.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(38, 16);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(808, 21);
-            this.textBox1.TabIndex = 1;
+            this.Txt_Anwser_E.Location = new System.Drawing.Point(67, 124);
+            this.Txt_Anwser_E.Name = "Txt_Anwser_E";
+            this.Txt_Anwser_E.Size = new System.Drawing.Size(496, 21);
+            this.Txt_Anwser_E.TabIndex = 9;
             // 
-            // textBox2
+            // CK_E
             // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.CK_E.AutoSize = true;
+            this.CK_E.Location = new System.Drawing.Point(25, 127);
+            this.CK_E.Name = "CK_E";
+            this.CK_E.Size = new System.Drawing.Size(15, 14);
+            this.CK_E.TabIndex = 8;
+            this.CK_E.UseVisualStyleBackColor = true;
+            // 
+            // Txt_Anwser_D
+            // 
+            this.Txt_Anwser_D.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(38, 43);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(808, 21);
-            this.textBox2.TabIndex = 3;
+            this.Txt_Anwser_D.Location = new System.Drawing.Point(67, 97);
+            this.Txt_Anwser_D.Name = "Txt_Anwser_D";
+            this.Txt_Anwser_D.Size = new System.Drawing.Size(496, 21);
+            this.Txt_Anwser_D.TabIndex = 7;
             // 
-            // checkBox2
+            // CK_D
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(17, 46);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(15, 14);
-            this.checkBox2.TabIndex = 2;
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.CK_D.AutoSize = true;
+            this.CK_D.Location = new System.Drawing.Point(25, 100);
+            this.CK_D.Name = "CK_D";
+            this.CK_D.Size = new System.Drawing.Size(15, 14);
+            this.CK_D.TabIndex = 6;
+            this.CK_D.UseVisualStyleBackColor = true;
             // 
-            // textBox3
+            // Txt_Anwser_C
             // 
-            this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.Txt_Anwser_C.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox3.Location = new System.Drawing.Point(38, 70);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(808, 21);
-            this.textBox3.TabIndex = 5;
+            this.Txt_Anwser_C.Location = new System.Drawing.Point(67, 70);
+            this.Txt_Anwser_C.Name = "Txt_Anwser_C";
+            this.Txt_Anwser_C.Size = new System.Drawing.Size(496, 21);
+            this.Txt_Anwser_C.TabIndex = 5;
             // 
-            // checkBox3
+            // CK_C
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(17, 73);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(15, 14);
-            this.checkBox3.TabIndex = 4;
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.CK_C.AutoSize = true;
+            this.CK_C.Location = new System.Drawing.Point(25, 73);
+            this.CK_C.Name = "CK_C";
+            this.CK_C.Size = new System.Drawing.Size(15, 14);
+            this.CK_C.TabIndex = 4;
+            this.CK_C.UseVisualStyleBackColor = true;
             // 
-            // textBox4
+            // Txt_Anwser_B
             // 
-            this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.Txt_Anwser_B.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox4.Location = new System.Drawing.Point(38, 97);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(808, 21);
-            this.textBox4.TabIndex = 7;
+            this.Txt_Anwser_B.Location = new System.Drawing.Point(67, 43);
+            this.Txt_Anwser_B.Name = "Txt_Anwser_B";
+            this.Txt_Anwser_B.Size = new System.Drawing.Size(496, 21);
+            this.Txt_Anwser_B.TabIndex = 3;
             // 
-            // checkBox4
+            // CK_B
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(17, 100);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(15, 14);
-            this.checkBox4.TabIndex = 6;
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.CK_B.AutoSize = true;
+            this.CK_B.Location = new System.Drawing.Point(25, 46);
+            this.CK_B.Name = "CK_B";
+            this.CK_B.Size = new System.Drawing.Size(15, 14);
+            this.CK_B.TabIndex = 2;
+            this.CK_B.UseVisualStyleBackColor = true;
             // 
-            // textBox5
+            // Txt_Anwser_A
             // 
-            this.textBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.Txt_Anwser_A.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox5.Location = new System.Drawing.Point(38, 124);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(808, 21);
-            this.textBox5.TabIndex = 9;
+            this.Txt_Anwser_A.Location = new System.Drawing.Point(67, 16);
+            this.Txt_Anwser_A.Name = "Txt_Anwser_A";
+            this.Txt_Anwser_A.Size = new System.Drawing.Size(496, 21);
+            this.Txt_Anwser_A.TabIndex = 1;
             // 
-            // checkBox5
+            // CK_A
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(17, 127);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(15, 14);
-            this.checkBox5.TabIndex = 8;
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.CK_A.AutoSize = true;
+            this.CK_A.Location = new System.Drawing.Point(25, 19);
+            this.CK_A.Name = "CK_A";
+            this.CK_A.Size = new System.Drawing.Size(15, 14);
+            this.CK_A.TabIndex = 0;
+            this.CK_A.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // label7
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Location = new System.Drawing.Point(290, 12);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(69, 25);
+            this.label7.TabIndex = 9;
+            this.label7.Text = "题面：";
+            // 
+            // Txt_Questions
+            // 
+            this.Txt_Questions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 329);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(887, 250);
-            this.dataGridView1.TabIndex = 5;
+            this.Txt_Questions.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Txt_Questions.Location = new System.Drawing.Point(295, 40);
+            this.Txt_Questions.Name = "Txt_Questions";
+            this.Txt_Questions.Size = new System.Drawing.Size(592, 134);
+            this.Txt_Questions.TabIndex = 8;
+            this.Txt_Questions.Text = "";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(741, 377);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "添加试题";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(615, 382);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "可添加：";
+            // 
+            // Lab_CanADD
+            // 
+            this.Lab_CanADD.AutoSize = true;
+            this.Lab_CanADD.Location = new System.Drawing.Point(674, 382);
+            this.Lab_CanADD.Name = "Lab_CanADD";
+            this.Lab_CanADD.Size = new System.Drawing.Size(17, 12);
+            this.Lab_CanADD.TabIndex = 12;
+            this.Lab_CanADD.Text = "是";
             // 
             // SelectQuestions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(899, 582);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.Btn_Add);
+            this.ClientSize = new System.Drawing.Size(899, 420);
+            this.Controls.Add(this.Lab_CanADD);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.P_Answer);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.Txt_Questions);
+            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.Btn_Add);
             this.Name = "SelectQuestions";
             this.Text = "添加选择题";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelectQuestions_FormClosing);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Load += new System.EventHandler(this.SelectQuestions_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.eSelectQuestionsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.examSystemDataSet)).EndInit();
+            this.P_Answer.ResumeLayout(false);
+            this.P_Answer.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button Btn_Add;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ListBox listBox1;
+        private ExamSystemDataSet examSystemDataSet;
+        private System.Windows.Forms.BindingSource eSelectQuestionsBindingSource;
+        private ExamSystemDataSetTableAdapters.E_SelectQuestionsTableAdapter e_SelectQuestionsTableAdapter;
+        private System.Windows.Forms.Panel P_Answer;
+        private System.Windows.Forms.TextBox Txt_Anwser_E;
+        private System.Windows.Forms.CheckBox CK_E;
+        private System.Windows.Forms.TextBox Txt_Anwser_D;
+        private System.Windows.Forms.CheckBox CK_D;
+        private System.Windows.Forms.TextBox Txt_Anwser_C;
+        private System.Windows.Forms.CheckBox CK_C;
+        private System.Windows.Forms.TextBox Txt_Anwser_B;
+        private System.Windows.Forms.CheckBox CK_B;
+        private System.Windows.Forms.TextBox Txt_Anwser_A;
+        private System.Windows.Forms.CheckBox CK_A;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.RichTextBox Txt_Questions;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label Lab_CanADD;
     }
 }

@@ -21,12 +21,12 @@ namespace ExamTeach
 
         private void Main_Load(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(UName))
-            {
-                Login l = new Login();
-                l.Tag = this;
-                l.ShowDialog();
-            }
+            //if (string.IsNullOrWhiteSpace(UName))
+            //{
+            //    Login l = new Login();
+            //    l.Tag = this;
+            //    l.ShowDialog();
+            //}
         }
 
         private void AddSelect_Click(object sender, EventArgs e)
@@ -35,6 +35,11 @@ namespace ExamTeach
             SelectQuestions sq = new SelectQuestions();
             sq.MdiParent = this;
             sq.Show();
+        }
+
+        public void DisabledMenu_AddSelect()
+        {
+            AddSelect.Enabled = true;
         }
     }
 
