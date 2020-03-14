@@ -62,7 +62,7 @@
             this.Btn_Add.Name = "Btn_Add";
             this.Btn_Add.Size = new System.Drawing.Size(65, 23);
             this.Btn_Add.TabIndex = 2;
-            this.Btn_Add.Text = "保存试题";
+            this.Btn_Add.Text = "保存题目";
             this.Btn_Add.UseVisualStyleBackColor = true;
             this.Btn_Add.Click += new System.EventHandler(this.Btn_Add_Click);
             // 
@@ -206,11 +206,11 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(290, 12);
+            this.label7.Location = new System.Drawing.Point(290, 9);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(69, 25);
+            this.label7.Size = new System.Drawing.Size(328, 25);
             this.label7.TabIndex = 9;
-            this.label7.Text = "题面：";
+            this.label7.Text = "题面：(请在下面复选框选择正确答案)";
             // 
             // Txt_Questions
             // 
@@ -229,7 +229,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 11;
-            this.button1.Text = "添加试题";
+            this.button1.Text = "添加模式";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -264,8 +264,10 @@
             this.Controls.Add(this.Txt_Questions);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.Btn_Add);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "SelectQuestions";
-            this.Text = "添加选择题";
+            this.Text = "选择题";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelectQuestions_FormClosing);
             this.Load += new System.EventHandler(this.SelectQuestions_Load);
             ((System.ComponentModel.ISupportInitialize)(this.eSelectQuestionsBindingSource)).EndInit();

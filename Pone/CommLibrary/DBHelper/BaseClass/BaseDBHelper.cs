@@ -84,7 +84,7 @@ namespace CommLibrary.DBHelper.BaseClass
             {
                 connStr = ConfigurationManager.AppSettings["ConStr"];
             }
-         
+
 
             #endregion
 
@@ -127,6 +127,10 @@ namespace CommLibrary.DBHelper.BaseClass
         /// <param name="level">事务级别,默认为ReadCommitted </param>
         public void BeginTransaction(IsolationLevel level = IsolationLevel.ReadCommitted)
         {
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+            }
             if (tran == null)
             {
                 tran = conn.BeginTransaction();
@@ -259,7 +263,7 @@ namespace CommLibrary.DBHelper.BaseClass
         /// <param name="tbName">数据库表名称</param>
         /// <param name="mapping">列映射,不传则默认为数据源中的所有列</param>      
         /// <returns></returns>
-        public abstract string BulkCopyToDB(DataTable data, string tbName = "", Dictionary<string, object> mapping = null);
+        public abstract void BulkCopyToDB(DataTable data, string tbName = "", Dictionary<string, string> mapping = null);
         //{
         //    string error = "";
 

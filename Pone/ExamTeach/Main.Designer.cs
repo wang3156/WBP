@@ -70,6 +70,7 @@
             this.AddTK.Name = "AddTK";
             this.AddTK.Size = new System.Drawing.Size(152, 22);
             this.AddTK.Text = "填空题";
+            this.AddTK.Click += new System.EventHandler(this.AddTK_Click);
             // 
             // MZJ
             // 

@@ -36,10 +36,39 @@ namespace CommLibrary.DBHelper
         /// <param name="data">需要插入的数据</param>
         /// <param name="tbName">数据库表名称默认使用数据源Table的Name</param>
         /// <param name="mapping">key(数据源列名)和value(表列名)映射关系.默认使用数据源Table的列名</param>
-        /// <returns></returns>
-        public override string BulkCopyToDB(DataTable data, string tbName = "", Dictionary<string, object> mapping = null)
+        /// <returns>如果 有值则是错误信息</returns>
+        public override void BulkCopyToDB(DataTable data, string tbName = "", Dictionary<string, string> mapping = null)
         {
-            return "";
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+            }
+            if (string.IsNullOrWhiteSpace(tbName))
+            {
+                tbName = data.TableName;
+            }
+
+            using (SqlBulkCopy sb = new SqlBulkCopy(conn as SqlConnection, SqlBulkCopyOptions.Default, (tran as SqlTransaction)))
+            {
+                sb.DestinationTableName = tbName;
+                if (mapping == null)
+                {
+                    foreach (DataColumn col in data.Columns)
+                    {
+                        sb.ColumnMappings.Add(col.ColumnName, col.ColumnName);
+                    }
+                }
+                else
+                {
+                    foreach (var item in mapping)
+                    {
+                        sb.ColumnMappings.Add(item.Key, item.Value);
+                    }
+                }
+                sb.WriteToServer(data);
+            }
+
+ ;
         }
     }
 }

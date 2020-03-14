@@ -138,9 +138,9 @@ namespace CommLibrary.DBHelper
         /// <param name="tbName">数据库表名称默认使用数据源Table的Name</param>
         /// <param name="mapping">key(数据源列名)和value(表列名)映射关系.默认使用数据源Table的列名</param>
         /// <returns></returns>
-        public override string BulkCopyToDB(DataTable data, string tbName = "", Dictionary<string, object> mapping = null)
+        public override void BulkCopyToDB(DataTable data, string tbName = "", Dictionary<string, string> mapping = null)
         {
-            return "";
+             
         }
     }
 

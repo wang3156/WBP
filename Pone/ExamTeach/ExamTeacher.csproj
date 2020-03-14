@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,6 +54,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ExamSystemDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ExamSystemDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExamSystemDataSet1.xsd</DependentUpon>
     </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
@@ -71,11 +80,11 @@
     <Compile Include="WQuestions\SelectQuestions.Designer.cs">
       <DependentUpon>SelectQuestions.cs</DependentUpon>
     </Compile>
-    <Compile Include="WQuestions\WSelectEdit.cs">
+    <Compile Include="WQuestions\TKQuestions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WQuestions\WSelectEdit.Designer.cs">
-      <DependentUpon>WSelectEdit.cs</DependentUpon>
+    <Compile Include="WQuestions\TKQuestions.Designer.cs">
+      <DependentUpon>TKQuestions.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -96,8 +105,8 @@
     <EmbeddedResource Include="WQuestions\SelectQuestions.resx">
       <DependentUpon>SelectQuestions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WQuestions\WSelectEdit.resx">
-      <DependentUpon>WSelectEdit.cs</DependentUpon>
+    <EmbeddedResource Include="WQuestions\TKQuestions.resx">
+      <DependentUpon>TKQuestions.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ExamSystemDataSet.xsc">
       <DependentUpon>ExamSystemDataSet.xsd</DependentUpon>
@@ -110,6 +119,18 @@
     <None Include="ExamSystemDataSet.xss">
       <DependentUpon>ExamSystemDataSet.xsd</DependentUpon>
     </None>
+    <None Include="ExamSystemDataSet1.xsc">
+      <DependentUpon>ExamSystemDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="ExamSystemDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ExamSystemDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExamSystemDataSet1.xss">
+      <DependentUpon>ExamSystemDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

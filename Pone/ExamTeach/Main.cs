@@ -41,6 +41,20 @@ namespace ExamTeach
         {
             AddSelect.Enabled = true;
         }
+
+        public void DisabledMenu_AddTK()
+        {
+            AddTK.Enabled = true;
+        }
+
+        private void AddTK_Click(object sender, EventArgs e)
+        {
+            AddTK.Enabled = false;
+            TKQuestions tk = new TKQuestions();
+            tk.MdiParent = this;
+            tk.Show();
+
+        }
     }
 
 
