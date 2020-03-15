@@ -98,6 +98,12 @@
     <Compile Include="ZPaperM.Designer.cs">
       <DependentUpon>ZPaperM.cs</DependentUpon>
     </Compile>
+    <Compile Include="ZuKao.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ZuKao.Designer.cs">
+      <DependentUpon>ZuKao.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
@@ -125,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ZPaperM.resx">
       <DependentUpon>ZPaperM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ZuKao.resx">
+      <DependentUpon>ZuKao.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ExamSystemDataSet.xsc">
       <DependentUpon>ExamSystemDataSet.xsd</DependentUpon>

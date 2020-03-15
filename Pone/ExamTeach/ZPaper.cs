@@ -237,7 +237,7 @@ namespace ExamTeach
             }
             DataGridView g = sender as DataGridView;
 
-            Comm.CreateControl((g.SelectedRows[0].DataBoundItem as DataRowView).Row, Txt_Questions, P_Content, true);
+            Comm.CreateControl((g.SelectedRows[0].DataBoundItem as DataRowView).Row, Txt_Questions, P_Content, false);
         }
     }
 

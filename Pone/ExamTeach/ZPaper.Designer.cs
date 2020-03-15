@@ -55,6 +55,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.Lab_Status = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -180,6 +181,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.P_Content);
             this.panel2.Controls.Add(this.Txt_Questions);
             this.panel2.Controls.Add(this.label7);
@@ -190,9 +192,9 @@
             // 
             // P_Content
             // 
-            this.P_Content.Location = new System.Drawing.Point(3, 211);
+            this.P_Content.Location = new System.Drawing.Point(3, 236);
             this.P_Content.Name = "P_Content";
-            this.P_Content.Size = new System.Drawing.Size(558, 354);
+            this.P_Content.Size = new System.Drawing.Size(558, 329);
             this.P_Content.TabIndex = 12;
             // 
             // dataGridView2
@@ -299,7 +301,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1064, 16);
+            this.button2.Location = new System.Drawing.Point(1107, 18);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(74, 25);
             this.button2.TabIndex = 17;
@@ -350,6 +352,15 @@
             this.button3.Text = "保存试卷";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 218);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "答案：";
             // 
             // ZPaper
             // 
@@ -411,5 +422,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn CheckRow2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn QQTYpe;
+        private System.Windows.Forms.Label label5;
     }
 }

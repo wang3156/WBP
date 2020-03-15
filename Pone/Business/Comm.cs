@@ -116,6 +116,7 @@ namespace Business
                         TextBox tb = new TextBox();
                         tb.Top = (i * tb.Height + 5 * i);
                         tb.Left = 5;
+                        tb.Width = 540;
                         cots.Add(tb);
                     }
                 }
