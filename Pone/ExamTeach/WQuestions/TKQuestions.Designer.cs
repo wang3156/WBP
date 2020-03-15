@@ -30,20 +30,20 @@
         {
             this.components = new System.ComponentModel.Container();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.eTKQuestionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.examSystemDataSet1 = new ExamTeach.ExamSystemDataSet1();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.Txt_Copy = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.Add_Question = new System.Windows.Forms.Button();
-            this.Txt_Copy = new System.Windows.Forms.TextBox();
             this.Lab_CanADD = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.examSystemDataSet1 = new ExamTeach.ExamSystemDataSet1();
-            this.eTKQuestionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.e_TKQuestionsTableAdapter = new ExamTeach.ExamSystemDataSet1TableAdapters.E_TKQuestionsTableAdapter();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.examSystemDataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eTKQuestionsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.examSystemDataSet1)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // listBox1
@@ -56,8 +56,18 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(254, 388);
             this.listBox1.TabIndex = 0;
-            this.listBox1.ValueMember = "TKID";
+            this.listBox1.ValueMember = "QID";
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            // 
+            // eTKQuestionsBindingSource
+            // 
+            this.eTKQuestionsBindingSource.DataMember = "E_TKQuestions";
+            this.eTKQuestionsBindingSource.DataSource = this.examSystemDataSet1;
+            // 
+            // examSystemDataSet1
+            // 
+            this.examSystemDataSet1.DataSetName = "ExamSystemDataSet1";
+            this.examSystemDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // richTextBox1
             // 
@@ -87,6 +97,16 @@
             this.panel1.Size = new System.Drawing.Size(605, 207);
             this.panel1.TabIndex = 11;
             // 
+            // Txt_Copy
+            // 
+            this.Txt_Copy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Txt_Copy.Location = new System.Drawing.Point(17, 13);
+            this.Txt_Copy.Name = "Txt_Copy";
+            this.Txt_Copy.Size = new System.Drawing.Size(573, 21);
+            this.Txt_Copy.TabIndex = 0;
+            this.Txt_Copy.Visible = false;
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(812, 389);
@@ -107,16 +127,6 @@
             this.Add_Question.UseVisualStyleBackColor = true;
             this.Add_Question.Click += new System.EventHandler(this.button2_Click);
             // 
-            // Txt_Copy
-            // 
-            this.Txt_Copy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Txt_Copy.Location = new System.Drawing.Point(17, 13);
-            this.Txt_Copy.Name = "Txt_Copy";
-            this.Txt_Copy.Size = new System.Drawing.Size(573, 21);
-            this.Txt_Copy.TabIndex = 0;
-            this.Txt_Copy.Visible = false;
-            // 
             // Lab_CanADD
             // 
             this.Lab_CanADD.AutoSize = true;
@@ -134,16 +144,6 @@
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 15;
             this.label1.Text = "可添加：";
-            // 
-            // examSystemDataSet1
-            // 
-            this.examSystemDataSet1.DataSetName = "ExamSystemDataSet1";
-            this.examSystemDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // eTKQuestionsBindingSource
-            // 
-            this.eTKQuestionsBindingSource.DataMember = "E_TKQuestions";
-            this.eTKQuestionsBindingSource.DataSource = this.examSystemDataSet1;
             // 
             // e_TKQuestionsTableAdapter
             // 
@@ -164,14 +164,15 @@
             this.Controls.Add(this.listBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "TKQuestions";
             this.Text = "填空题";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TKQuestions_FormClosing);
             this.Load += new System.EventHandler(this.TKQuestions_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.eTKQuestionsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.examSystemDataSet1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.examSystemDataSet1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eTKQuestionsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

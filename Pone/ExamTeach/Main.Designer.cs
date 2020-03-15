@@ -61,14 +61,14 @@
             // AddSelect
             // 
             this.AddSelect.Name = "AddSelect";
-            this.AddSelect.Size = new System.Drawing.Size(152, 22);
+            this.AddSelect.Size = new System.Drawing.Size(112, 22);
             this.AddSelect.Text = "选择题";
             this.AddSelect.Click += new System.EventHandler(this.AddSelect_Click);
             // 
             // AddTK
             // 
             this.AddTK.Name = "AddTK";
-            this.AddTK.Size = new System.Drawing.Size(152, 22);
+            this.AddTK.Size = new System.Drawing.Size(112, 22);
             this.AddTK.Text = "填空题";
             this.AddTK.Click += new System.EventHandler(this.AddTK_Click);
             // 
@@ -77,6 +77,7 @@
             this.MZJ.Name = "MZJ";
             this.MZJ.Size = new System.Drawing.Size(44, 21);
             this.MZJ.Text = "组卷";
+            this.MZJ.Click += new System.EventHandler(this.MZJ_Click);
             // 
             // MSetExam
             // 

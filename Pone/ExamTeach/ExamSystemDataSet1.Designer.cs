@@ -279,11 +279,11 @@ namespace ExamTeach {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class E_TKQuestionsDataTable : global::System.Data.TypedTableBase<E_TKQuestionsRow> {
             
-            private global::System.Data.DataColumn columnTKID;
-            
             private global::System.Data.DataColumn columnQuestions;
             
             private global::System.Data.DataColumn columnAnswer;
+            
+            private global::System.Data.DataColumn columnQID;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -320,14 +320,6 @@ namespace ExamTeach {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn TKIDColumn {
-                get {
-                    return this.columnTKID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn QuestionsColumn {
                 get {
                     return this.columnQuestions;
@@ -339,6 +331,14 @@ namespace ExamTeach {
             public global::System.Data.DataColumn AnswerColumn {
                 get {
                     return this.columnAnswer;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn QIDColumn {
+                get {
+                    return this.columnQID;
                 }
             }
             
@@ -382,9 +382,9 @@ namespace ExamTeach {
             public E_TKQuestionsRow AddE_TKQuestionsRow(string Questions, string Answer) {
                 E_TKQuestionsRow rowE_TKQuestionsRow = ((E_TKQuestionsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        null,
                         Questions,
-                        Answer};
+                        Answer,
+                        null};
                 rowE_TKQuestionsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowE_TKQuestionsRow);
                 return rowE_TKQuestionsRow;
@@ -392,9 +392,9 @@ namespace ExamTeach {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public E_TKQuestionsRow FindByTKID(int TKID) {
+            public E_TKQuestionsRow FindByQID(int QID) {
                 return ((E_TKQuestionsRow)(this.Rows.Find(new object[] {
-                            TKID})));
+                            QID})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -414,32 +414,32 @@ namespace ExamTeach {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnTKID = base.Columns["TKID"];
                 this.columnQuestions = base.Columns["Questions"];
                 this.columnAnswer = base.Columns["Answer"];
+                this.columnQID = base.Columns["QID"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnTKID = new global::System.Data.DataColumn("TKID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTKID);
                 this.columnQuestions = new global::System.Data.DataColumn("Questions", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQuestions);
                 this.columnAnswer = new global::System.Data.DataColumn("Answer", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAnswer);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnTKID}, true));
-                this.columnTKID.AutoIncrement = true;
-                this.columnTKID.AutoIncrementSeed = -1;
-                this.columnTKID.AutoIncrementStep = -1;
-                this.columnTKID.AllowDBNull = false;
-                this.columnTKID.ReadOnly = true;
-                this.columnTKID.Unique = true;
+                this.columnQID = new global::System.Data.DataColumn("QID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnQID);
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint2", new global::System.Data.DataColumn[] {
+                                this.columnQID}, true));
                 this.columnQuestions.AllowDBNull = false;
                 this.columnQuestions.MaxLength = 512;
                 this.columnAnswer.AllowDBNull = false;
                 this.columnAnswer.MaxLength = 512;
+                this.columnQID.AutoIncrement = true;
+                this.columnQID.AutoIncrementSeed = -1;
+                this.columnQID.AutoIncrementStep = -1;
+                this.columnQID.AllowDBNull = false;
+                this.columnQID.ReadOnly = true;
+                this.columnQID.Unique = true;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -582,17 +582,6 @@ namespace ExamTeach {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int TKID {
-                get {
-                    return ((int)(this[this.tableE_TKQuestions.TKIDColumn]));
-                }
-                set {
-                    this[this.tableE_TKQuestions.TKIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string Questions {
                 get {
                     return ((string)(this[this.tableE_TKQuestions.QuestionsColumn]));
@@ -610,6 +599,17 @@ namespace ExamTeach {
                 }
                 set {
                     this[this.tableE_TKQuestions.AnswerColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int QID {
+                get {
+                    return ((int)(this[this.tableE_TKQuestions.QIDColumn]));
+                }
+                set {
+                    this[this.tableE_TKQuestions.QIDColumn] = value;
                 }
             }
         }
@@ -773,37 +773,39 @@ namespace ExamTeach.ExamSystemDataSet1TableAdapters {
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
             tableMapping.DataSetTable = "E_TKQuestions";
-            tableMapping.ColumnMappings.Add("TKID", "TKID");
             tableMapping.ColumnMappings.Add("Questions", "Questions");
             tableMapping.ColumnMappings.Add("Answer", "Answer");
+            tableMapping.ColumnMappings.Add("QID", "QID");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[E_TKQuestions] WHERE (([TKID] = @Original_TKID) AND ([Question" +
-                "s] = @Original_Questions) AND ([Answer] = @Original_Answer))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [E_TKQuestions] WHERE (([QID] = @Original_QID) AND ([Questions] = @Or" +
+                "iginal_Questions) AND ([Answer] = @Original_Answer))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_TKID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TKID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_QID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "QID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Questions", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Questions", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Answer", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Answer", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[E_TKQuestions] ([Questions], [Answer]) VALUES (@Questions, @An" +
-                "swer);\r\nSELECT TKID, Questions, Answer FROM E_TKQuestions WHERE (TKID = SCOPE_ID" +
-                "ENTITY())";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [E_TKQuestions] ([Questions], [Answer]) VALUES (@Questions, @Answer);" +
+                "\r\nSELECT QID, Questions, Answer FROM E_TKQuestions WHERE (QID = SCOPE_IDENTITY()" +
+                ")";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Questions", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Questions", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Answer", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Answer", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[E_TKQuestions] SET [Questions] = @Questions, [Answer] = @Answer WHERE (([TKID] = @Original_TKID) AND ([Questions] = @Original_Questions) AND ([Answer] = @Original_Answer));
-SELECT TKID, Questions, Answer FROM E_TKQuestions WHERE (TKID = @TKID)";
+            this._adapter.UpdateCommand.CommandText = "UPDATE [E_TKQuestions] SET [Questions] = @Questions, [Answer] = @Answer WHERE (([" +
+                "QID] = @Original_QID) AND ([Questions] = @Original_Questions) AND ([Answer] = @O" +
+                "riginal_Answer));\r\nSELECT QID, Questions, Answer FROM E_TKQuestions WHERE (QID =" +
+                " @QID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Questions", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Questions", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Answer", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Answer", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_TKID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TKID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_QID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "QID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Questions", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Questions", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Answer", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Answer", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TKID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "TKID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@QID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "QID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -819,7 +821,7 @@ SELECT TKID, Questions, Answer FROM E_TKQuestions WHERE (TKID = @TKID)";
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT TKID, Questions, Answer FROM dbo.E_TKQuestions";
+            this._commandCollection[0].CommandText = "SELECT QID, Questions, Answer FROM E_TKQuestions";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -880,8 +882,8 @@ SELECT TKID, Questions, Answer FROM E_TKQuestions WHERE (TKID = @TKID)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_TKID, string Original_Questions, string Original_Answer) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_TKID));
+        public virtual int Delete(int Original_QID, string Original_Questions, string Original_Answer) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_QID));
             if ((Original_Questions == null)) {
                 throw new global::System.ArgumentNullException("Original_Questions");
             }
@@ -947,7 +949,7 @@ SELECT TKID, Questions, Answer FROM E_TKQuestions WHERE (TKID = @TKID)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Questions, string Answer, int Original_TKID, string Original_Questions, string Original_Answer, int TKID) {
+        public virtual int Update(string Questions, string Answer, int Original_QID, string Original_Questions, string Original_Answer, int QID) {
             if ((Questions == null)) {
                 throw new global::System.ArgumentNullException("Questions");
             }
@@ -960,7 +962,7 @@ SELECT TKID, Questions, Answer FROM E_TKQuestions WHERE (TKID = @TKID)";
             else {
                 this.Adapter.UpdateCommand.Parameters[1].Value = ((string)(Answer));
             }
-            this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(Original_TKID));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(Original_QID));
             if ((Original_Questions == null)) {
                 throw new global::System.ArgumentNullException("Original_Questions");
             }
@@ -973,7 +975,7 @@ SELECT TKID, Questions, Answer FROM E_TKQuestions WHERE (TKID = @TKID)";
             else {
                 this.Adapter.UpdateCommand.Parameters[4].Value = ((string)(Original_Answer));
             }
-            this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(TKID));
+            this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(QID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -994,8 +996,8 @@ SELECT TKID, Questions, Answer FROM E_TKQuestions WHERE (TKID = @TKID)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Questions, string Answer, int Original_TKID, string Original_Questions, string Original_Answer) {
-            return this.Update(Questions, Answer, Original_TKID, Original_Questions, Original_Answer, Original_TKID);
+        public virtual int Update(string Questions, string Answer, int Original_QID, string Original_Questions, string Original_Answer) {
+            return this.Update(Questions, Answer, Original_QID, Original_Questions, Original_Answer, Original_QID);
         }
     }
     

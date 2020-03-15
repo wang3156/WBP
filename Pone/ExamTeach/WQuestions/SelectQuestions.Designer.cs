@@ -266,6 +266,7 @@
             this.Controls.Add(this.Btn_Add);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "SelectQuestions";
             this.Text = "选择题";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelectQuestions_FormClosing);

@@ -55,6 +55,19 @@ namespace ExamTeach
             tk.Show();
 
         }
+
+        private void MZJ_Click(object sender, EventArgs e)
+        {
+            MZJ.Enabled = false;
+            ZPaperM zm = new ZPaperM();
+            zm.MdiParent = this;
+            zm.Show();
+        }
+
+        public void DisabledMenu_MZJ()
+        {
+            MZJ.Enabled = true;
+        }
     }
 
 

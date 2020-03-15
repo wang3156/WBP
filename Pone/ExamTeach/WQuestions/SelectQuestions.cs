@@ -64,7 +64,7 @@ namespace ExamTeach.WQuestions
                 MessageBox.Show(error);
             }
             tb.Dispose();
-          
+
         }
 
         void BindList()
@@ -95,7 +95,7 @@ namespace ExamTeach.WQuestions
 
             List<string> ans = new List<string>();
 
-            for (int i = 0,j=0 ; i < 5; i++)
+            for (int i = 0, j = 0; i < 5; i++)
             {
                 string o = ((char)(i + 65)).ToString();
                 string content = P_Answer.Controls.Find(tx + o, false).First().Text;
@@ -169,6 +169,8 @@ namespace ExamTeach.WQuestions
         {
             string chk = "CK_";
             string tx = "Txt_Anwser_";
+
+            Txt_Questions.Text = "";
 
             for (int i = 0; i < 5; i++)
             {
