@@ -84,6 +84,7 @@
             this.MSetExam.Name = "MSetExam";
             this.MSetExam.Size = new System.Drawing.Size(68, 21);
             this.MSetExam.Text = "设置考试";
+            this.MSetExam.Click += new System.EventHandler(this.MSetExam_Click);
             // 
             // Main
             // 

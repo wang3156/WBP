@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,7 +75,7 @@ namespace Business
                     le.Top = (i * le.Height + 5 * i);
                     cb.Height = 20;
                     cb.Top = (i * cb.Height + 5 * i);
-                    
+
 
                     cb.Left = 5;
                     cb.Width = 20;
@@ -123,6 +124,24 @@ namespace Business
             }
             p_Content.Controls.AddRange(cots.ToArray());
 
+        }
+
+        /// <summary>
+        /// 获取考试信息
+        /// </summary>
+        /// <returns></returns>
+        public static DataTable GetKSInfo(string examName)
+        {
+            DataSet dt = null;
+            using (SqlServerDBHelper db = new SqlServerDBHelper())
+            {
+                dt = db.GetDataSet("select [EID],[ExamName],[ExamRemark],[EStart],[EEnd],[EStatus]=(case [EStatus] when 0 then N'未开考' when 1 then '正在考试' else '考试结束' end ),[PID] From E_ExamInfo where ExamName like @e", pars: new SqlParameter[] { new SqlParameter("@e", $"%{examName}%") });
+            }
+            if (dt.Tables.Count > 0)
+            {
+                return dt.Tables[0];
+            }
+            return null;
         }
     }
 }

@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddExamF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddExamF.Designer.cs">
+      <DependentUpon>AddExamF.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExamSystemDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -71,6 +77,11 @@
     </Compile>
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PaperInfo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PaperInfo.xsd</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,6 +115,9 @@
     <Compile Include="ZuKao.Designer.cs">
       <DependentUpon>ZuKao.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AddExamF.resx">
+      <DependentUpon>AddExamF.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
@@ -158,6 +172,17 @@
       <DependentUpon>ExamSystemDataSet1.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="PaperInfo.xsc">
+      <DependentUpon>PaperInfo.xsd</DependentUpon>
+    </None>
+    <None Include="PaperInfo.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PaperInfo.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PaperInfo.xss">
+      <DependentUpon>PaperInfo.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

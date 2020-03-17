@@ -83,6 +83,9 @@ namespace Business
             return "";
         }
 
+
+
+
         /// <summary>
         ///保存填空题信息
         /// </summary>
@@ -199,6 +202,39 @@ select a.QType,b.* From [dbo].[E_CPaper] a,[dbo].[E_TKQuestions] b where PID=@p 
                 return null;
             }
         }
+        #endregion
+
+
+        #region 考试操作
+        public DataTable AddExam(string Name, string STime, string ETime, object selectedValue, string remark)
+        {
+            return db.GetDataSet(@"INSERT INTO [dbo].[E_ExamInfo]
+           ([ExamName]
+           ,[ExamRemark]
+           ,[EStart]
+           ,[EEnd]
+           ,[EStatus]
+           ,[PID])
+     VALUES
+           (@n
+           ,@r
+           ,@es
+           ,@en
+           ,0
+           ,@p)  ;  select * From E_ExamInfo where [EID]=SCOPE_IDENTITY() ", pars: new SqlParameter[] { new SqlParameter("@n", Name), new SqlParameter("@r", remark), new SqlParameter("@es", STime), new SqlParameter("@en", ETime), new SqlParameter("@p", selectedValue) }).Tables[0];
+        }
+
+        public DataTable UpdateExam(string Name, string STime, string ETime, object selectedValue, string remark, int EID)
+        {
+            return db.GetDataSet(@"UPDATE [dbo].[E_ExamInfo]
+   SET [ExamName] = @ExamName
+      ,[ExamRemark] = @ExamRemark
+      ,[EStart] = @EStart
+      ,[EEnd] = @EEnd    
+      ,[PID] = @PID
+ WHERE EID=" + EID + " ; select * From E_ExamInfo where [EID]=" + EID, pars: new SqlParameter[] { new SqlParameter("@ExamName", Name), new SqlParameter("@ExamRemark", remark), new SqlParameter("@EStart", STime), new SqlParameter("@EEnd", ETime), new SqlParameter("@PID", selectedValue) }).Tables[0];
+        }
+
         #endregion
     }
 }
