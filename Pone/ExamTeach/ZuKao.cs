@@ -80,6 +80,33 @@ namespace ExamTeach
             LoadKSInfo();
         }
 
+        /// <summary>
+        /// 批量设置试卷
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button4_Click(object sender, EventArgs e)
+        {
+            List<DataRowView> li_Rows = new List<DataRowView>();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (Convert.ToString(row.Cells["CheckRow"].Value) == "1")
+                {
+                    if (row.Cells["EStatus"].Value.ToString() != "未开考")
+                    {
+                        MessageBox.Show("选择中有考试正在进行或已结束无法进行此操作!");
+                        return;
+                    }
+                    li_Rows.Add(row.DataBoundItem as DataRowView);
+                }
+            }
 
+            SetPaperByExam se = new SetPaperByExam(li_Rows.Select(c => Convert.ToInt32(c["EID"])), this);
+            se.ShowDialog();
+
+
+
+
+        }
     }
 }

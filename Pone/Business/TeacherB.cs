@@ -16,11 +16,13 @@ namespace Business
 
         SqlServerDBHelper db = new SqlServerDBHelper();
 
-        public void BeginTransaction() {
+        public void BeginTransaction()
+        {
             db.BeginTransaction();
         }
 
-        public void Commit() {
+        public void Commit()
+        {
             db.Commit();
         }
         public void Rollback()
@@ -128,10 +130,7 @@ namespace Business
             return "";
         }
 
-        public void UpdateKSList(DataTable dt)
-        {
-            throw new NotImplementedException();
-        }
+
         #endregion
 
 
@@ -232,7 +231,7 @@ select a.QType,b.* From [dbo].[E_CPaper] a,[dbo].[E_TKQuestions] b where PID=@p 
         /// <param name="ETime"></param>
         /// <param name="selectedValue">试卷信息</param>
         /// <param name="remark">说明 </param>
- 
+
         /// <returns></returns>
         public DataTable AddExam(string Name, string STime, string ETime, object selectedValue, string remark)
         {
@@ -263,6 +262,51 @@ select a.QType,b.* From [dbo].[E_CPaper] a,[dbo].[E_TKQuestions] b where PID=@p 
  WHERE EID=" + EID + " ; select * From E_ExamInfo where [EID]=" + EID, pars: new SqlParameter[] { new SqlParameter("@ExamName", Name), new SqlParameter("@ExamRemark", remark), new SqlParameter("@EStart", STime), new SqlParameter("@EEnd", ETime), new SqlParameter("@PID", selectedValue) }).Tables[0];
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dt">考生信息</param>
+        /// <param name="EID">考试号</param>
+        public void UpdateKSList(DataTable dt, int EID)
+        {
+            dt.Columns.Add(new DataColumn("EID", typeof(int)) { DefaultValue = EID });
+            /*
+             Create Table E_StudentKs(
+STID int identity(1,1) primary key,
+EID int not null,
+ZKZH nvarchar(32) not null,
+UName nvarchar(16) not null,
+XH nvarchar(32) not null
+)
+             */
+            dt.Columns["学号"].ColumnName = "XH";
+            dt.Columns["准考证号"].ColumnName = "ZKZH";
+            dt.Columns["姓名"].ColumnName = "UName";
+            db.ExecuteNonQuery("Delete E_StudentKs where EID=" + EID);
+
+            db.BulkCopyToDB(dt, "E_StudentKs");
+        }
+
+
+        /// <summary>
+        /// 设置一批考试的试卷
+        /// </summary>
+        /// <param name="eIDs">一批考试号</param>
+        /// <param name="r">试卷号</param>
+        public void SetPaperWithExam(IEnumerable<int> eIDs, int r)
+        {
+            db.ExecuteNonQuery($"update E_ExamInfo set PID={r} where EID in({string.Join(",", eIDs)})");
+        }
+
+        /// <summary>
+        /// 设置一批考试的状态
+        /// </summary>
+        /// <param name="eIDs">一批考试号</param>
+        /// <param name="r">状态 1 开始考试  2 结束考试</param>
+        public void SetStatusWithExam(IEnumerable<int> eIDs, int r)
+        {
+            db.ExecuteNonQuery($"update E_ExamInfo set EStatus={r} where EID in({string.Join(",", eIDs)})");
+        }
         #endregion
     }
 }

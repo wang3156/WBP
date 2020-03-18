@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,7 +54,7 @@ namespace ExamTeach
             }
             if (Convert.ToString(row["EStatus"]) != "未开考")
             {
-                rich_Remark.Enabled = button2.Enabled = Txt_ExamName.Enabled = date_Start.Enabled = date_End.Enabled = Cb_Paper.Enabled = false;
+                Txt_List.Enabled = rich_Remark.Enabled = button2.Enabled = Txt_ExamName.Enabled = date_Start.Enabled = date_End.Enabled = Cb_Paper.Enabled = false;
 
             }
 
@@ -109,7 +110,7 @@ namespace ExamTeach
                         DataTable dt = NPOIHelper.GetDataTableFromExcel(Txt_List.Text);
                         if (dt.Rows.Count > 0)
                         {
-                            tb.UpdateKSList(dt);
+                            tb.UpdateKSList(dt, Convert.ToInt32(row["EID"]));
                         }
                     }
                     tb.Commit();
@@ -139,6 +140,17 @@ namespace ExamTeach
 
             Txt_List.Text = pd.FileName;
 
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            SaveFileDialog sf = new SaveFileDialog();
+            if (sf.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "files\\Students.xlsx"), sf.FileName, true);
+            MessageBox.Show("保存成功!");
         }
     }
 }
