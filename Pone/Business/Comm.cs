@@ -135,7 +135,9 @@ namespace Business
             DataSet dt = null;
             using (SqlServerDBHelper db = new SqlServerDBHelper())
             {
-                dt = db.GetDataSet("select [EID],[ExamName],[ExamRemark],[EStart],[EEnd],[EStatus]=(case [EStatus] when 0 then N'未开考' when 1 then '正在考试' else '考试结束' end ),[PID] From E_ExamInfo where ExamName like @e", pars: new SqlParameter[] { new SqlParameter("@e", $"%{examName}%") });
+                dt = db.GetDataSet(@"select[EID],[ExamName],[ExamRemark],[EStart],[EEnd],[EStatus] = (case [EStatus] when 0 then N'未开考' when 1 then '正在考试' else '考试结束' end ),b.*
+ From E_ExamInfo a
+left join E_Paper b on b.PID = a.PID  where ExamName like @e", pars: new SqlParameter[] { new SqlParameter("@e", $"%{examName}%") });
             }
             if (dt.Tables.Count > 0)
             {

@@ -54,25 +54,25 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 17);
+            this.label1.Location = new System.Drawing.Point(12, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "考试名称";
             // 
             // Txt_ExamName
             // 
-            this.Txt_ExamName.Location = new System.Drawing.Point(80, 13);
+            this.Txt_ExamName.Location = new System.Drawing.Point(80, 12);
             this.Txt_ExamName.Name = "Txt_ExamName";
-            this.Txt_ExamName.Size = new System.Drawing.Size(451, 20);
+            this.Txt_ExamName.Size = new System.Drawing.Size(451, 21);
             this.Txt_ExamName.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 60);
+            this.label2.Location = new System.Drawing.Point(12, 55);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 13);
+            this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 2;
             this.label2.Text = "开始时间";
             // 
@@ -80,18 +80,18 @@
             // 
             this.date_Start.CustomFormat = "yyyy-MM-dd HH:mm";
             this.date_Start.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.date_Start.Location = new System.Drawing.Point(80, 53);
+            this.date_Start.Location = new System.Drawing.Point(80, 49);
             this.date_Start.Name = "date_Start";
-            this.date_Start.Size = new System.Drawing.Size(451, 20);
+            this.date_Start.Size = new System.Drawing.Size(451, 21);
             this.date_Start.TabIndex = 3;
             this.date_Start.Value = new System.DateTime(2020, 3, 16, 20, 36, 15, 0);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 102);
+            this.label3.Location = new System.Drawing.Point(12, 94);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 2;
             this.label3.Text = "结束时间";
             // 
@@ -99,9 +99,9 @@
             // 
             this.date_End.CustomFormat = "yyyy-MM-dd HH:mm";
             this.date_End.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.date_End.Location = new System.Drawing.Point(80, 95);
+            this.date_End.Location = new System.Drawing.Point(80, 88);
             this.date_End.Name = "date_End";
-            this.date_End.Size = new System.Drawing.Size(451, 20);
+            this.date_End.Size = new System.Drawing.Size(451, 21);
             this.date_End.TabIndex = 3;
             this.date_End.Value = new System.DateTime(2020, 3, 16, 20, 36, 15, 0);
             // 
@@ -109,10 +109,11 @@
             // 
             this.Cb_Paper.DataSource = this.ePaperBindingSource;
             this.Cb_Paper.DisplayMember = "PaperName";
+            this.Cb_Paper.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Cb_Paper.FormattingEnabled = true;
-            this.Cb_Paper.Location = new System.Drawing.Point(80, 141);
+            this.Cb_Paper.Location = new System.Drawing.Point(80, 130);
             this.Cb_Paper.Name = "Cb_Paper";
-            this.Cb_Paper.Size = new System.Drawing.Size(451, 21);
+            this.Cb_Paper.Size = new System.Drawing.Size(451, 20);
             this.Cb_Paper.TabIndex = 4;
             this.Cb_Paper.ValueMember = "PID";
             // 
@@ -129,9 +130,9 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 144);
+            this.label4.Location = new System.Drawing.Point(12, 133);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(55, 13);
+            this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 2;
             this.label4.Text = "设置试卷";
             // 
@@ -141,9 +142,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(461, 296);
+            this.button1.Location = new System.Drawing.Point(461, 273);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 25);
+            this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 5;
             this.button1.Text = "取消";
             this.button1.UseVisualStyleBackColor = true;
@@ -151,9 +152,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(380, 296);
+            this.button2.Location = new System.Drawing.Point(380, 273);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 25);
+            this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 5;
             this.button2.Text = "保存";
             this.button2.UseVisualStyleBackColor = true;
@@ -162,45 +163,45 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(36, 186);
+            this.label5.Location = new System.Drawing.Point(36, 172);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(31, 13);
+            this.label5.Size = new System.Drawing.Size(29, 12);
             this.label5.TabIndex = 2;
             this.label5.Text = "说明";
             // 
             // rich_Remark
             // 
             this.rich_Remark.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.rich_Remark.Location = new System.Drawing.Point(80, 183);
+            this.rich_Remark.Location = new System.Drawing.Point(80, 169);
             this.rich_Remark.Name = "rich_Remark";
-            this.rich_Remark.Size = new System.Drawing.Size(451, 54);
+            this.rich_Remark.Size = new System.Drawing.Size(451, 50);
             this.rich_Remark.TabIndex = 6;
             this.rich_Remark.Text = "";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 257);
+            this.label6.Location = new System.Drawing.Point(12, 237);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(55, 13);
+            this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 7;
             this.label6.Text = "考生信息";
             // 
             // Txt_List
             // 
-            this.Txt_List.Location = new System.Drawing.Point(80, 254);
+            this.Txt_List.Location = new System.Drawing.Point(80, 234);
             this.Txt_List.Name = "Txt_List";
             this.Txt_List.ReadOnly = true;
-            this.Txt_List.Size = new System.Drawing.Size(375, 20);
+            this.Txt_List.Size = new System.Drawing.Size(375, 21);
             this.Txt_List.TabIndex = 8;
             this.Txt_List.DoubleClick += new System.EventHandler(this.textBox1_DoubleClick);
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(476, 257);
+            this.linkLabel1.Location = new System.Drawing.Point(476, 237);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(55, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(53, 12);
             this.linkLabel1.TabIndex = 9;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "模板下载";
@@ -208,10 +209,10 @@
             // 
             // AddExamF
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(543, 331);
+            this.ClientSize = new System.Drawing.Size(543, 306);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.Txt_List);
             this.Controls.Add(this.label6);

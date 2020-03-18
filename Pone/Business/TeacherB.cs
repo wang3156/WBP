@@ -33,6 +33,8 @@ namespace Business
 
 
 
+
+
         /// <summary>
         /// 检查账号和用户名是否正确
         /// </summary>
@@ -97,6 +99,7 @@ namespace Business
             }
             return "";
         }
+
 
 
 
@@ -270,21 +273,14 @@ select a.QType,b.* From [dbo].[E_CPaper] a,[dbo].[E_TKQuestions] b where PID=@p 
         public void UpdateKSList(DataTable dt, int EID)
         {
             dt.Columns.Add(new DataColumn("EID", typeof(int)) { DefaultValue = EID });
-            /*
-             Create Table E_StudentKs(
-STID int identity(1,1) primary key,
-EID int not null,
-ZKZH nvarchar(32) not null,
-UName nvarchar(16) not null,
-XH nvarchar(32) not null
-)
-             */
+
             dt.Columns["学号"].ColumnName = "XH";
             dt.Columns["准考证号"].ColumnName = "ZKZH";
             dt.Columns["姓名"].ColumnName = "UName";
             db.ExecuteNonQuery("Delete E_StudentKs where EID=" + EID);
 
             db.BulkCopyToDB(dt, "E_StudentKs");
+
         }
 
 
@@ -307,6 +303,19 @@ XH nvarchar(32) not null
         {
             db.ExecuteNonQuery($"update E_ExamInfo set EStatus={r} where EID in({string.Join(",", eIDs)})");
         }
+
+
+        public DataTable GetKsData(int EID, string lx, string where)
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>() { { "准考证号", "ZKZH" }, { "姓名", "UName" }, { "学号", "XH" } };
+            return db.GetDataSet($"select * From [dbo].[E_StudentKs] where EID={EID}  {(string.IsNullOrWhiteSpace(where) ? "" : " and " + dic[lx] + "=@n")}", pars: new SqlParameter[] { new SqlParameter("@n", where) }).Tables[0];
+        }
+
+        public void DeleteStudent(int id)
+        {
+            db.ExecuteNonQuery("delete E_StudentKs where stid=" + id);
+        }
+
         #endregion
     }
 }

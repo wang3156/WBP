@@ -47,7 +47,7 @@ namespace ExamTeach
                 return;
             }
             DataGridViewRow vr = dataGridView1.Rows[e.RowIndex];
-            string a = Convert.ToString(vr.Cells["EStatus"]);
+            string a = Convert.ToString(vr.Cells["EStatus"].Value);
 
             switch (dataGridView1.Columns[e.ColumnIndex].Name)
             {
@@ -62,6 +62,12 @@ namespace ExamTeach
                         MessageBox.Show(a);
                         return;
                     }
+                    using (TeacherB tb = new TeacherB())
+                    {
+                        tb.SetStatusWithExam(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) }, 1);
+                    }
+                    vr.Cells["EStatus"].Value = "正在考试";
+                    MessageBox.Show("操作成功!");
                     break;
                 case "EEndExam":
                     if (a != "正在考试")
@@ -69,6 +75,16 @@ namespace ExamTeach
                         MessageBox.Show(a);
                         return;
                     }
+                    using (TeacherB tb = new TeacherB())
+                    {
+                        tb.SetStatusWithExam(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) }, 2);
+                    }
+                    vr.Cells["EStatus"].Value = "考试结束";
+                    MessageBox.Show("操作成功!");
+                    break;
+                case "E_ExamKS":
+                    E_Student es = new E_Student(Convert.ToInt32(vr.Cells["EID"].Value),vr.Cells["EStatus"].Value.ToString());
+                    es.ShowDialog();
                     break;
                 default:
                     break;
@@ -100,13 +116,77 @@ namespace ExamTeach
                     li_Rows.Add(row.DataBoundItem as DataRowView);
                 }
             }
-
+            if (li_Rows.Count == 0)
+            {
+                MessageBox.Show("没有选择需要操作的数据 !");
+                return;
+            }
             SetPaperByExam se = new SetPaperByExam(li_Rows.Select(c => Convert.ToInt32(c["EID"])), this);
             se.ShowDialog();
 
 
 
 
+        }
+        //批量开始
+        private void button2_Click(object sender, EventArgs e)
+        {
+            List<DataRowView> li_Rows = new List<DataRowView>();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (Convert.ToString(row.Cells["CheckRow"].Value) == "1")
+                {
+                    if (row.Cells["EStatus"].Value.ToString() != "未开考")
+                    {
+                        MessageBox.Show("选择中有考试正在进行或已结束无法进行此操作!");
+                        return;
+                    }
+                    li_Rows.Add(row.DataBoundItem as DataRowView);
+                }
+            }
+            if (li_Rows.Count==0)
+            {
+                MessageBox.Show("没有选择需要操作的数据 !");
+                return;
+            }
+            using (TeacherB tb = new TeacherB())
+            {
+                tb.SetStatusWithExam(li_Rows.Select(c => Convert.ToInt32(c["EID"])), 1);
+            }
+            li_Rows.ForEach(c =>
+            {
+                c["EStatus"] = "正在考试";
+            });
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            List<DataRowView> li_Rows = new List<DataRowView>();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (Convert.ToString(row.Cells["CheckRow"].Value) == "1")
+                {
+                    if (row.Cells["EStatus"].Value.ToString() != "正在考试")
+                    {
+                        MessageBox.Show("选择中有考试不在进行中无法进行此操作!");
+                        return;
+                    }
+                    li_Rows.Add(row.DataBoundItem as DataRowView);
+                }
+            }
+            if (li_Rows.Count == 0)
+            {
+                MessageBox.Show("没有选择需要操作的数据 !");
+                return;
+            }
+            using (TeacherB tb = new TeacherB())
+            {
+                tb.SetStatusWithExam(li_Rows.Select(c => Convert.ToInt32(c["EID"])), 2);
+            }
+            li_Rows.ForEach(c =>
+            {
+                c["EStatus"] = "考试结束";
+            });
         }
     }
 }
