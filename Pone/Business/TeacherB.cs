@@ -16,6 +16,19 @@ namespace Business
 
         SqlServerDBHelper db = new SqlServerDBHelper();
 
+        public void BeginTransaction() {
+            db.BeginTransaction();
+        }
+
+        public void Commit() {
+            db.Commit();
+        }
+        public void Rollback()
+        {
+            db.Rollback();
+        }
+
+
 
 
         /// <summary>
@@ -114,6 +127,11 @@ namespace Business
 
             return "";
         }
+
+        public void UpdateKSList(DataTable dt)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
 
@@ -206,6 +224,16 @@ select a.QType,b.* From [dbo].[E_CPaper] a,[dbo].[E_TKQuestions] b where PID=@p 
 
 
         #region 考试操作
+        /// <summary>
+        /// 新增一场考试
+        /// </summary>
+        /// <param name="Name">考试名称</param>
+        /// <param name="STime"></param>
+        /// <param name="ETime"></param>
+        /// <param name="selectedValue">试卷信息</param>
+        /// <param name="remark">说明 </param>
+ 
+        /// <returns></returns>
         public DataTable AddExam(string Name, string STime, string ETime, object selectedValue, string remark)
         {
             return db.GetDataSet(@"INSERT INTO [dbo].[E_ExamInfo]

@@ -1,4 +1,5 @@
 ﻿using Business;
+using CommLibrary.OfficeHelper.Excel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -91,13 +92,31 @@ namespace ExamTeach
 
             using (TeacherB tb = new TeacherB())
             {
-                if (row != null)
+                tb.BeginTransaction();
+                try
                 {
-                    row = tb.UpdateExam(Txt_ExamName.Text, date_Start.Text, date_End.Text, Cb_Paper.SelectedValue, rich_Remark.Text.Trim(), Convert.ToInt32(row["EID"])).Rows[0];
+                    if (row != null)
+                    {
+                        row = tb.UpdateExam(Txt_ExamName.Text, date_Start.Text, date_End.Text, Cb_Paper.SelectedValue, rich_Remark.Text.Trim(), Convert.ToInt32(row["EID"])).Rows[0];
+                    }
+                    else
+                    {
+                        row = tb.AddExam(Txt_ExamName.Text, date_Start.Text, date_End.Text, Cb_Paper.SelectedValue, rich_Remark.Text.Trim()).Rows[0];
+                    }
+
+                    if (Txt_List.Text != "") //有上传学生数据
+                    {
+                        DataTable dt = NPOIHelper.GetDataTableFromExcel(Txt_List.Text);
+                        if (dt.Rows.Count > 0)
+                        {
+                            tb.UpdateKSList(dt);
+                        }
+                    }
+                    tb.Commit();
                 }
-                else
+                catch (Exception ex)
                 {
-                    row = tb.AddExam(Txt_ExamName.Text, date_Start.Text, date_End.Text, Cb_Paper.SelectedValue, rich_Remark.Text.Trim()).Rows[0];
+                    tb.Rollback();
                 }
 
             }
@@ -107,6 +126,19 @@ namespace ExamTeach
         private void AddExamF_FormClosing(object sender, FormClosingEventArgs e)
         {
             zk.LoadKSInfo();
+        }
+
+        private void textBox1_DoubleClick(object sender, EventArgs e)
+        {
+            OpenFileDialog pd = new OpenFileDialog();
+            pd.Multiselect = false;
+            if (pd.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            Txt_List.Text = pd.FileName;
+
         }
     }
 }

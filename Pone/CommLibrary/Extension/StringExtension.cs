@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace CommLibrary.Extension
 {
+    /// <summary>
+    /// 字符串扩展方法
+    /// </summary>
     public static class StringExtension
     {
         /// <summary>
         /// 检查string的集合中是否包含指定字符v 
-        ///    >↑<  三个符号合为一个则为保留符.
+        /// <!--三个符号合为一个则为保留符. >↑<-->
         /// </summary>
         /// <param name="list">集合本身</param>
         /// <param name="v">需要检查的值</param>

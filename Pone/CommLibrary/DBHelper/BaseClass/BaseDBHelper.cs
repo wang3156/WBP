@@ -113,7 +113,9 @@ namespace CommLibrary.DBHelper.BaseClass
             }
             catch (Exception ex)
             {
+                string s = ex.Message;
             }
+
             finally
             {
                 conn?.Dispose();
@@ -199,6 +201,7 @@ namespace CommLibrary.DBHelper.BaseClass
             }
             catch (Exception ex)
             {
+                string s = ex.Message;
                 return default(N);
             }
 

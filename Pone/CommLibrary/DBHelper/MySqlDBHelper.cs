@@ -13,6 +13,9 @@ using CommLibrary.DBHelper.BaseClass;
 
 namespace CommLibrary.DBHelper
 {
+    /// <summary>
+    /// mysql操作帮助类
+    /// </summary>
     public class MySqlDBHelper : BaseDBHelper, IDisposable
     {
         /// <summary>

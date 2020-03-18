@@ -18,10 +18,7 @@ namespace CommLibrary.OfficeHelper.Excel
     /// </summary>
     public class NPOIHelper
     {
-        /// <summary>
-        /// Excel生成或获取数据的SheetName,默认为 sheet1
-        /// </summary>
-        public string SheetName = "sheet1";
+
         //public string FileName { get; set; }
 
         //public List<T> DataList { get; set; }
@@ -78,8 +75,9 @@ namespace CommLibrary.OfficeHelper.Excel
         /// <param name="dic">DataTable(key)和Excel(value)中列名对照 </param>
         ///<param name="FilePath">生成的文件保存路径</param>
         ///<param name="Is2007">是否生成2007或以上的Excel 如果FilePath有值并带文件名则以该文件类型为准</param>
+        ///<param name="SheetName">需要生成的Sheet名.默认为 sheet1</param>
         ///<returns>如果有传文件路径则保存到路径返回文件名,否则返回生成的文件字节数组</returns>
-        private object ExportxlsxFromDataTable(DataTable dt, Dictionary<string, string> dic = null, string FilePath = "", bool Is2007 = true)
+        public static object ExportxlsxFromDataTable(DataTable dt, Dictionary<string, string> dic = null, string FilePath = "", bool Is2007 = true, string SheetName = "sheet1")
         {
             if (dt.Rows.Count == 0)
             {
@@ -192,126 +190,137 @@ namespace CommLibrary.OfficeHelper.Excel
 
         }
 
-        //private void Exportxls(ControllerContext context)
-        //{
-        //    if (DataList == null)
-        //    {
-        //        return;
-        //    }
-        //    HSSFWorkbook workbook = new HSSFWorkbook();
-        //    ISheet sheet = workbook.CreateSheet(SheetName);
-        //    if (DataList != null)
-        //    {
-        //        context.HttpContext.Response.Clear();
-
-        //        // 编码
-        //        context.HttpContext.Response.ContentEncoding = Encoding.UTF8;
-
-        //        // 设置网页ContentType
-        //        context.HttpContext.Response.ContentType =
-        //            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
-        //        // 导出名字
-        //        var browser = context.HttpContext.Request.Browser.Browser;
-        //        var exportFileName = browser.Equals("Firefox", StringComparison.OrdinalIgnoreCase)
-        //            ? FileName
-        //            : Uri.EscapeDataString(FileName);
-
-        //        context.HttpContext.Response.AddHeader(
-        //            "Content-Disposition",
-        //            string.Format("attachment;filename={0}", exportFileName));
-
-        //        //第一行
-        //        IRow row = sheet.CreateRow(0);
-        //        int i = 0;
-        //        //数据行
-        //        int j = 1;//rows
-        //        int cells = 0; //cells
-
-        //        IEnumerable<PropertyInfo> modelName = DataList[0].GetType().GetProperties().Where(a => a.Name != "Id");
-
-        //        if (Nofileds.Count > 0)
-        //        {
-        //            if (TitleRow == null)
-        //            {
-        //                foreach (PropertyInfo propertyInfo in modelName)
-        //                {
-        //                    if (!Nofileds.Contains(propertyInfo.Name))
-        //                    {
-        //                        row.CreateCell(i).SetCellValue(propertyInfo.Name.Replace("ForShow", ""));
-        //                        i++;
-        //                    }
-        //                }
-        //            }
-        //            else
-        //            {
-        //                foreach (string title in TitleRow)
-        //                {
-        //                    row.CreateCell(i).SetCellValue(title);
-        //                    i++;
-        //                }
-        //            }
+        /// <summary>
+        /// 将Excel的内容读出成DataTable 
+        /// </summary>
+        /// <param name="fileName">文件路径</param>
+        /// <param name="sheetName">读取的sheetName,默认为sheet1</param>       
+        /// <returns></returns>
+        public static DataTable GetDataTableFromExcel(string fileName, string sheetName = "sheet1")
+        {
+            IWorkbook wr;
+            // IFormulaEvaluator ife;
+            FileStream fi = new FileStream(fileName, FileMode.Open);
+            if (fileName.EndsWith(".xlsx"))
+            {
+                wr = new XSSFWorkbook(fi);
+                // ife = new XSSFFormulaEvaluator(wr);
+            }
+            else
+            {
+                wr = new HSSFWorkbook(fi);
+                //  ife = new HSSFFormulaEvaluator(wr);
+            }
 
 
-        //            foreach (var item in DataList)
-        //            {
-        //                cells = 0;
-        //                IRow rows = sheet.CreateRow(j);
-        //                foreach (PropertyInfo Info in modelName)
-        //                {
-        //                    if (!Nofileds.Contains(Info.Name))
-        //                    {
-        //                        rows.CreateCell(cells).SetCellValue(Info.GetValue(item) == null ? "" : Info.GetValue(item).ToString());
-        //                        cells++;
-        //                    }
+            DataTable dt = new DataTable();
 
-        //                }
-        //                j++;
-        //            }
-
-        //        }
-        //        else
-        //        {
-        //            if (TitleRow == null)
-        //            {
-        //                foreach (PropertyInfo propertyInfo in modelName)
-        //                {
-        //                    row.CreateCell(i).SetCellValue(propertyInfo.Name);
-        //                    i++;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                foreach (string title in TitleRow)
-        //                {
-        //                    row.CreateCell(i).SetCellValue(title);
-        //                    i++;
-        //                }
-        //            }
+            // int rowIndex = 0, cellIndex = 0;
+            ISheet sh = wr.GetSheet(sheetName);
 
 
-        //            foreach (var item in DataList)
-        //            {
-        //                cells = 0;
-        //                IRow rows = sheet.CreateRow(j);
-        //                foreach (PropertyInfo Info in modelName)
-        //                {
+            IRow row = sh.GetRow(0);
+            ICell cell;
+            DataRow nrow;
 
-        //                    rows.CreateCell(cells).SetCellValue(Info.GetValue(item) == null ? "" : Info.GetValue(item).ToString());
-        //                    cells++;
-        //                }
-        //                j++;
-        //            }
-        //        }
+            int lastCellNum = row.LastCellNum;
+            for (int i = 0; i < lastCellNum; i++)
+            {
+                dt.Columns.Add(row.Cells[i].StringCellValue);
+            }
 
-        //        using (MemoryStream ms = new MemoryStream())
-        //        {
-        //            workbook.Write(ms);
-        //            ms.WriteTo(context.HttpContext.Response.OutputStream);
-        //            ms.Close();
-        //        }
-        //    }
-        //}
+
+            try
+            {
+                var igrow = sh.GetRowEnumerator();
+                igrow.MoveNext();//跳过首行
+                while (igrow.MoveNext())
+                {
+                    row = igrow.Current as IRow;
+                    nrow = dt.NewRow();
+                    dt.Rows.Add(nrow);
+                    for (int i = 0; i < lastCellNum; i++)
+                    {
+                        cell = row.Cells[i];
+
+                        switch (cell.CellType)
+                        {
+                            case CellType.Blank:
+                                nrow[i] = DBNull.Value;
+                                break;
+                            case CellType.Boolean:
+                                nrow[i] = cell.BooleanCellValue;
+                                break;
+                            case CellType.Numeric:
+                                //short format = cell.CellStyle.DataFormat;
+                                //if (format == 14 || format == 31 || format == 57 || format == 58)
+                                if (DateUtil.IsCellDateFormatted(cell))
+                                    nrow[i] = cell.DateCellValue;
+                                else
+                                    nrow[i] = cell.NumericCellValue;
+                                break;
+
+                            case CellType.String:
+                                nrow[i] = cell.StringCellValue;
+                                break;
+                            case CellType.Error:
+                                nrow[i] = cell.ErrorCellValue;
+                                break;
+                            case CellType.Formula:
+                                //计算公式的内容   
+                                //ife.EvaluateInCell(cell)
+                                nrow[i] = GetFormulaCellValue(cell);
+                                break;
+                            default:
+                                nrow[i] = "=" + cell.CellFormula;
+                                break;
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string s = ex.Message;
+            }
+            finally
+            {
+                wr.Close();
+                fi.Dispose();
+            }
+
+            return dt;
+        }
+        /// <summary>
+        /// 获取公式列的值 
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <returns></returns>
+        static object GetFormulaCellValue(ICell cell)
+        {
+
+            switch (cell.CachedFormulaResultType)
+            {
+
+                case CellType.Numeric:
+                    if (DateUtil.IsCellDateFormatted(cell))
+                        return cell.DateCellValue;
+                    else
+                        return cell.NumericCellValue;
+                case CellType.String:
+                    return cell.StringCellValue;
+                case CellType.Boolean:
+                    return cell.BooleanCellValue;
+                case CellType.Error:
+                    return cell.ErrorCellValue;
+                case CellType.Unknown:
+                case CellType.Blank:
+                    return DBNull.Value;
+                default:
+                    return DBNull.Value;
+            }
+        }
+
     }
 
 
