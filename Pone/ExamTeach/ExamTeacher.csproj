@@ -67,6 +67,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ExamSystemDataSet1.xsd</DependentUpon>
     </Compile>
+    <Compile Include="E_Student.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="E_Student.Designer.cs">
+      <DependentUpon>E_Student.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +131,9 @@
     <EmbeddedResource Include="AddExamF.resx">
       <DependentUpon>AddExamF.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="E_Student.resx">
+      <DependentUpon>E_Student.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
@@ -181,7 +190,9 @@
     <None Include="ExamSystemDataSet1.xss">
       <DependentUpon>ExamSystemDataSet1.xsd</DependentUpon>
     </None>
-    <None Include="files\Students.xlsx" />
+    <None Include="files\Students.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="PaperInfo.xsc">
       <DependentUpon>PaperInfo.xsd</DependentUpon>

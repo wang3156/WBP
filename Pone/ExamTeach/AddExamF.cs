@@ -132,6 +132,7 @@ namespace ExamTeach
         private void textBox1_DoubleClick(object sender, EventArgs e)
         {
             OpenFileDialog pd = new OpenFileDialog();
+            pd.Filter = "2007+excel (*.xlsx)|*.xlsx| 2003excel (*.xls)|*.xls";
             pd.Multiselect = false;
             if (pd.ShowDialog() != DialogResult.OK)
             {
@@ -145,6 +146,7 @@ namespace ExamTeach
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             SaveFileDialog sf = new SaveFileDialog();
+            sf.Filter = "2007+excel (*.xlsx)|*.xlsx| 2003excel (*.xls)|*.xls";
             if (sf.ShowDialog() != DialogResult.OK)
             {
                 return;

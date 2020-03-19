@@ -47,6 +47,8 @@
             this.EStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PaperName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.E_ExamKS = new System.Windows.Forms.DataGridViewLinkColumn();
             this.E_Paper = new System.Windows.Forms.DataGridViewLinkColumn();
             this.EStartExam = new System.Windows.Forms.DataGridViewLinkColumn();
             this.EEndExam = new System.Windows.Forms.DataGridViewLinkColumn();
@@ -63,7 +65,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1219, 659);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1407, 612);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // panel1
@@ -77,14 +79,14 @@
             this.panel1.Controls.Add(this.textBox1);
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1213, 48);
+            this.panel1.Size = new System.Drawing.Size(1404, 44);
             this.panel1.TabIndex = 0;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(828, 15);
+            this.button5.Location = new System.Drawing.Point(1009, 13);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(73, 23);
+            this.button5.Size = new System.Drawing.Size(73, 21);
             this.button5.TabIndex = 4;
             this.button5.Text = "添加";
             this.button5.UseVisualStyleBackColor = true;
@@ -92,18 +94,19 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(1129, 14);
+            this.button3.Location = new System.Drawing.Point(1310, 12);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(75, 21);
             this.button3.TabIndex = 3;
             this.button3.Text = "结束选择";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(928, 15);
+            this.button4.Location = new System.Drawing.Point(1109, 13);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(93, 23);
+            this.button4.Size = new System.Drawing.Size(93, 21);
             this.button4.TabIndex = 3;
             this.button4.Text = "批量设置试卷";
             this.button4.UseVisualStyleBackColor = true;
@@ -111,18 +114,19 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1038, 14);
+            this.button2.Location = new System.Drawing.Point(1219, 12);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(75, 21);
             this.button2.TabIndex = 3;
             this.button2.Text = "开始选择";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(407, 14);
+            this.button1.Location = new System.Drawing.Point(407, 13);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(75, 21);
             this.button1.TabIndex = 2;
             this.button1.Text = "查询";
             this.button1.UseVisualStyleBackColor = true;
@@ -131,25 +135,25 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 17);
+            this.label1.Location = new System.Drawing.Point(10, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 1;
             this.label1.Text = "考试名称";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(69, 14);
+            this.textBox1.Location = new System.Drawing.Point(69, 13);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(319, 20);
+            this.textBox1.Size = new System.Drawing.Size(319, 21);
             this.textBox1.TabIndex = 0;
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.dataGridView1);
-            this.panel2.Location = new System.Drawing.Point(3, 57);
+            this.panel2.Location = new System.Drawing.Point(3, 53);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1216, 599);
+            this.panel2.Size = new System.Drawing.Size(1404, 559);
             this.panel2.TabIndex = 1;
             // 
             // dataGridView1
@@ -175,14 +179,18 @@
             this.EStart,
             this.EEnd,
             this.EStatus,
+            this.PaperName,
+            this.E_ExamKS,
             this.E_Paper,
             this.EStartExam,
             this.EEndExam});
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
+            this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(1213, 593);
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(1401, 553);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
@@ -257,6 +265,29 @@
             this.EStatus.Name = "EStatus";
             this.EStatus.ReadOnly = true;
             // 
+            // PaperName
+            // 
+            this.PaperName.DataPropertyName = "PaperName";
+            this.PaperName.FillWeight = 115F;
+            this.PaperName.Frozen = true;
+            this.PaperName.HeaderText = "试卷名";
+            this.PaperName.Name = "PaperName";
+            this.PaperName.ReadOnly = true;
+            this.PaperName.Width = 115;
+            // 
+            // E_ExamKS
+            // 
+            this.E_ExamKS.FillWeight = 80F;
+            this.E_ExamKS.Frozen = true;
+            this.E_ExamKS.HeaderText = "考生信息";
+            this.E_ExamKS.Name = "E_ExamKS";
+            this.E_ExamKS.ReadOnly = true;
+            this.E_ExamKS.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.E_ExamKS.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.E_ExamKS.Text = "信息";
+            this.E_ExamKS.UseColumnTextForLinkValue = true;
+            this.E_ExamKS.Width = 80;
+            // 
             // E_Paper
             // 
             this.E_Paper.FillWeight = 52F;
@@ -291,9 +322,9 @@
             // 
             // ZuKao
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1219, 659);
+            this.ClientSize = new System.Drawing.Size(1407, 612);
             this.Controls.Add(this.flowLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -331,6 +362,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn EStart;
         private System.Windows.Forms.DataGridViewTextBoxColumn EEnd;
         private System.Windows.Forms.DataGridViewTextBoxColumn EStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PaperName;
+        private System.Windows.Forms.DataGridViewLinkColumn E_ExamKS;
         private System.Windows.Forms.DataGridViewLinkColumn E_Paper;
         private System.Windows.Forms.DataGridViewLinkColumn EStartExam;
         private System.Windows.Forms.DataGridViewLinkColumn EEndExam;
