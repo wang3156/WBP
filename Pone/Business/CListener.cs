@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Business
@@ -15,6 +16,12 @@ namespace Business
 
         Socket Client_Socket;
         IPEndPoint ipe;
+        /// <summary>
+        /// 收到服务器消息后的处理方法
+        /// </summary>
+        public Action<ConnectCheck> ServerP;
+
+
         public CListener()
         {
             /*
@@ -23,21 +30,27 @@ namespace Business
                     ServerPort int
                )
             */
+
+        }
+
+        public void BeginConnction(string zkzh)
+        {
+
             DataTable dt = Comm.GetServerSocketInfo();
-            if (dt.Rows.Count == 0)
+
+            while (dt.Rows.Count == 0)
             {
-                throw new Exception("服务端未开启!");
+                Thread.Sleep(6 * 1000);
+                dt = Comm.GetServerSocketInfo();
             }
 
             ipe = new IPEndPoint(IPAddress.Parse(dt.Rows[0]["ServerIP"].ToString()), Convert.ToInt32(dt.Rows[0]["ServerPort"]));
-        }
 
-        public void BeginConnction()
-        {
             Client_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
                 Client_Socket.Connect(ipe);
+                Client_Socket.Send(Encoding.UTF8.GetBytes(zkzh));
             }
             catch (Exception)
             {
@@ -59,28 +72,33 @@ namespace Business
             //    cc = JsonConvert.DeserializeObject<ConnectCheck>(Encoding.ASCII.GetString(re, 0, recv));
             //    DoByServerCode(cc);
             //}
-            byte[] re = new byte[1024];
-            int recv = 0;
-            ConnectCheck cc;
-
-            while (true)
+            Thread t = new Thread(() =>
             {
-                re = new byte[1024];
-                recv = Client_Socket.Receive(re);
-                string ss = Encoding.UTF8.GetString(re, 0, recv);
-                if (!ss.EndsWith(Comm.EndMark))
+                byte[] re = new byte[1024];
+                int recv = 0;
+                ConnectCheck cc;
+
+                while (true)
                 {
-                    //包不完整
-                    continue;
+                    re = new byte[1024];
+                    recv = Client_Socket.Receive(re);
+                    string ss = Encoding.UTF8.GetString(re, 0, recv);
+                    if (!ss.EndsWith(Comm.EndMark))
+                    {
+                        //包不完整
+                        continue;
+                    }
+                    ss.Split(new string[] { Comm.EndMark }, StringSplitOptions.RemoveEmptyEntries).ToList().ForEach(c =>
+                    {
+                        cc = JsonConvert.DeserializeObject<ConnectCheck>(c);
+                        DoByServerCode(cc);
+                    });
                 }
-                ss.Split(new string[] { Comm.EndMark }, StringSplitOptions.RemoveEmptyEntries).ToList().ForEach(c =>
-                {
-                    cc = JsonConvert.DeserializeObject<ConnectCheck>(c);
-                    DoByServerCode(cc);
-                });
 
+            });
 
-            }
+            t.IsBackground = true;
+            t.Start();
 
 
         }
@@ -95,12 +113,28 @@ namespace Business
                 case ResponseCode.ClientConnected:
                     break;
                 case ResponseCode.ServerColseConnected:
-                    Client_Socket.Shutdown(SocketShutdown.Both);
-                    Client_Socket.Close();
+                    try
+                    {
+                        Client_Socket.Shutdown(SocketShutdown.Both);
+                    }
+                    catch
+                    {
+
+                    }
+                    finally
+                    {
+                        Client_Socket.Close();
+                    }
+                    System.Windows.Forms.MessageBox.Show("服务器已断开!");
                     break;
                 case ResponseCode.ClientColseConnected:
                     break;
+
                 default:
+                    if (ServerP != null)
+                    {
+                        ServerP(cc);
+                    }
                     break;
             }
         }

@@ -30,7 +30,7 @@ namespace Business
             db.Rollback();
         }
 
-      
+
 
 
 
@@ -132,6 +132,11 @@ namespace Business
             }
 
             return "";
+        }
+
+        public void EmptyServerInfo()
+        {
+            db.ExecuteNonQuery("truncate table E_ServerInfo");
         }
 
 

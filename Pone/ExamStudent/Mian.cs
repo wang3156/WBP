@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Business;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,6 +17,50 @@ namespace ExamStudent
         public Mian()
         {
             InitializeComponent();
+            Control.CheckForIllegalCrossThreadCalls = false;
+        }
+        CListener cl;
+        private void Mian_Load(object sender, EventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem((a) =>
+            {
+                ShowStatus();
+                cl = new CListener();
+                cl.ServerP = c =>
+                {
+                    switch (c.RCode)
+                    {
+                        case ResponseCode.StartExam:
+                            MessageBox.Show("====考试开始!");
+                            break;
+                        case ResponseCode.EndExam:
+                            MessageBox.Show("====考试结束!");
+                            break;
+                        case ResponseCode.DisabledExam:
+                            MessageBox.Show("禁止考试!");
+                            break;
+                        default:
+                            break;
+                    }
+
+                };
+                cl.BeginConnction("zkz0004");
+                ShowStatus(false);
+            });
+        }
+
+        void ShowStatus(bool lj = true)
+        {
+            if (lj)
+            {
+                this.Text = "学生端(连接中.....)";
+
+            }
+            else
+            {
+                this.Text = "学生端(已连接服务器)";
+            }
+
         }
     }
 }

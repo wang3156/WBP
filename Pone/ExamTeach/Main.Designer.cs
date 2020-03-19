@@ -49,7 +49,7 @@
             this.监听服务ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1513, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(1344, 25);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -102,27 +102,28 @@
             // M_StartListener
             // 
             this.M_StartListener.Name = "M_StartListener";
-            this.M_StartListener.Size = new System.Drawing.Size(152, 22);
+            this.M_StartListener.Size = new System.Drawing.Size(124, 22);
             this.M_StartListener.Text = "开启监听";
             this.M_StartListener.Click += new System.EventHandler(this.M_StartListener_Click);
             // 
             // M_EndListener
             // 
             this.M_EndListener.Name = "M_EndListener";
-            this.M_EndListener.Size = new System.Drawing.Size(152, 22);
+            this.M_EndListener.Size = new System.Drawing.Size(124, 22);
             this.M_EndListener.Text = "停止监听";
             this.M_EndListener.Click += new System.EventHandler(this.M_EndListener_Click);
             // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1344, 861);
+            this.ClientSize = new System.Drawing.Size(1344, 795);
             this.Controls.Add(this.menuStrip1);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.Text = "教师端";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

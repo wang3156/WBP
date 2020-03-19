@@ -10,13 +10,14 @@ using System.Threading;
 using Newtonsoft.Json;
 using Business;
 using System.Windows.Forms;
+using System.Data;
 
 namespace Business
 {
     public class TListener : IDisposable
     {
         //Dictionary<Socket, Thread> children_sockets = new Dictionary<Socket, Thread>();
-        List<Socket> children_sockets = new List<Socket>();
+        List<SocketUserInfo> children_sockets = new List<SocketUserInfo>();
         private byte[] buffer_result = new byte[1024];
         static object li_Lock = new object();
 
@@ -31,10 +32,16 @@ namespace Business
         /// 监听的线程
         /// </summary>
         Thread t_list;
+        bool t_listExit = false;
         /// <summary>
         /// 检查在线的线程
         /// </summary>
         Thread t_check;
+        bool t_checkExit = false;
+
+
+        public Action<Socket> AddList;
+        public Action<Socket> RemoveList;
 
         public TListener()
         {
@@ -47,7 +54,7 @@ namespace Business
                  ("端口号应该是一个大于5000的数字!");
 
             }
-            ipe = new IPEndPoint(IPAddress.Any, p);//本机预使用的IP和端
+            ipe = new IPEndPoint(IPAddress.Parse(Comm.GetLocalIP()), p);//本机预使用的IP和端
 
 
         }
@@ -56,9 +63,12 @@ namespace Business
         /// </summary>
         public void BeginListen()
         {
+            Comm.UpdateServerInfo(server_ip, server_port);
 
             Server_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Server_Socket.Bind(ipe);
+
+
 
             //设置监听队列, 最大10个
             Server_Socket.Listen(10);
@@ -80,19 +90,60 @@ namespace Business
         {
             while (true)
             {
+                if (t_listExit)
+                {
+                    return;
+                }
 
                 Socket clientSocket = Server_Socket.Accept();
                 lock (li_Lock)
                 {
-                    if (!children_sockets.Contains(clientSocket))
+                    buffer_result = new byte[1024];
+                    int len = clientSocket.Receive(buffer_result);
+                    string zkzh = Encoding.UTF8.GetString(buffer_result, 0, len);
+                    DataTable dt = Comm.GetUserInfoByZKZH(zkzh);
+                    if (dt.Rows.Count == 0)
                     {
-                        //Thread receiveThread = new Thread(ReceiveMessage);
-                        //receiveThread.Start(clientSocket);
-                        SendTOClient(new ConnectCheck() { RCode = ResponseCode.ClientConnected }, clientSocket);
-                        AddClientToList(clientSocket);
+                        SendTOClient(new ConnectCheck() { RCode = ResponseCode.ServerColseConnected }, clientSocket);
                     }
+                    else
+                    {
+                        DataRow row = dt.Rows[0];
+                        AddClientToList(new SocketUserInfo() { socket = clientSocket, ZKZH = Convert.ToString(row["ZKZH"]), XH = Convert.ToString(row["XH"]), UName = Convert.ToString(row["UName"]), EID = Convert.ToInt32(row["EID"]), STID = Convert.ToInt32(row["STID"]) });
+                        SendTOClient(new ConnectCheck() { RCode = ResponseCode.ClientConnected }, clientSocket);
+                    }
+
+
+
                 }
 
+            }
+
+        }
+        /// <summary>
+        /// 考试结束
+        /// </summary>
+        /// <param name="EID"></param>
+        public void EndExamByEID(IEnumerable<int> EID)
+        {
+            lock (li_Lock)
+            {
+                EID.ToList().ForEach(c =>
+                {
+                    SendTOClient(new ConnectCheck() { RCode = ResponseCode.EndExam }, children_sockets.Where(cc => cc.EID == c).FirstOrDefault()?.socket);
+                });
+
+            }
+        }
+
+        public void StartExamByEID(IEnumerable<int> EID)
+        {
+            lock (li_Lock)
+            {
+                EID.ToList().ForEach(c =>
+                {
+                    SendTOClient(new ConnectCheck() { RCode = ResponseCode.StartExam }, children_sockets.Where(cc => cc.EID == c).FirstOrDefault()?.socket);
+                });
             }
 
         }
@@ -106,8 +157,18 @@ namespace Business
                 {
                     children_sockets.ForEach(c =>
                     {
-                        SendTOClient(new ConnectCheck() { RCode = ResponseCode.CheckOnLine }, c);
+                        if (t_checkExit)
+                        {
+                            return;
+                        }
+
+                        SendTOClient(new ConnectCheck() { RCode = ResponseCode.CheckOnLine }, c.socket);
                     });
+
+                    if (t_checkExit)
+                    {
+                        return;
+                    }
                 }
                 Application.DoEvents();
                 Thread.Sleep(5 * 1000);
@@ -121,18 +182,30 @@ namespace Business
         /// <param name="client"></param>
         void SendTOClient(ConnectCheck msg, Socket client)
         {
+            if (client == null)
+            {
+                return;
+            }
             try
             {
-                client.Send(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg)));
+
+                client.Send(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg) + Comm.EndMark));
             }
             catch (Exception ex)
             {
-                RemoveClientToList(client);
+                RemoveClientFromList(children_sockets.Where(c => c.socket == client).FirstOrDefault());
             }
         }
 
+        public void SendTOClient(ConnectCheck msg, string ZKZH)
+        {
+            SendTOClient(msg, children_sockets.Where(c => c.ZKZH == ZKZH).FirstOrDefault()?.socket);
+
+        }
+
+
         #region 添加移除和添加队列的方法.方便在添加或移除时做其它事
-        void AddClientToList(Socket client)
+        void AddClientToList(SocketUserInfo client)
         {
             lock (li_Lock)
             {
@@ -140,8 +213,13 @@ namespace Business
             }
         }
 
-        void RemoveClientFromList(Socket client)
+        void RemoveClientFromList(SocketUserInfo client)
         {
+            if (client == null)
+            {
+                return;
+            }
+
 
             lock (li_Lock)
             {
@@ -150,13 +228,16 @@ namespace Business
 
             try
             {
-                client.Shutdown(SocketShutdown.Both);
-                client.Close();
+                client.socket.Shutdown(SocketShutdown.Both);
+
             }
-            catch (Exception)
+            catch
             {
 
-
+            }
+            finally
+            {
+                client.socket.Close();
             }
 
         }
@@ -189,27 +270,47 @@ namespace Business
 
         public void Dispose()
         {
-            lock (li_Lock)
+            bool have = false;
+            t_listExit = t_checkExit = true;
+
+            if (have = children_sockets.Count > 0)
             {
-                //通知所有用户已经终止了
-                children_sockets.ForEach(c =>
+                lock (li_Lock)
                 {
-                    SendTOClient(new ConnectCheck() { RCode = ResponseCode.ServerColseConnected }, c);
-                });
+                    //通知所有用户已经终止了
+                    children_sockets.ForEach(c =>
+                    {
+                        SendTOClient(new ConnectCheck() { RCode = ResponseCode.ServerColseConnected }, c.socket);
+                    });
 
-                int cc = children_sockets.Count - 1;
-                for (int i = cc; i > -1; i--)
-                {
-                    RemoveClientToList(children_sockets[i]);
+                    int cc = children_sockets.Count - 1;
+                    for (int i = cc; i > -1; i--)
+                    {
+                        RemoveClientFromList(children_sockets[i]);
+                    }
                 }
-            }
-            t_list.Abort();           
-            t_check.Abort();
 
-            Server_Socket.Shutdown(SocketShutdown.Both);
-            Server_Socket.Close();
+                try
+                {
+                    //这里有很大可能会出错.但如果 socket在执行中需要先关闭所以要先执行一下
+                    Server_Socket.Shutdown(SocketShutdown.Both);
+                }
+                catch
+                {
+
+                }
+                finally
+                {
+                    Server_Socket.Close();
+                }
+
+            }
+            t_list.Abort();
+            t_check.Abort();
         }
     }
+
+
 
 
 

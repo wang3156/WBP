@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +37,10 @@ namespace Business
         /// </summary>
         ClientColseConnected,
         /// <summary>
+        /// 开始考试
+        /// </summary>
+        StartExam,
+        /// <summary>
         /// 结束考试
         /// </summary>
         EndExam,
@@ -43,5 +48,19 @@ namespace Business
         /// 禁止考试
         /// </summary>
         DisabledExam
+    }
+    /// <summary>
+    /// 教师端存的学生信息
+    /// </summary>
+    public class SocketUserInfo {
+
+        public int STID;
+        public string ZKZH;
+        public string XH;
+        public string UName;
+        public int EID;
+        public Socket socket;
+
+
     }
 }

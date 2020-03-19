@@ -17,10 +17,11 @@ namespace ExamTeach
         {
             InitializeComponent();
         }
-
+        Main m;
         private void ZuKao_Load(object sender, EventArgs e)
         {
             LoadKSInfo();
+            m = this.MdiParent as Main;
         }
 
         public void LoadKSInfo()
@@ -30,7 +31,7 @@ namespace ExamTeach
 
         private void ZuKao_FormClosing(object sender, FormClosingEventArgs e)
         {
-            (this.MdiParent as Main).DisabledMSetExam();
+            m.DisabledMSetExam();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -67,6 +68,7 @@ namespace ExamTeach
                         tb.SetStatusWithExam(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) }, 1);
                     }
                     vr.Cells["EStatus"].Value = "正在考试";
+                    m.TL.StartExamByEID(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) });
                     MessageBox.Show("操作成功!");
                     break;
                 case "EEndExam":
@@ -80,10 +82,12 @@ namespace ExamTeach
                         tb.SetStatusWithExam(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) }, 2);
                     }
                     vr.Cells["EStatus"].Value = "考试结束";
+                    m.TL.EndExamByEID(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) });
+
                     MessageBox.Show("操作成功!");
                     break;
                 case "E_ExamKS":
-                    E_Student es = new E_Student(Convert.ToInt32(vr.Cells["EID"].Value),vr.Cells["EStatus"].Value.ToString());
+                    E_Student es = new E_Student(Convert.ToInt32(vr.Cells["EID"].Value), vr.Cells["EStatus"].Value.ToString());
                     es.ShowDialog();
                     break;
                 default:
@@ -144,19 +148,22 @@ namespace ExamTeach
                     li_Rows.Add(row.DataBoundItem as DataRowView);
                 }
             }
-            if (li_Rows.Count==0)
+            if (li_Rows.Count == 0)
             {
                 MessageBox.Show("没有选择需要操作的数据 !");
                 return;
             }
+            var edis = li_Rows.Select(c => Convert.ToInt32(c["EID"]));
             using (TeacherB tb = new TeacherB())
             {
-                tb.SetStatusWithExam(li_Rows.Select(c => Convert.ToInt32(c["EID"])), 1);
+                tb.SetStatusWithExam(edis, 1);
             }
             li_Rows.ForEach(c =>
             {
                 c["EStatus"] = "正在考试";
             });
+
+            m.TL.StartExamByEID(edis);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -179,14 +186,18 @@ namespace ExamTeach
                 MessageBox.Show("没有选择需要操作的数据 !");
                 return;
             }
+
+            var edis = li_Rows.Select(c => Convert.ToInt32(c["EID"]));
             using (TeacherB tb = new TeacherB())
             {
-                tb.SetStatusWithExam(li_Rows.Select(c => Convert.ToInt32(c["EID"])), 2);
+                tb.SetStatusWithExam(edis, 2);
             }
             li_Rows.ForEach(c =>
             {
                 c["EStatus"] = "考试结束";
             });
+
+            m.TL.EndExamByEID(edis);
         }
     }
 }

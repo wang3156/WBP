@@ -20,7 +20,7 @@ namespace ExamTeach
         {
             InitializeComponent();
         }
-        public TListener l;
+        public TListener TL;
         private void Main_Load(object sender, EventArgs e)
         {
             //if (string.IsNullOrWhiteSpace(UName))
@@ -29,6 +29,7 @@ namespace ExamTeach
             //    l.Tag = this;
             //    l.ShowDialog();
             //}
+            M_EndListener.Enabled = false;
 
         }
 
@@ -89,8 +90,8 @@ namespace ExamTeach
             //启动监听服务
             try
             {
-                l = new TListener();
-                l.BeginListen();
+                TL = new TListener();
+                TL.BeginListen();
                 this.Text += "(服务已开启)";
                 M_StartListener.Enabled = !(M_EndListener.Enabled = true);
             }
@@ -102,11 +103,23 @@ namespace ExamTeach
 
         private void M_EndListener_Click(object sender, EventArgs e)
         {
-            l.Dispose();
-            l = null;
+            TL.Dispose();
+            TL = null;
             this.Text = this.Text.Replace("(服务已开启)", "");
             M_StartListener.Enabled = !(M_EndListener.Enabled = false);
+            using (TeacherB tb = new TeacherB())
+            {
+                tb.EmptyServerInfo();
+            }
 
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            using (TeacherB tb=new TeacherB())
+            {
+                tb.EmptyServerInfo();
+            }
         }
     }
 

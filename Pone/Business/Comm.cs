@@ -3,8 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -131,6 +134,33 @@ namespace Business
 
         }
 
+
+
+        /// <summary>
+        ///通过准考证号获取学生信息
+        /// </summary>
+        /// <param name="zkzh"></param>
+        /// <returns></returns>
+        internal static DataTable GetUserInfoByZKZH(string zkzh)
+        {
+            DataTable dt;
+            using (SqlServerDBHelper db = new SqlServerDBHelper())
+            {
+                dt = db.GetDataSet($"	   select  * From [E_StudentKs] where [ZKZH]='{zkzh}'").Tables[0];
+            }
+            return dt;
+        }
+
+        internal static void UpdateServerInfo(string server_ip, int server_port)
+        {
+            using (SqlServerDBHelper db = new SqlServerDBHelper())
+            {
+
+                db.ExecuteNonQuery($@"truncate table E_ServerInfo
+                          insert into E_ServerInfo values('{server_ip}',{server_port})");
+            }
+        }
+
         /// <summary>
         /// 获取考试信息
         /// </summary>
@@ -165,37 +195,97 @@ left join E_Paper b on b.PID = a.PID  where ExamName like @e", pars: new SqlPara
         }
 
 
-        /**
-     * 将字符串的ip地址转换为long型.
-     *
-     * @param ip ip地址
-     * @return long 型ip地址
-     */
-        public static long IpToInt(string ip)
+        #region IP相关
+        /// <summary>  
+        /// 获取当前使用的IP  
+        /// </summary>  
+        /// <returns></returns>  
+        public static string GetLocalIP()
         {
-            char[] separator = new char[] { '.' };
-            string[] items = ip.Split(separator);
-            return long.Parse(items[0]) << 24
-                    | long.Parse(items[1]) << 16
-                    | long.Parse(items[2]) << 8
-                    | long.Parse(items[3]);
+            string result = RunApp("route", "print", true);
+            Match m = Regex.Match(result, @"0.0.0.0\s+0.0.0.0\s+(\d+.\d+.\d+.\d+)\s+(\d+.\d+.\d+.\d+)");
+            if (m.Success)
+            {
+                return m.Groups[2].Value;
+            }
+            else
+            {
+                try
+                {
+                    System.Net.Sockets.TcpClient c = new System.Net.Sockets.TcpClient();
+                    c.Connect("www.baidu.com", 80);
+                    string ip = ((System.Net.IPEndPoint)c.Client.LocalEndPoint).Address.ToString();
+                    c.Close();
+                    return ip;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
         }
 
-        /**
-         * 将long ip地址转为字符串IP
-         * long型IP地址
-         * @param ipaddress
-         * @return
-         */
-        public static string IntToIp(long ipInt)
+        /// <summary>  
+        /// 获取本机主DNS  
+        /// </summary>  
+        /// <returns></returns>  
+        public static string GetPrimaryDNS()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append((ipInt >> 24) & 0xFF).Append(".");
-            sb.Append((ipInt >> 16) & 0xFF).Append(".");
-            sb.Append((ipInt >> 8) & 0xFF).Append(".");
-            sb.Append(ipInt & 0xFF);
-            return sb.ToString();
+            string result = RunApp("nslookup", "", true);
+            Match m = Regex.Match(result, @"\d+\.\d+\.\d+\.\d+");
+            if (m.Success)
+            {
+                return m.Value;
+            }
+            else
+            {
+                return null;
+            }
         }
+
+        /// <summary>  
+        /// 运行一个控制台程序并返回其输出参数。  
+        /// </summary>  
+        /// <param name="filename">程序名</param>  
+        /// <param name="arguments">输入参数</param>  
+        /// <returns></returns>  
+        static string RunApp(string filename, string arguments, bool recordLog)
+        {
+            try
+            {
+
+                Process proc = new Process();
+                proc.StartInfo.FileName = filename;
+                proc.StartInfo.CreateNoWindow = true;
+                proc.StartInfo.Arguments = arguments;
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.UseShellExecute = false;
+                proc.Start();
+
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(proc.StandardOutput.BaseStream, Encoding.Default))
+                {
+
+                    //上面标记的是原文，下面是我自己调试错误后自行修改的  
+                    Thread.Sleep(100);           //貌似调用系统的nslookup还未返回数据或者数据未编码完成，程序就已经跳过直接执行  
+                                                 //txt = sr.ReadToEnd()了，导致返回的数据为空，故睡眠令硬件反应  
+                    if (!proc.HasExited)         //在无参数调用nslookup后，可以继续输入命令继续操作，如果进程未停止就直接执行  
+                    {                            //txt = sr.ReadToEnd()程序就在等待输入，而且又无法输入，直接掐住无法继续运行  
+                        proc.Kill();
+                    }
+                    string txt = sr.ReadToEnd();
+                    sr.Close();
+
+                    return txt;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex);
+                return ex.Message;
+            }
+        }
+        #endregion
+
 
 
     }

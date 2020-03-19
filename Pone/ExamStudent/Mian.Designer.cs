@@ -30,13 +30,14 @@
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // Mian
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1344, 861);
-            this.Name = "Form1";
+            this.ClientSize = new System.Drawing.Size(1344, 795);
+            this.Name = "Mian";
             this.Text = "学生端";
+            this.Load += new System.EventHandler(this.Mian_Load);
             this.ResumeLayout(false);
 
         }
