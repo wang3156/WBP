@@ -30,7 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -42,16 +47,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CListener.cs" />
     <Compile Include="Comm.cs" />
+    <Compile Include="SocketEntity.cs" />
     <Compile Include="StudentB.cs" />
     <Compile Include="TeacherB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommLibrary\CommLibrary.csproj">
       <Project>{2B47B0D7-612C-4D4C-ABC6-93280D8B3BB7}</Project>
       <Name>CommLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

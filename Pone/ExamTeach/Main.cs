@@ -1,4 +1,5 @@
-﻿using ExamTeach.WQuestions;
+﻿using Business;
+using ExamTeach.WQuestions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,7 +20,7 @@ namespace ExamTeach
         {
             InitializeComponent();
         }
-
+        public TListener l;
         private void Main_Load(object sender, EventArgs e)
         {
             //if (string.IsNullOrWhiteSpace(UName))
@@ -27,6 +29,7 @@ namespace ExamTeach
             //    l.Tag = this;
             //    l.ShowDialog();
             //}
+
         }
 
         private void AddSelect_Click(object sender, EventArgs e)
@@ -81,6 +84,30 @@ namespace ExamTeach
             MSetExam.Enabled = true;
         }
 
+        private void M_StartListener_Click(object sender, EventArgs e)
+        {
+            //启动监听服务
+            try
+            {
+                l = new TListener();
+                l.BeginListen();
+                this.Text += "(服务已开启)";
+                M_StartListener.Enabled = !(M_EndListener.Enabled = true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("服务开启失败!" + ex.Message);
+            }
+        }
+
+        private void M_EndListener_Click(object sender, EventArgs e)
+        {
+            l.Dispose();
+            l = null;
+            this.Text = this.Text.Replace("(服务已开启)", "");
+            M_StartListener.Enabled = !(M_EndListener.Enabled = false);
+
+        }
     }
 
 

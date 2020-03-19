@@ -34,6 +34,9 @@
             this.AddTK = new System.Windows.Forms.ToolStripMenuItem();
             this.MZJ = new System.Windows.Forms.ToolStripMenuItem();
             this.MSetExam = new System.Windows.Forms.ToolStripMenuItem();
+            this.监听服务ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.M_StartListener = new System.Windows.Forms.ToolStripMenuItem();
+            this.M_EndListener = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,7 +45,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MQuestion,
             this.MZJ,
-            this.MSetExam});
+            this.MSetExam,
+            this.监听服务ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1344, 25);
@@ -86,11 +90,34 @@
             this.MSetExam.Text = "设置考试";
             this.MSetExam.Click += new System.EventHandler(this.MSetExam_Click);
             // 
+            // 监听服务ToolStripMenuItem
+            // 
+            this.监听服务ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.M_StartListener,
+            this.M_EndListener});
+            this.监听服务ToolStripMenuItem.Name = "监听服务ToolStripMenuItem";
+            this.监听服务ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
+            this.监听服务ToolStripMenuItem.Text = "监听服务";
+            // 
+            // M_StartListener
+            // 
+            this.M_StartListener.Name = "M_StartListener";
+            this.M_StartListener.Size = new System.Drawing.Size(152, 22);
+            this.M_StartListener.Text = "开启监听";
+            this.M_StartListener.Click += new System.EventHandler(this.M_StartListener_Click);
+            // 
+            // M_EndListener
+            // 
+            this.M_EndListener.Name = "M_EndListener";
+            this.M_EndListener.Size = new System.Drawing.Size(152, 22);
+            this.M_EndListener.Text = "停止监听";
+            this.M_EndListener.Click += new System.EventHandler(this.M_EndListener_Click);
+            // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1344, 795);
+            this.ClientSize = new System.Drawing.Size(1344, 861);
             this.Controls.Add(this.menuStrip1);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
@@ -112,6 +139,9 @@
         private System.Windows.Forms.ToolStripMenuItem MSetExam;
         private System.Windows.Forms.ToolStripMenuItem AddSelect;
         private System.Windows.Forms.ToolStripMenuItem AddTK;
+        private System.Windows.Forms.ToolStripMenuItem 监听服务ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem M_StartListener;
+        private System.Windows.Forms.ToolStripMenuItem M_EndListener;
     }
 }
 

@@ -143,5 +143,53 @@ namespace Business
             }
             return null;
         }
+
+        /// <summary>
+        /// 获取服务器信息
+        /// </summary>
+        /// <returns></returns>
+        public static DataTable GetServerSocketInfo()
+        {
+            using (SqlServerDBHelper db = new SqlServerDBHelper())
+            {
+                return db.GetDataSet("select * From E_ServerInfo").Tables[0];
+            }
+
+        }
+
+
+        /**
+     * 将字符串的ip地址转换为long型.
+     *
+     * @param ip ip地址
+     * @return long 型ip地址
+     */
+        public static long IpToInt(string ip)
+        {
+            char[] separator = new char[] { '.' };
+            string[] items = ip.Split(separator);
+            return long.Parse(items[0]) << 24
+                    | long.Parse(items[1]) << 16
+                    | long.Parse(items[2]) << 8
+                    | long.Parse(items[3]);
+        }
+
+        /**
+         * 将long ip地址转为字符串IP
+         * long型IP地址
+         * @param ipaddress
+         * @return
+         */
+        public static string IntToIp(long ipInt)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append((ipInt >> 24) & 0xFF).Append(".");
+            sb.Append((ipInt >> 16) & 0xFF).Append(".");
+            sb.Append((ipInt >> 8) & 0xFF).Append(".");
+            sb.Append(ipInt & 0xFF);
+            return sb.ToString();
+        }
+
+
     }
 }
