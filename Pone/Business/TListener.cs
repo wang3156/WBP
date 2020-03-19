@@ -140,7 +140,7 @@ namespace Business
             }
         }
 
-        void RemoveClientToList(Socket client)
+        void RemoveClientFromList(Socket client)
         {
 
             lock (li_Lock)

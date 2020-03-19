@@ -29,7 +29,7 @@ namespace Business
                 throw new Exception("服务端未开启!");
             }
 
-            ipe = new IPEndPoint(new IPAddress(Comm.IpToInt(dt.Rows[0]["ServerIP"].ToString())), Convert.ToInt32(dt.Rows[0]["ServerPort"]));
+            ipe = new IPEndPoint(IPAddress.Parse(dt.Rows[0]["ServerIP"].ToString()), Convert.ToInt32(dt.Rows[0]["ServerPort"]));
         }
 
         public void BeginConnction()
@@ -44,21 +44,44 @@ namespace Business
 
                 throw;
             }
+            //byte[] re = new byte[1024];
+            //int recv = Client_Socket.Receive(re);
+            //ConnectCheck cc = JsonConvert.DeserializeObject<ConnectCheck>(Encoding.UTF8.GetString(re, 0, recv));
+            //if (cc.RCode != ResponseCode.ClientConnected)
+            //{
+            //    throw new Exception("未能连接到服务器!!");
+            //}
+
+            //while (true)
+            //{
+            //    re = new byte[1024];
+            //    recv = Client_Socket.Receive(re);
+            //    cc = JsonConvert.DeserializeObject<ConnectCheck>(Encoding.ASCII.GetString(re, 0, recv));
+            //    DoByServerCode(cc);
+            //}
             byte[] re = new byte[1024];
-            int recv = Client_Socket.Receive(re);
-            ConnectCheck cc = JsonConvert.DeserializeObject<ConnectCheck>(Encoding.UTF8.GetString(re, 0, recv));
-            if (cc.RCode != ResponseCode.ClientConnected)
-            {
-                throw new Exception("未能连接到服务器!!");
-            }
+            int recv = 0;
+            ConnectCheck cc;
 
             while (true)
             {
                 re = new byte[1024];
                 recv = Client_Socket.Receive(re);
-                cc = JsonConvert.DeserializeObject<ConnectCheck>(Encoding.ASCII.GetString(re, 0, recv));
-                DoByServerCode(cc);
+                string ss = Encoding.UTF8.GetString(re, 0, recv);
+                if (!ss.EndsWith(Comm.EndMark))
+                {
+                    //包不完整
+                    continue;
+                }
+                ss.Split(new string[] { Comm.EndMark }, StringSplitOptions.RemoveEmptyEntries).ToList().ForEach(c =>
+                {
+                    cc = JsonConvert.DeserializeObject<ConnectCheck>(c);
+                    DoByServerCode(cc);
+                });
+
+
             }
+
 
         }
 

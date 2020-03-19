@@ -14,6 +14,11 @@ namespace Business
     {
 
         /// <summary>
+        /// socket包的结束标志
+        /// </summary>
+        public const string EndMark = "⒂";
+
+        /// <summary>
         /// 获取选择题选项
         /// </summary>
         /// <returns></returns>
