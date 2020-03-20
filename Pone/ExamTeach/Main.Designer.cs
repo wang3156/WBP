@@ -37,6 +37,7 @@
             this.监听服务ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.M_StartListener = new System.Windows.Forms.ToolStripMenuItem();
             this.M_EndListener = new System.Windows.Forms.ToolStripMenuItem();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +47,8 @@
             this.MQuestion,
             this.MZJ,
             this.MSetExam,
-            this.监听服务ToolStripMenuItem});
+            this.监听服务ToolStripMenuItem,
+            this.testToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1344, 25);
@@ -113,11 +115,18 @@
             this.M_EndListener.Text = "停止监听";
             this.M_EndListener.Click += new System.EventHandler(this.M_EndListener_Click);
             // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.testToolStripMenuItem.Text = "Test";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1344, 795);
+            this.ClientSize = new System.Drawing.Size(1344, 861);
             this.Controls.Add(this.menuStrip1);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
@@ -143,6 +152,7 @@
         private System.Windows.Forms.ToolStripMenuItem 监听服务ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem M_StartListener;
         private System.Windows.Forms.ToolStripMenuItem M_EndListener;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
     }
 }
 

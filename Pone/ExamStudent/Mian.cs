@@ -17,27 +17,31 @@ namespace ExamStudent
         public Mian()
         {
             InitializeComponent();
-            Control.CheckForIllegalCrossThreadCalls = false;
+            CheckForIllegalCrossThreadCalls = false;
         }
         CListener cl;
         private void Mian_Load(object sender, EventArgs e)
         {
             ThreadPool.QueueUserWorkItem((a) =>
             {
-                ShowStatus();
+               
                 cl = new CListener();
                 cl.ServerP = c =>
                 {
                     switch (c.RCode)
                     {
                         case ResponseCode.StartExam:
-                            MessageBox.Show("====考试开始!");
+                            label1.Text = ("====考试开始!");
                             break;
                         case ResponseCode.EndExam:
-                            MessageBox.Show("====考试结束!");
+                            label1.Text = ("====考试结束!");
                             break;
                         case ResponseCode.DisabledExam:
-                            MessageBox.Show("禁止考试!");
+                            label1.Text = ("禁止考试!");
+                            break;
+                        case ResponseCode.ServerColseConnected:
+                            cl.Dispose();                      
+                            label1.Text = ("服务器已断开!");
                             break;
                         default:
                             break;

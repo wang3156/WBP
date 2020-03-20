@@ -19,7 +19,7 @@ namespace Business
         //Dictionary<Socket, Thread> children_sockets = new Dictionary<Socket, Thread>();
         List<SocketUserInfo> children_sockets = new List<SocketUserInfo>();
         private byte[] buffer_result = new byte[1024];
-        static object li_Lock = new object();
+        public static object li_Lock = new object();
 
 
 
@@ -40,8 +40,8 @@ namespace Business
         bool t_checkExit = false;
 
 
-        public Action<Socket> AddList;
-        public Action<Socket> RemoveList;
+        public Action<SocketUserInfo> AddList;
+        public Action<SocketUserInfo> RemoveList;
 
         public TListener()
         {
@@ -90,12 +90,20 @@ namespace Business
         {
             while (true)
             {
+                Socket clientSocket = null;
                 if (t_listExit)
                 {
                     return;
                 }
 
-                Socket clientSocket = Server_Socket.Accept();
+                try
+                {
+                    clientSocket = Server_Socket.Accept();
+                }
+                catch (Exception ex)
+                {  //这里异常说明服务器可能关闭了
+                    return;
+                }
                 lock (li_Lock)
                 {
                     buffer_result = new byte[1024];
@@ -155,15 +163,16 @@ namespace Business
             {
                 lock (li_Lock)
                 {
-                    children_sockets.ForEach(c =>
+                    int ii = children_sockets.Count - 1;
+                    for (int i = ii; i > -1; i--)
                     {
                         if (t_checkExit)
                         {
                             return;
                         }
 
-                        SendTOClient(new ConnectCheck() { RCode = ResponseCode.CheckOnLine }, c.socket);
-                    });
+                        SendTOClient(new ConnectCheck() { RCode = ResponseCode.CheckOnLine }, children_sockets[ii].socket);
+                    }
 
                     if (t_checkExit)
                     {
@@ -211,6 +220,7 @@ namespace Business
             {
                 children_sockets.Add(client);
             }
+            AddList?.Invoke(client);
         }
 
         void RemoveClientFromList(SocketUserInfo client)
@@ -220,6 +230,7 @@ namespace Business
                 return;
             }
 
+            RemoveList?.Invoke(client);
 
             lock (li_Lock)
             {
@@ -239,6 +250,7 @@ namespace Business
             {
                 client.socket.Close();
             }
+
 
         }
         #endregion
@@ -290,20 +302,19 @@ namespace Business
                     }
                 }
 
-                try
-                {
-                    //这里有很大可能会出错.但如果 socket在执行中需要先关闭所以要先执行一下
-                    Server_Socket.Shutdown(SocketShutdown.Both);
-                }
-                catch
-                {
+            }
+            try
+            {
+                //这里有很大可能会出错.但如果 socket在执行中需要先关闭所以要先执行一下
+                Server_Socket.Shutdown(SocketShutdown.Both);
+            }
+            catch
+            {
 
-                }
-                finally
-                {
-                    Server_Socket.Close();
-                }
-
+            }
+            finally
+            {
+                Server_Socket.Close();
             }
             t_list.Abort();
             t_check.Abort();

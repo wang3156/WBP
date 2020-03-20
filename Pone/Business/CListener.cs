@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Business
 {
-    public class CListener
+    public class CListener : IDisposable
     {
 
         Socket Client_Socket;
@@ -81,7 +81,15 @@ namespace Business
                 while (true)
                 {
                     re = new byte[1024];
-                    recv = Client_Socket.Receive(re);
+                    try
+                    {
+                        recv = Client_Socket.Receive(re);
+                    }
+                    catch (Exception ex)
+                    {
+                        DoByServerCode(new ConnectCheck { RCode = ResponseCode.ServerColseConnected });
+                        return;
+                    }
                     string ss = Encoding.UTF8.GetString(re, 0, recv);
                     if (!ss.EndsWith(Comm.EndMark))
                     {
@@ -111,31 +119,31 @@ namespace Business
                 case ResponseCode.CheckOnLine:
                     break;
                 case ResponseCode.ClientConnected:
-                    break;
-                case ResponseCode.ServerColseConnected:
-                    try
-                    {
-                        Client_Socket.Shutdown(SocketShutdown.Both);
-                    }
-                    catch
-                    {
-
-                    }
-                    finally
-                    {
-                        Client_Socket.Close();
-                    }
-                    System.Windows.Forms.MessageBox.Show("服务器已断开!");
-                    break;
+                    break;                
                 case ResponseCode.ClientColseConnected:
                     break;
-
                 default:
                     if (ServerP != null)
                     {
                         ServerP(cc);
                     }
                     break;
+            }
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                Client_Socket.Shutdown(SocketShutdown.Both);
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                Client_Socket.Close();
             }
         }
     }

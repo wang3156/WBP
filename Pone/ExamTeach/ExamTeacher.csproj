@@ -98,6 +98,12 @@
     <Compile Include="SetPaperByExam.Designer.cs">
       <DependentUpon>SetPaperByExam.cs</DependentUpon>
     </Compile>
+    <Compile Include="SockTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SockTest.Designer.cs">
+      <DependentUpon>SockTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="WQuestions\SelectQuestions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +158,9 @@
     </Compile>
     <EmbeddedResource Include="SetPaperByExam.resx">
       <DependentUpon>SetPaperByExam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SockTest.resx">
+      <DependentUpon>SockTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WQuestions\SelectQuestions.resx">
       <DependentUpon>SelectQuestions.cs</DependentUpon>

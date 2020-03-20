@@ -19,6 +19,7 @@ namespace ExamTeach
         public Main()
         {
             InitializeComponent();
+            CheckForIllegalCrossThreadCalls = false;
         }
         public TListener TL;
         private void Main_Load(object sender, EventArgs e)
@@ -120,6 +121,12 @@ namespace ExamTeach
             {
                 tb.EmptyServerInfo();
             }
+        }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SockTest st = new SockTest();
+            st.Show();
         }
     }
 
