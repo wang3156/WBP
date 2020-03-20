@@ -282,6 +282,12 @@ namespace Business
 
         public void Dispose()
         {
+
+            using (TeacherB tb = new TeacherB())
+            {
+                tb.EmptyServerInfo();
+            }
+
             bool have = false;
             t_listExit = t_checkExit = true;
 

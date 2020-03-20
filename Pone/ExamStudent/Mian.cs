@@ -22,6 +22,7 @@ namespace ExamStudent
         CListener cl;
         private void Mian_Load(object sender, EventArgs e)
         {
+            ShowStatus();
             ThreadPool.QueueUserWorkItem((a) =>
             {
                
@@ -40,8 +41,11 @@ namespace ExamStudent
                             label1.Text = ("禁止考试!");
                             break;
                         case ResponseCode.ServerColseConnected:
+                          
                             cl.Dispose();                      
                             label1.Text = ("服务器已断开!");
+                            ShowStatus();
+                            cl.BeginConnction("zkz0004");
                             break;
                         default:
                             break;

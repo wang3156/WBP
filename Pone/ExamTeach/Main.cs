@@ -108,10 +108,7 @@ namespace ExamTeach
             TL = null;
             this.Text = this.Text.Replace("(服务已开启)", "");
             M_StartListener.Enabled = !(M_EndListener.Enabled = false);
-            using (TeacherB tb = new TeacherB())
-            {
-                tb.EmptyServerInfo();
-            }
+            
 
         }
 
