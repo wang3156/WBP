@@ -25,7 +25,7 @@ namespace ExamStudent
             ShowStatus();
             ThreadPool.QueueUserWorkItem((a) =>
             {
-               
+
                 cl = new CListener();
                 cl.ServerP = c =>
                 {
@@ -38,11 +38,11 @@ namespace ExamStudent
                             label1.Text = ("====考试结束!");
                             break;
                         case ResponseCode.DisabledExam:
-                            label1.Text = ("禁止考试!");
+                            DisabledExam();
                             break;
                         case ResponseCode.ServerColseConnected:
-                          
-                            cl.Dispose();                      
+
+                            cl.Dispose();
                             label1.Text = ("服务器已断开!");
                             ShowStatus();
                             cl.BeginConnction("zkz0004");
@@ -55,6 +55,12 @@ namespace ExamStudent
                 cl.BeginConnction("zkz0004");
                 ShowStatus(false);
             });
+        }
+
+        private void DisabledExam()
+        {
+            MessageBox.Show("你已被禁止参考,系统将自动退!");
+            this.Close();
         }
 
         void ShowStatus(bool lj = true)
