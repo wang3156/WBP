@@ -112,6 +112,11 @@ namespace ExamTeach
 
         }
 
+        internal string GetHostName(string zkzh,int EID)
+        {
+           return TL.GetHostName(zkzh, EID);
+        }
+
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             using (TeacherB tb=new TeacherB())

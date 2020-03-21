@@ -50,24 +50,26 @@ namespace Business
         /// 根据传入的行数据生成控件
         /// </summary>
         /// <param name="row"></param>
-        public static void CreateControl(DataRow dataRow, System.Windows.Forms.RichTextBox txt_Questions, System.Windows.Forms.Panel p_Content, bool teacher)
+        public static void CreateControl(DataRow dataRow, System.Windows.Forms.RichTextBox txt_Questions, System.Windows.Forms.Panel p_Content, bool teacher, string Answer="")
         {
             string q = Convert.ToString(dataRow["Questions"]);
             int Qtype = Convert.ToInt32(dataRow["QType"]);
             int QID = Convert.ToInt32(dataRow["QID"]);
+
+
 
             txt_Questions.Text = q;
             p_Content.Controls.Clear();
 
             DataRow row;
             List<Control> cots = new List<Control>();
-            string[] ans;
+            string[] ans, stu_ans;
             if (Qtype == 0)
             {
                 DataTable dt = GetCSelectOpetion(QID);
                 string code;
                 ans = Convert.ToString(dataRow["Answer"]).Split(',');
-
+                stu_ans = Answer?.Split(',');
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
 
@@ -94,6 +96,10 @@ namespace Business
                         cb.Enabled = false;
                         cb.Checked = ans.Contains(code);
                     }
+                    else
+                    {
+                        cb.Checked = (stu_ans == null ? false : stu_ans.Contains(code));
+                    }
 
                     cots.Add(le);
                     cots.Add(cb);
@@ -105,6 +111,7 @@ namespace Business
 
                 row = dt.Rows[0];
                 ans = Convert.ToString(row["Answer"]).Split(new string[] { TeacherB.TKASp }, StringSplitOptions.None);
+                stu_ans = Answer?.Split(new string[] { TeacherB.TKASp }, StringSplitOptions.None);
                 for (int i = 0; i < ans.Length; i++)
                 {
                     if (teacher)
@@ -126,6 +133,7 @@ namespace Business
                         tb.Top = (i * tb.Height + 5 * i);
                         tb.Left = 5;
                         tb.Width = 540;
+                        tb.Text = stu_ans?[i];
                         cots.Add(tb);
                     }
                 }
@@ -141,12 +149,12 @@ namespace Business
         /// </summary>
         /// <param name="zkzh"></param>
         /// <returns></returns>
-        internal static DataTable GetUserInfoByZKZH(string zkzh)
+        public static DataTable GetUserInfoByZKZH(string zkzh)
         {
             DataTable dt;
             using (SqlServerDBHelper db = new SqlServerDBHelper())
             {
-                dt = db.GetDataSet($"	   select  * From [E_StudentKs] where [ZKZH]='{zkzh}'").Tables[0];
+                dt = db.GetDataSet($"	   select top 1 a.*,b.EStatus From [E_StudentKs] a,E_ExamInfo b where [ZKZH]='{zkzh}' and [JZKS]=0 and b.EID=a.EID order by b.EStart").Tables[0];
             }
             return dt;
         }
@@ -286,6 +294,34 @@ left join E_Paper b on b.PID = a.PID  where ExamName like @e", pars: new SqlPara
         }
         #endregion
 
+
+
+        public static DataTable GetPaper(int PID)
+        {
+            using (SqlServerDBHelper db = new SqlServerDBHelper())
+            {
+                return db.GetDataSet("select * From [dbo].[E_Paper] where PID= " + PID).Tables[0];
+            }
+
+        }
+
+        /// <summary>
+        /// 获取试卷数据 
+        /// </summary>
+        /// <param name="pID">试卷ID</param>
+        /// <returns>表1 试卷信息  表2 试卷明细</returns>
+        public static DataTable GetPaperMx(int pID)
+        {
+            string sql = @"
+select a.QType,b.* From [dbo].[E_CPaper] a,[dbo].[E_SelectQuestions] b where PID=@p and a.[QType]=0 and b.QID=a.QID
+union all
+select a.QType,b.* From [dbo].[E_CPaper] a,[dbo].[E_TKQuestions] b where PID=@p and a.[QType]=1 and b.QID=a.QID
+ ";
+            using (SqlServerDBHelper db = new SqlServerDBHelper())
+            {
+                return db.GetDataSet(sql, pars: new SqlParameter[] { new SqlParameter("@p", pID) }).Tables[0];
+            }
+        }
 
 
     }

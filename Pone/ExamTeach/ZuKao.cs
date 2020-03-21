@@ -87,7 +87,7 @@ namespace ExamTeach
                     MessageBox.Show("操作成功!");
                     break;
                 case "E_ExamKS":
-                    E_Student es = new E_Student(Convert.ToInt32(vr.Cells["EID"].Value), vr.Cells["EStatus"].Value.ToString());
+                    E_Student es = new E_Student(Convert.ToInt32(vr.Cells["EID"].Value), vr.Cells["EStatus"].Value.ToString(),m);
                     es.ShowDialog();
                     break;
                 default:

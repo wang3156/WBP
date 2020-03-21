@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -39,6 +39,8 @@
             this.ZKZH = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.XH = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsOnline = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Remote = new System.Windows.Forms.DataGridViewLinkColumn();
             this.SDelete = new System.Windows.Forms.DataGridViewLinkColumn();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -52,7 +54,7 @@
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Location = new System.Drawing.Point(2, 1);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(548, 39);
+            this.panel1.Size = new System.Drawing.Size(602, 39);
             this.panel1.TabIndex = 0;
             // 
             // button1
@@ -90,7 +92,7 @@
             this.panel2.Controls.Add(this.dataGridView1);
             this.panel2.Location = new System.Drawing.Point(2, 46);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(548, 529);
+            this.panel2.Size = new System.Drawing.Size(602, 529);
             this.panel2.TabIndex = 1;
             // 
             // dataGridView1
@@ -99,19 +101,21 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ZKZH,
             this.UName,
             this.XH,
+            this.IsOnline,
+            this.Remote,
             this.SDelete});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -119,9 +123,10 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(548, 529);
+            this.dataGridView1.Size = new System.Drawing.Size(602, 529);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView1_RowPrePaint);
             // 
             // ZKZH
             // 
@@ -153,10 +158,31 @@
             this.XH.ReadOnly = true;
             this.XH.Width = 110;
             // 
+            // IsOnline
+            // 
+            this.IsOnline.FillWeight = 52F;
+            this.IsOnline.Frozen = true;
+            this.IsOnline.HeaderText = "在线";
+            this.IsOnline.Name = "IsOnline";
+            this.IsOnline.ReadOnly = true;
+            this.IsOnline.Visible = false;
+            this.IsOnline.Width = 52;
+            // 
+            // Remote
+            // 
+            this.Remote.FillWeight = 52F;
+            this.Remote.Frozen = true;
+            this.Remote.HeaderText = "查看";
+            this.Remote.Name = "Remote";
+            this.Remote.ReadOnly = true;
+            this.Remote.Text = "查看";
+            this.Remote.UseColumnTextForLinkValue = true;
+            this.Remote.Width = 52;
+            // 
             // SDelete
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.SDelete.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.SDelete.DefaultCellStyle = dataGridViewCellStyle4;
             this.SDelete.FillWeight = 52F;
             this.SDelete.Frozen = true;
             this.SDelete.HeaderText = "删除";
@@ -171,7 +197,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(552, 578);
+            this.ClientSize = new System.Drawing.Size(607, 578);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -199,6 +225,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ZKZH;
         private System.Windows.Forms.DataGridViewTextBoxColumn UName;
         private System.Windows.Forms.DataGridViewTextBoxColumn XH;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IsOnline;
+        private System.Windows.Forms.DataGridViewLinkColumn Remote;
         private System.Windows.Forms.DataGridViewLinkColumn SDelete;
     }
 }

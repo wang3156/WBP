@@ -26,7 +26,7 @@ namespace ExamTeach
 
         private void ZPaper_Load(object sender, EventArgs e)
         {
-            if (fp==null)
+            if (fp == null)
             {
                 fp = this.Tag as FPars;
                 PID = Convert.ToInt32(fp.PID);
@@ -57,16 +57,12 @@ namespace ExamTeach
         private void BindDataWithPID()
         {
 
-            DataSet ds = null;
-            using (TeacherB tb = new TeacherB())
-            {
-                ds = tb.GetPaperMx(PID);
-            }
+            DataTable ds = Comm.GetPaperMx(PID);
 
-            if (ds.Tables.Count > 0)
+            if (ds.Rows.Count > 0)
             {
 
-                dataGridView2.DataSource = ds.Tables[0];
+                dataGridView2.DataSource = ds;
             }
             else
             {
@@ -82,14 +78,10 @@ namespace ExamTeach
             {
                 return;
             }
-            using (TeacherB tb = new TeacherB())
+            DataTable dt = Comm.GetPaper(PID);
+            if (dt != null)
             {
-                DataTable dt = tb.GetPaper(PID); ;
-                if (dt != null)
-                {
-                    textBox1.Text = Convert.ToString(dt.Rows[0]["PaperName"]);
-                }
-
+                textBox1.Text = Convert.ToString(dt.Rows[0]["PaperName"]);
             }
 
         }
@@ -100,14 +92,14 @@ namespace ExamTeach
         {
             Qtype = 0;
             BindUnData();
-            
+
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             Qtype = 1;
             BindUnData();
- 
+
         }
 
         private void button1_Click(object sender, EventArgs e)

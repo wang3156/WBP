@@ -128,6 +128,12 @@ namespace Business
             }
 
         }
+
+        public string GetHostName(string zkzh, int EID)
+        {
+           return (children_sockets.Where(c => c.ZKZH == zkzh && c.EID == EID).FirstOrDefault()?.socket.RemoteEndPoint as IPEndPoint)?.Address.ToString();
+        }
+
         /// <summary>
         /// 考试结束
         /// </summary>

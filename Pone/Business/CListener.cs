@@ -35,7 +35,7 @@ namespace Business
 
         public void BeginConnction(string zkzh)
         {
-
+            re:
             DataTable dt = Comm.GetServerSocketInfo();
 
             while (dt.Rows.Count == 0)
@@ -54,8 +54,11 @@ namespace Business
             }
             catch (Exception)
             {
-
-                throw;
+                using (TeacherB tb = new TeacherB())
+                {
+                    tb.EmptyServerInfo();
+                }
+                goto re;
             }
             //byte[] re = new byte[1024];
             //int recv = Client_Socket.Receive(re);
@@ -88,6 +91,7 @@ namespace Business
                     catch (Exception ex)
                     {
                         DoByServerCode(new ConnectCheck { RCode = ResponseCode.ServerColseConnected });
+                        System.Windows.Forms.MessageBox.Show("服务端已断开!!");
                         return;
                     }
                     string ss = Encoding.UTF8.GetString(re, 0, recv);
@@ -119,7 +123,7 @@ namespace Business
                 case ResponseCode.CheckOnLine:
                     break;
                 case ResponseCode.ClientConnected:
-                    break;                
+                    break;
                 case ResponseCode.ClientColseConnected:
                     break;
                 default:

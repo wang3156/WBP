@@ -105,6 +105,7 @@ namespace Business
 
 
 
+
         /// <summary>
         ///保存填空题信息
         /// </summary>
@@ -154,15 +155,7 @@ namespace Business
             return null;
         }
 
-        public DataTable GetPaper(int PID)
-        {
-            DataSet dt = db.GetDataSet("select * From [dbo].[E_Paper] where PID= " + PID);
-            if (dt.Tables.Count > 0)
-            {
-                return dt.Tables[0];
-            }
-            return null;
-        }
+
 
         public string SavePaper(ref int pID, string pName, DataTable dataTable)
         {
@@ -194,20 +187,7 @@ namespace Business
 
         }
 
-        /// <summary>
-        /// 获取试卷数据 
-        /// </summary>
-        /// <param name="pID">试卷ID</param>
-        /// <returns>表1 试卷信息  表2 试卷明细</returns>
-        public DataSet GetPaperMx(int pID)
-        {
-            string sql = @"
-select a.QType,b.* From [dbo].[E_CPaper] a,[dbo].[E_SelectQuestions] b where PID=@p and a.[QType]=0 and b.QID=a.QID
-union all
-select a.QType,b.* From [dbo].[E_CPaper] a,[dbo].[E_TKQuestions] b where PID=@p and a.[QType]=1 and b.QID=a.QID
- ";
-            return db.GetDataSet(sql, pars: new SqlParameter[] { new SqlParameter("@p", pID) });
-        }
+
 
         /// <summary>
         /// 获取试卷中没有选择的数据 
@@ -314,13 +294,22 @@ select a.QType,b.* From [dbo].[E_CPaper] a,[dbo].[E_TKQuestions] b where PID=@p 
         public DataTable GetKsData(int EID, string lx, string where)
         {
             Dictionary<string, string> dic = new Dictionary<string, string>() { { "准考证号", "ZKZH" }, { "姓名", "UName" }, { "学号", "XH" } };
-            return db.GetDataSet($"select * From [dbo].[E_StudentKs] where EID={EID}  {(string.IsNullOrWhiteSpace(where) ? "" : " and " + dic[lx] + "=@n")}", pars: new SqlParameter[] { new SqlParameter("@n", where) }).Tables[0];
+            DataTable dt = db.GetDataSet($"select * From [dbo].[E_StudentKs] where EID={EID}  {(string.IsNullOrWhiteSpace(where) ? "" : " and " + dic[lx] + "=@n")}", pars: new SqlParameter[] { new SqlParameter("@n", where) }).Tables[0];
+            dt.Columns.Add(new DataColumn("IsOnline") { DefaultValue = "否" });
+            return dt;
         }
 
         public void DeleteStudent(int id)
         {
             db.ExecuteNonQuery("delete E_StudentKs where stid=" + id);
         }
+
+
+        public void DisabledStu(int eID, string zkzh)
+        {
+            db.ExecuteNonQuery($"update E_StudentKs set [JZKS]=1 where EID={eID} and ZKZH='{zkzh}'");
+        }
+
 
         #endregion
     }

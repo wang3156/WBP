@@ -16,7 +16,7 @@ namespace ExamStudent
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Mian());
+            Application.Run(new Main());
         }
     }
 }
