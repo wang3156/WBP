@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.Lab_Name = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.Btu_Submit = new System.Windows.Forms.Button();
             this.Lab_UName = new System.Windows.Forms.Label();
             this.Lab_XH = new System.Windows.Forms.Label();
@@ -39,15 +41,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Lab_Count = new System.Windows.Forms.Label();
+            this.Btn_Next = new System.Windows.Forms.Button();
+            this.Btn_Perv = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.Lab_Connection = new System.Windows.Forms.Label();
-            this.Lab_Name = new System.Windows.Forms.Label();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.Btn_Perv = new System.Windows.Forms.Button();
-            this.Btn_Next = new System.Windows.Forms.Button();
-            this.Lab_Count = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -71,6 +71,25 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1012, 41);
             this.panel1.TabIndex = 2;
+            // 
+            // Lab_Name
+            // 
+            this.Lab_Name.AutoSize = true;
+            this.Lab_Name.Location = new System.Drawing.Point(714, 16);
+            this.Lab_Name.Name = "Lab_Name";
+            this.Lab_Name.Size = new System.Drawing.Size(41, 12);
+            this.Lab_Name.TabIndex = 3;
+            this.Lab_Name.Text = "label1";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(844, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "保存";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Btu_Submit
             // 
@@ -151,6 +170,50 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "试卷";
             // 
+            // Lab_Count
+            // 
+            this.Lab_Count.AutoSize = true;
+            this.Lab_Count.Location = new System.Drawing.Point(657, 595);
+            this.Lab_Count.Name = "Lab_Count";
+            this.Lab_Count.Size = new System.Drawing.Size(41, 12);
+            this.Lab_Count.TabIndex = 3;
+            this.Lab_Count.Text = "label1";
+            // 
+            // Btn_Next
+            // 
+            this.Btn_Next.Location = new System.Drawing.Point(910, 590);
+            this.Btn_Next.Name = "Btn_Next";
+            this.Btn_Next.Size = new System.Drawing.Size(75, 23);
+            this.Btn_Next.TabIndex = 2;
+            this.Btn_Next.Text = "下一题";
+            this.Btn_Next.UseVisualStyleBackColor = true;
+            this.Btn_Next.Click += new System.EventHandler(this.Btn_Next_Click);
+            // 
+            // Btn_Perv
+            // 
+            this.Btn_Perv.Location = new System.Drawing.Point(815, 590);
+            this.Btn_Perv.Name = "Btn_Perv";
+            this.Btn_Perv.Size = new System.Drawing.Size(75, 23);
+            this.Btn_Perv.TabIndex = 2;
+            this.Btn_Perv.Text = "上一题";
+            this.Btn_Perv.UseVisualStyleBackColor = true;
+            this.Btn_Perv.Click += new System.EventHandler(this.Btn_Perv_Click);
+            // 
+            // panel3
+            // 
+            this.panel3.Location = new System.Drawing.Point(12, 227);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(994, 362);
+            this.panel3.TabIndex = 1;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(12, 20);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(988, 183);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.Lab_Connection);
@@ -169,69 +232,6 @@
             this.Lab_Connection.TabIndex = 0;
             this.Lab_Connection.Text = "label1";
             // 
-            // Lab_Name
-            // 
-            this.Lab_Name.AutoSize = true;
-            this.Lab_Name.Location = new System.Drawing.Point(714, 16);
-            this.Lab_Name.Name = "Lab_Name";
-            this.Lab_Name.Size = new System.Drawing.Size(41, 12);
-            this.Lab_Name.TabIndex = 3;
-            this.Lab_Name.Text = "label1";
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(12, 20);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(988, 183);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
-            // 
-            // panel3
-            // 
-            this.panel3.Location = new System.Drawing.Point(12, 227);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(994, 362);
-            this.panel3.TabIndex = 1;
-            // 
-            // Btn_Perv
-            // 
-            this.Btn_Perv.Location = new System.Drawing.Point(815, 590);
-            this.Btn_Perv.Name = "Btn_Perv";
-            this.Btn_Perv.Size = new System.Drawing.Size(75, 23);
-            this.Btn_Perv.TabIndex = 2;
-            this.Btn_Perv.Text = "上一题";
-            this.Btn_Perv.UseVisualStyleBackColor = true;
-            this.Btn_Perv.Click += new System.EventHandler(this.Btn_Perv_Click);
-            // 
-            // Btn_Next
-            // 
-            this.Btn_Next.Location = new System.Drawing.Point(910, 590);
-            this.Btn_Next.Name = "Btn_Next";
-            this.Btn_Next.Size = new System.Drawing.Size(75, 23);
-            this.Btn_Next.TabIndex = 2;
-            this.Btn_Next.Text = "下一题";
-            this.Btn_Next.UseVisualStyleBackColor = true;
-            this.Btn_Next.Click += new System.EventHandler(this.Btn_Next_Click);
-            // 
-            // Lab_Count
-            // 
-            this.Lab_Count.AutoSize = true;
-            this.Lab_Count.Location = new System.Drawing.Point(657, 595);
-            this.Lab_Count.Name = "Lab_Count";
-            this.Lab_Count.Size = new System.Drawing.Size(41, 12);
-            this.Lab_Count.TabIndex = 3;
-            this.Lab_Count.Text = "label1";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(844, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "保存";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // notifyIcon1
             // 
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
@@ -248,6 +248,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Business;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +18,24 @@ namespace ExamTeach
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+            try
+            {
+                Application.Run(new Main());
+            }
+            catch (Exception ex)
+            {
+                using (TeacherB tb = new TeacherB())
+                {
+                    tb.EmptyServerInfo();
+
+                }
+
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                }
+                File.AppendAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log.txt"), new string[] { ex.Message, ex.StackTrace });
+            }
         }
     }
 }

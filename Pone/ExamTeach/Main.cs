@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,8 @@ using System.Windows.Forms;
 
 namespace ExamTeach
 {
+    using CommLibrary.Extension;
+
     public partial class Main : Form
     {
         public string UName;
@@ -24,13 +27,23 @@ namespace ExamTeach
         public TListener TL;
         private void Main_Load(object sender, EventArgs e)
         {
-            //if (string.IsNullOrWhiteSpace(UName))
-            //{
-            //    Login l = new Login();
-            //    l.Tag = this;
-            //    l.ShowDialog();
-            //}
+            if (string.IsNullOrWhiteSpace(UName))
+            {
+                Login l = new Login();
+                l.Tag = this;
+                if (l.ShowDialog() != DialogResult.OK)
+                {
+                    this.Close();
+                    return;
+
+                }
+            }
             M_EndListener.Enabled = false;
+            using (TeacherB tb = new TeacherB())
+            {
+                tb.EmptyServerInfo();
+
+            }
 
         }
 
@@ -108,22 +121,41 @@ namespace ExamTeach
             TL = null;
             this.Text = this.Text.Replace("(服务已开启)", "");
             M_StartListener.Enabled = !(M_EndListener.Enabled = false);
-            
+
 
         }
 
-        internal string GetHostName(string zkzh,int EID)
+        internal string GetHostName(string zkzh, int EID)
         {
-           return TL.GetHostName(zkzh, EID);
+
+            return TL?.GetHostName(zkzh, EID);
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            using (TeacherB tb=new TeacherB())
+            using (TeacherB tb = new TeacherB())
             {
                 tb.EmptyServerInfo();
             }
+            TL?.Dispose();
+
+            //杀掉所有监控进程
+            killProcess();
         }
+
+        //查找进程、结束进程
+        void killProcess()
+        {
+            Process[] pro = Process.GetProcesses();//获取已开启的所有进程
+
+            //遍历所有查找到的进程
+
+            pro.Where(c => c.ProcessName.Equals("viewer", StringComparison.CurrentCultureIgnoreCase)).ToList().ForEach(c =>
+             {
+                 c.Kill();
+             });
+        }
+
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {

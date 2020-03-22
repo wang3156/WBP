@@ -52,45 +52,52 @@ namespace ExamStudent
             //StuAnswer.Columns.AddRange(new DataColumn[] { new DataColumn("EID", typeof(int)) { AllowDBNull = false }, new DataColumn("PID", typeof(int)) { AllowDBNull = false }, new DataColumn("QID", typeof(int)), new DataColumn("Answers", typeof(string)), new DataColumn("ZKZH", typeof(string)) { AllowDBNull = false } });
             Re();
 
+            Action<ConnectCheck> atin = c =>
+             {
+                 switch (c.RCode)
+                 {
+                     case ResponseCode.ClientConnected:
+                         if (papers.Rows.Count > 0)
+                         {
+                             DisabledMian(true);
+                         }
+                         break;
+                     case ResponseCode.CheckOnLine:
+                         ShowStatus(false);
+                         break;
+                     case ResponseCode.StartExam:
+                         SetPaper();
+                         break;
+                     case ResponseCode.EndExam:
+                         SaveData(true);
+                         break;
+                     case ResponseCode.DisabledExam:
+                         DisabledExam();
+                         break;
+                     case ResponseCode.ServerColseConnected:
+                         DisabledMian(false);
+                         SaveData(false);
+                         ShowStatus();
+                         cl.Dispose();
+                         this.Invoke(new Action(() =>
+                         {
+                             CShowDialog("服务器已断开!");
+
+                         }));
+                         cl.BeginConnction(zkzh);
+                         break;
+                     default:
+                         break;
+                 }
+
+             };
+
             ShowStatus();
             ThreadPool.QueueUserWorkItem((a) =>
             {
 
                 cl = new CListener();
-                cl.ServerP = c =>
-                {
-                    switch (c.RCode)
-                    {
-                        case ResponseCode.StartExam:
-
-                            SetPaper();
-                            break;
-                        case ResponseCode.EndExam:
-                            SaveData(true);
-                            break;
-                        case ResponseCode.DisabledExam:
-                            DisabledExam();
-                            break;
-                        case ResponseCode.ServerColseConnected:
-                            SaveData(false);
-                            ShowStatus();
-                            try
-                            {
-                                cl.Dispose();
-
-                            }
-                            catch (Exception)
-                            {
-
-
-                            }
-                            cl.BeginConnction(zkzh);
-                            break;
-                        default:
-                            break;
-                    }
-
-                };
+                cl.ServerP = atin;
                 cl.BeginConnction(zkzh);
                 ShowStatus(false);
                 if (Convert.ToInt32(UserRow["EStatus"]) == 1)  //考试中要直接加入
@@ -141,7 +148,7 @@ namespace ExamStudent
         private void SetPaper()
         {
             DisabledMian(true);
-            papers = Comm.GetPaper(Convert.ToInt32(UserRow["EID"]));
+            papers = Comm.GetPaperByEID(Convert.ToInt32(UserRow["EID"]));
             Lab_Name.Text = Convert.ToString(papers.Rows[0]["PaperName"]);
             E_Test = Comm.GetPaperMx(Convert.ToInt32(papers.Rows[0]["PID"]));
             //获取学生答案

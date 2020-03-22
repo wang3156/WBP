@@ -33,6 +33,14 @@ namespace Business
             }
         }
 
+        public static bool CanEditPaper(int pID)
+        {
+            using (SqlServerDBHelper db = new SqlServerDBHelper())
+            {
+                return db.ExecuteScalar<int>($"select count(1) From  E_ExamInfo where PID={pID}") == 0;
+            }
+        }
+
         /// <summary>
         /// 获取选择题选项
         /// </summary>
@@ -50,7 +58,7 @@ namespace Business
         /// 根据传入的行数据生成控件
         /// </summary>
         /// <param name="row"></param>
-        public static void CreateControl(DataRow dataRow, System.Windows.Forms.RichTextBox txt_Questions, System.Windows.Forms.Panel p_Content, bool teacher, string Answer="")
+        public static void CreateControl(DataRow dataRow, System.Windows.Forms.RichTextBox txt_Questions, System.Windows.Forms.Panel p_Content, bool teacher, string Answer = null)
         {
             string q = Convert.ToString(dataRow["Questions"]);
             int Qtype = Convert.ToInt32(dataRow["QType"]);
@@ -133,13 +141,21 @@ namespace Business
                         tb.Top = (i * tb.Height + 5 * i);
                         tb.Left = 5;
                         tb.Width = 540;
-                        tb.Text = stu_ans?[i];
+                        tb.Text = stu_ans == null ? "" : stu_ans?[i];
                         cots.Add(tb);
                     }
                 }
             }
             p_Content.Controls.AddRange(cots.ToArray());
 
+        }
+
+        public static DataTable GetPaperByEID(int EID)
+        {
+            using (SqlServerDBHelper db = new SqlServerDBHelper())
+            {
+                return db.GetDataSet("select a.*,b.PaperName From E_ExamInfo a,E_Paper b where a.EID= 3 and b.PID=a.PID").Tables[0];
+            }
         }
 
 

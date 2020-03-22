@@ -86,6 +86,7 @@ namespace SmartKernel.Net
         {
             textBox1.Text = HostName;
             checkBox1.Checked = true;
+            checkBox2.Checked = true;
 
         }
 

@@ -68,7 +68,8 @@ namespace ExamTeach
                         tb.SetStatusWithExam(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) }, 1);
                     }
                     vr.Cells["EStatus"].Value = "正在考试";
-                    m.TL.StartExamByEID(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) });
+                    if (m.TL != null)
+                        m.TL.StartExamByEID(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) });
                     MessageBox.Show("操作成功!");
                     break;
                 case "EEndExam":
@@ -77,17 +78,22 @@ namespace ExamTeach
                         MessageBox.Show(a);
                         return;
                     }
+
                     using (TeacherB tb = new TeacherB())
                     {
                         tb.SetStatusWithExam(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) }, 2);
                     }
                     vr.Cells["EStatus"].Value = "考试结束";
-                    m.TL.EndExamByEID(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) });
+                    if (m.TL != null)
+                    {
+                        m.TL.EndExamByEID(new int[] { Convert.ToInt32(vr.Cells["EID"].Value) });
+                    }
+
 
                     MessageBox.Show("操作成功!");
                     break;
                 case "E_ExamKS":
-                    E_Student es = new E_Student(Convert.ToInt32(vr.Cells["EID"].Value), vr.Cells["EStatus"].Value.ToString(),m);
+                    E_Student es = new E_Student(Convert.ToInt32(vr.Cells["EID"].Value), vr.Cells["EStatus"].Value.ToString(), m);
                     es.ShowDialog();
                     break;
                 default:
@@ -162,8 +168,8 @@ namespace ExamTeach
             {
                 c["EStatus"] = "正在考试";
             });
-
-            m.TL.StartExamByEID(edis);
+            if (m.TL != null)
+                m.TL.StartExamByEID(edis);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -196,8 +202,8 @@ namespace ExamTeach
             {
                 c["EStatus"] = "考试结束";
             });
-
-            m.TL.EndExamByEID(edis);
+            if (m.TL != null)
+                m.TL.EndExamByEID(edis);
         }
     }
 }

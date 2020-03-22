@@ -26,17 +26,28 @@ namespace ExamTeach
 
         private void ZPaper_Load(object sender, EventArgs e)
         {
-            if (fp == null)
+            fp = this.Tag as FPars;
+            PID = Convert.ToInt32(fp.PID);
+
+            if (PID > 0)
             {
-                fp = this.Tag as FPars;
-                PID = Convert.ToInt32(fp.PID);
+                SetCanEdit();
+                BindPaperData();
+                BindDataWithPID();
             }
-
-
-            BindPaperData();
-            BindDataWithPID();
             BindUnData();
+
         }
+
+        private void SetCanEdit()
+        {
+            //用过的试卷不能修改
+            if (!Comm.CanEditPaper(PID))
+            {
+                button1.Enabled = button3.Enabled = button2.Enabled = false;
+            }
+        }
+
         /// <summary>
         /// 绑定未选择的数据 
         /// </summary>
@@ -49,7 +60,16 @@ namespace ExamTeach
             }
             DataTable dt2 = dataGridView2.DataSource as DataTable;
             DataTable dtn = dt.Clone();
-            dt.AsEnumerable().Except(dt2.AsEnumerable(), new ProductComparer()).CopyToDataTable(dtn, LoadOption.OverwriteChanges);
+            if (dt2 != null)
+            {
+                dt.AsEnumerable().Except(dt2.AsEnumerable(), new ProductComparer()).CopyToDataTable(dtn, LoadOption.OverwriteChanges);
+            }
+            else
+            {
+
+                dtn = dt;
+            }
+
 
             dataGridView1.DataSource = dtn;
         }
@@ -153,6 +173,11 @@ namespace ExamTeach
                 return;
             }
             DataTable dt = dataGridView2.DataSource as DataTable;
+            if (dt == null)
+            {
+                dataGridView2.DataSource = dt = (dataGridView1.DataSource as DataTable).Clone();
+
+            }
 
             foreach (var item in QIDS)
             {
@@ -229,7 +254,7 @@ namespace ExamTeach
             }
             DataGridView g = sender as DataGridView;
 
-            Comm.CreateControl((g.SelectedRows[0].DataBoundItem as DataRowView).Row, Txt_Questions, P_Content, false);
+            Comm.CreateControl((g.SelectedRows[0].DataBoundItem as DataRowView).Row, Txt_Questions, P_Content, true);
         }
     }
 

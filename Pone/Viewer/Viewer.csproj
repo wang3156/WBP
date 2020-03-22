@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6F0CE3A7-4273-40E6-82EF-E0982B3A89E2}</ProjectGuid>
+    <ProjectGuid>{9273608A-DE15-4203-9CBA-833A3134FE19}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExamStudent</RootNamespace>
-    <AssemblyName>ExamStudent</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <RootNamespace>Viewer</RootNamespace>
+    <AssemblyName>Viewer</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\ExamTeach\bin\Debug\viewer\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,9 +31,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>032118525077_0a.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,28 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs">
+    <Compile Include="MonitorClient.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
+    <Compile Include="MonitorClient.designer.cs">
+      <DependentUpon>MonitorClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonitorUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonitorUserControl.designer.cs">
+      <DependentUpon>MonitorUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StuLogin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="StuLogin.Designer.cs">
-      <DependentUpon>StuLogin.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TipMsg .cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TipMsg .Designer.cs">
-      <DependentUpon>TipMsg .cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
+    <EmbeddedResource Include="MonitorClient.resx">
+      <DependentUpon>MonitorClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorUserControl.resx">
+      <DependentUpon>MonitorUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -82,12 +76,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="StuLogin.resx">
-      <DependentUpon>StuLogin.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TipMsg .resx">
-      <DependentUpon>TipMsg .cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -106,9 +94,6 @@
       <Project>{8D41871F-F3E8-4EC8-ACDD-71128EAD7518}</Project>
       <Name>Business</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="032118525077_0a.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

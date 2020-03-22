@@ -32,7 +32,7 @@ namespace ExamTeach
             }
             else
             {
-
+                this.DialogResult = DialogResult.OK;
                 p.Text = $"教师端（{(p.UName = Txt_User.Text)}）";
                 this.Close();
             }

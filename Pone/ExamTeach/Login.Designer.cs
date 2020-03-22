@@ -71,14 +71,14 @@
             this.Txt_PassWord.Name = "Txt_PassWord";
             this.Txt_PassWord.PasswordChar = '#';
             this.Txt_PassWord.Size = new System.Drawing.Size(253, 21);
-            this.Txt_PassWord.TabIndex = 1;
+            this.Txt_PassWord.TabIndex = 2;
             // 
             // Btn_Exit
             // 
             this.Btn_Exit.Location = new System.Drawing.Point(294, 159);
             this.Btn_Exit.Name = "Btn_Exit";
             this.Btn_Exit.Size = new System.Drawing.Size(75, 21);
-            this.Btn_Exit.TabIndex = 2;
+            this.Btn_Exit.TabIndex = 4;
             this.Btn_Exit.Text = "退出";
             this.Btn_Exit.UseVisualStyleBackColor = true;
             this.Btn_Exit.Click += new System.EventHandler(this.Btn_Exit_Click);
@@ -88,7 +88,7 @@
             this.Btn_Login.Location = new System.Drawing.Point(189, 159);
             this.Btn_Login.Name = "Btn_Login";
             this.Btn_Login.Size = new System.Drawing.Size(75, 21);
-            this.Btn_Login.TabIndex = 2;
+            this.Btn_Login.TabIndex = 3;
             this.Btn_Login.Text = "登录";
             this.Btn_Login.UseVisualStyleBackColor = true;
             this.Btn_Login.Click += new System.EventHandler(this.Btn_Login_Click);

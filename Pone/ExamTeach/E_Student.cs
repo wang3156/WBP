@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,7 +80,7 @@ namespace ExamTeach
                     tb.DisabledStu(EID, zkzh);
                 }
                 vr["JZKS"] = true;
-                M.TL.SendTOClient(new ConnectCheck() { RCode = ResponseCode.DisabledExam }, zkzh);
+                M.TL?.SendTOClient(new ConnectCheck() { RCode = ResponseCode.DisabledExam }, zkzh);
 
                 MessageBox.Show("该考生已被禁止考试!");
 
@@ -87,14 +88,17 @@ namespace ExamTeach
             else if (dataGridView1.Columns[e.ColumnIndex].HeaderText == "查看")
             {
 
-                string s = M.GetHostName(zkzh,EID);
+                string s = M.GetHostName(zkzh, EID);
                 if (string.IsNullOrWhiteSpace(s))
                 {
                     MessageBox.Show("用户未上线!");
                     return;
                 }
-                MonitorClient mc = new MonitorClient(s);
-                mc.Show();
+                //MonitorClient mc = new MonitorClient(s);
+                //mc.Show();
+                string ptah = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"viewer\Viewer.exe ");
+                System.Diagnostics.Process.Start(ptah, s);
+
             }
         }
 

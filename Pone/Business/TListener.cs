@@ -129,6 +129,8 @@ namespace Business
 
         }
 
+      
+
         public string GetHostName(string zkzh, int EID)
         {
            return (children_sockets.Where(c => c.ZKZH == zkzh && c.EID == EID).FirstOrDefault()?.socket.RemoteEndPoint as IPEndPoint)?.Address.ToString();
@@ -189,7 +191,7 @@ namespace Business
                 Thread.Sleep(5 * 1000);
             }
         }
-
+       
         /// <summary>
         /// 统一编码发送数据给客户端
         /// </summary>

@@ -35,7 +35,7 @@ namespace Business
 
         public void BeginConnction(string zkzh)
         {
-            re:
+            //re:
             DataTable dt = Comm.GetServerSocketInfo();
 
             while (dt.Rows.Count == 0)
@@ -47,19 +47,19 @@ namespace Business
             ipe = new IPEndPoint(IPAddress.Parse(dt.Rows[0]["ServerIP"].ToString()), Convert.ToInt32(dt.Rows[0]["ServerPort"]));
 
             Client_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            try
-            {
-                Client_Socket.Connect(ipe);
-                Client_Socket.Send(Encoding.UTF8.GetBytes(zkzh));
-            }
-            catch (Exception)
-            {
-                using (TeacherB tb = new TeacherB())
-                {
-                    tb.EmptyServerInfo();
-                }
-                goto re;
-            }
+            //try
+            //{
+            Client_Socket.Connect(ipe);
+            Client_Socket.Send(Encoding.UTF8.GetBytes(zkzh));
+            //}
+            //catch (Exception)
+            //{
+            //    using (TeacherB tb = new TeacherB())
+            //    {
+            //        tb.EmptyServerInfo();
+            //    }
+            //    goto re;
+            //}
             //byte[] re = new byte[1024];
             //int recv = Client_Socket.Receive(re);
             //ConnectCheck cc = JsonConvert.DeserializeObject<ConnectCheck>(Encoding.UTF8.GetString(re, 0, recv));
@@ -91,8 +91,8 @@ namespace Business
                     catch (Exception ex)
                     {
                         DoByServerCode(new ConnectCheck { RCode = ResponseCode.ServerColseConnected });
-                        System.Windows.Forms.MessageBox.Show("服务端已断开!!");
                         return;
+
                     }
                     string ss = Encoding.UTF8.GetString(re, 0, recv);
                     if (!ss.EndsWith(Comm.EndMark))
@@ -120,10 +120,7 @@ namespace Business
             //根据服务器传的指定做事情
             switch (cc.RCode)
             {
-                case ResponseCode.CheckOnLine:
-                    break;
-                case ResponseCode.ClientConnected:
-                    break;
+                
                 case ResponseCode.ClientColseConnected:
                     break;
                 default:
