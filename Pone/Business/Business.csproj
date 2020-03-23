@@ -50,7 +50,6 @@
   <ItemGroup>
     <Compile Include="CListener.cs" />
     <Compile Include="Comm.cs" />
-    <Compile Include="Monitor.cs" />
     <Compile Include="SocketEntity.cs" />
     <Compile Include="StudentB.cs" />
     <Compile Include="TeacherB.cs" />

@@ -106,6 +106,10 @@
       <Project>{8D41871F-F3E8-4EC8-ACDD-71128EAD7518}</Project>
       <Name>Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CommLibrary\CommLibrary.csproj">
+      <Project>{2b47b0d7-612c-4d4c-abc6-93280d8b3bb7}</Project>
+      <Name>CommLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="032118525077_0a.ico" />

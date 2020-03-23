@@ -106,7 +106,7 @@ namespace ExamTeach
         {
             if (status == "正在考试")
             {
-                ((DataGridViewLinkColumn)dataGridView1.Columns["SDelete"]).Text = dataGridView1.Columns["SDelete"].HeaderText = "禁考";
+                //((DataGridViewLinkColumn)dataGridView1.Columns["SDelete"]).Text = dataGridView1.Columns["SDelete"].HeaderText = "禁考";
             }
             else if (status == "考试结束")
             {
