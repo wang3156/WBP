@@ -99,6 +99,7 @@
     <Content Include="Scripts\lib\Jquery\jquery-3.4.1.js" />
     <Content Include="Scripts\lib\template\template.js" />
     <Content Include="Scripts\lib\ViewUI\css\iview.css" />
+    <Content Include="Scripts\lib\ViewUI\iview-grid.js" />
     <Content Include="Scripts\lib\ViewUI\iview.min.js" />
     <Content Include="Scripts\lib\vue.min.js" />
     <Content Include="Web.config" />

@@ -16,7 +16,7 @@ namespace WebFramework1.Areas.Admin.Controllers.UserManagerView
         }
 
         public ActionResult GetUserInfo(ExpandoObject where) {
-            
+            return Content("");
         }
 
         // GET: Admin/UserManager/PermissionInfo
