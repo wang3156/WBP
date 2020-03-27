@@ -4,14 +4,14 @@
     Vue.component('i-grid', {
         template: '  <Layout class="el-grid" v-loading="loading"> \
 			            <i-content>\
-                            <i-table v-bind:data="tableData" stripe v-bind:height="tableHeight" v-bind:columns="tableColumns">\
+                            <i-table v-bind:data="tableData" stripe v-bind:height="tableHeight" v-bind:columns="tableColumns" v-bind:row-class-name="rowClassName" v-on:on-expand="onExpand">\
                                  <template slot-scope="{ row, index }" slot="action">\
-                                </template>\
+                                 </template>\
                             </i-table>\
                         </i-content>\
                         <i-footer class="page">\
 				          <div style="float: right;">\
-                                <Page :total="100" v-bind:page-size="50" v-bind:current="pageIndex" @@on-change="changePage"></Page>\
+                                <Page v-bind:total="totalRecords" v-bind:page-size="pageSize" v-bind:current="currentPage" v-on:on-change="changePage"></Page>\
                           </div>\
 			            </i-footer>\
 		         </Layout>',
@@ -44,17 +44,19 @@
                     return {};
                 }
             },
+            //生成列的对象
+            tableColumns: {
+                type: Object,
+                required: true
+            },
             rowClassName: {
                 type: Function,
                 default: function () {
                     return ""
                 }
             },
-            cellClassName: {
-                type: Function,
-                default: function () {
-                    return ""
-                }
+            onExpand: {
+                type: Function
             }
         },
         data: function () {
@@ -77,6 +79,14 @@
             }
         },
         methods: {
+            changePage (currentPage) {
+                this.currentPage = currentPage;
+                this.reload({
+                    PageNumber: self.currentPage,
+                    PageSize: self.pageSize,
+                    Sort: self.sort
+                });
+            },
             //加载数据
             reload: function (pageInfo) {
                 var actualPageInfo = this.buildPageInfoSmartly(pageInfo);
@@ -148,36 +158,11 @@
 
         },
         mounted: function () {
-            var self = this;
-            var column = this.$refs.myTable.columns.find(function (v) { return v.property == self.defaultSort.prop; });
-            if (column && column.sortOrders.length == 3) {
-                column.sortOrders = ['ascending', 'descending'];
-            }
-            this.$nextTick(function () {
+            var self = this;            
+            self.$nextTick(function () {
+ 
 
-                self.$refs.myTable.$on('expand-change', function (row, expandedRows) {
-                    self.$emit('expand-change', row, expandedRows);
-                });
-
-                self.$refs.myPager.$on('current-change', function (currentPage) {
-                    self.currentPage = currentPage;
-                    self.loadData({
-                        PageNumber: self.currentPage,
-                        PageSize: self.pageSize,
-                        Sort: self.sort
-                    });
-                });
-
-                self.$refs.myPager.$on('size-change', function (pageSize) {
-                    self.pageSize = pageSize;
-                    self.currentPage = 1;
-                    var pageInfo = {
-                        PageNumber: self.currentPage,
-                        PageSize: self.pageSize,
-                        Sort: self.sort
-                    };
-                    self.loadData(pageInfo);
-                });
+                 
             });
         }
     });
