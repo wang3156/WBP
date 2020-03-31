@@ -13,5 +13,12 @@ namespace WebFramework1.Areas.Admin.Controllers
         {
             return View();
         }
+
+
+        public ActionResult gridTest()
+        {
+
+            return View();
+        }
     }
 }

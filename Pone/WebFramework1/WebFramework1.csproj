@@ -126,6 +126,7 @@
     <Content Include="Areas\Admin\Views\UserManager\PermissionInfo.cshtml" />
     <Content Include="Scripts\lib\jquery.cookie\component.json" />
     <Content Include="Scripts\lib\jquery.cookie\cookie.jquery.json" />
+    <Content Include="Areas\Admin\Views\Main\gridTest.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
