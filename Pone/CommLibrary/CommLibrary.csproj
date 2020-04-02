@@ -98,6 +98,7 @@
     <Compile Include="DBHelper\BaseClass\BaseDBHelper.cs" />
     <Compile Include="DBHelper\MySqlDBHelper.cs" />
     <Compile Include="DBHelper\SqlServerDBHelper.cs" />
+    <Compile Include="Extension\DataTableExtension.cs" />
     <Compile Include="OfficeHelper\Excel\NPOIHelper.cs" />
     <Compile Include="Extension\StringExtension.cs" />
     <Compile Include="Other\Remote\Monitor.cs" />

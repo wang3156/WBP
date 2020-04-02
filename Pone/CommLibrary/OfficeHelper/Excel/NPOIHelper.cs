@@ -69,12 +69,12 @@ namespace CommLibrary.OfficeHelper.Excel
         //}
 
         /// <summary>
-        /// 从DataTable导出一个Excel
+        /// 从DataTable导出一个Excel 默认生成2007以上的
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="dic">DataTable(key)和Excel(value)中列名对照 </param>
         ///<param name="FilePath">生成的文件保存路径</param>
-        ///<param name="Is2007">是否生成2007或以上的Excel 如果FilePath有值并带文件名则以该文件类型为准</param>
+        ///<param name="Is2007">是否生成2007或以上的Excel 如果FilePath有值并带文件名则以该文件类型为准 默认生成2007以上的</param>
         ///<param name="SheetName">需要生成的Sheet名.默认为 sheet1</param>
         ///<returns>如果有传文件路径则保存到路径返回文件名,否则返回生成的文件字节数组</returns>
         public static object ExportxlsxFromDataTable(DataTable dt, Dictionary<string, string> dic = null, string FilePath = "", bool Is2007 = true, string SheetName = "sheet1")
