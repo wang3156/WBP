@@ -13,6 +13,7 @@ using System.Windows.Forms;
 
 namespace ExamStudent
 {
+    using SmartKernel.Net;
     using System.Runtime.Remoting;
     using System.Runtime.Remoting.Channels;
     using System.Runtime.Remoting.Channels.Tcp;
@@ -351,9 +352,9 @@ namespace ExamStudent
 
         public void Re()
         {
-            TcpServerChannel channel = new TcpServerChannel(24563);
-            ChannelServices.RegisterChannel(channel, false);
-            RemotingConfiguration.RegisterWellKnownServiceType(typeof(SmartKernel.Net.Monitor), "MonitorServerUrl", WellKnownObjectMode.SingleCall);
+            
+            RemoteClient rc = new RemoteClient();
+            rc.BeginRemote();
         }
     }
 }

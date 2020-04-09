@@ -1,4 +1,12 @@
-﻿ 
+﻿/************************************************************/
+//【项目】：远程监控
+//【创建】：2005年10月
+//【作者】：SmartKernel
+//【邮箱】：smartkernel@126.com
+//【QQ  】：120018689
+//【MSN 】：smartkernel@hotmail.com
+//【网站】：www.SmartKernel.com
+/************************************************************/
 
 using System;
 using System.Drawing;
@@ -9,7 +17,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace SmartKernel.Net
+namespace SmartKernel.Net1
 {
     public class Monitor : System.MarshalByRefObject
     {

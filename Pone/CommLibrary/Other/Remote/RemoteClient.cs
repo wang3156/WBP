@@ -17,9 +17,9 @@ namespace SmartKernel.Net
         /// <summary>
         /// 开始一个远程客户端
         /// </summary>
-        public void BeginRemote()
+        public void BeginRemote(int port= 24563)
         {
-            TcpServerChannel channel = new TcpServerChannel(24563);
+            TcpServerChannel channel = new TcpServerChannel(port);
             ChannelServices.RegisterChannel(channel, false);
             RemotingConfiguration.RegisterWellKnownServiceType(typeof(Monitor), "MonitorServerUrl", WellKnownObjectMode.SingleCall);
         }

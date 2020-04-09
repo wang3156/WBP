@@ -1,0 +1,9 @@
+--字段说明里有字段含义
+ -- 教师信息  [dbo].[A_Teacher]
+ --考生信息 [dbo].[E_StudentKs]
+ --选择题选项 [dbo].[E_CSelectQuestions]
+ --选择题 主表 [dbo].[E_SelectQuestions]
+--填空题  [dbo].[E_TKQuestions]
+--试卷表 [dbo].[E_Paper] , [dbo].[E_CPaper]
+--考试信息 [dbo].[E_ExamInfo]
+--学生答案 [dbo].[E_StudentAnswer]
