@@ -108,16 +108,22 @@ namespace SmartKernel.Net
         #region 按键按下
         private void MonitorUserControl_KeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = true;
-            robj.SendKeystroke((byte)e.KeyCode, (byte)MapVirtualKey((uint)e.KeyCode, 0), true, false);
+            if (Control)
+            {
+                e.Handled = true;
+                robj.SendKeystroke((byte)e.KeyCode, (byte)MapVirtualKey((uint)e.KeyCode, 0), true, false);
+            }
         }
         #endregion
 
         #region 按键释放
         private void MonitorUserControl_KeyUp(object sender, KeyEventArgs e)
         {
-            e.Handled = true;
-            robj.SendKeystroke((byte)e.KeyCode, (byte)MapVirtualKey((uint)e.KeyCode, 0), false, false);
+            if (Control)
+            {
+                e.Handled = true;
+                robj.SendKeystroke((byte)e.KeyCode, (byte)MapVirtualKey((uint)e.KeyCode, 0), false, false);
+            }
         }
         #endregion
 
