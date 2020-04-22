@@ -14,6 +14,7 @@ using System.Windows.Forms;
 namespace ExamStudent
 {
     using SmartKernel.Net;
+    using System.IO;
     using System.Runtime.Remoting;
     using System.Runtime.Remoting.Channels;
     using System.Runtime.Remoting.Channels.Tcp;
@@ -23,7 +24,7 @@ namespace ExamStudent
 
         public DataRow UserRow;
         public Main()
-        {
+        {          
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
         }
@@ -32,6 +33,7 @@ namespace ExamStudent
         CListener cl;
         private void Mian_Load(object sender, EventArgs e)
         {
+
             if (UserRow == null)
             {
                 StuLogin sl = new StuLogin(this);
@@ -55,40 +57,51 @@ namespace ExamStudent
 
             Action<ConnectCheck> atin = c =>
              {
-                 switch (c.RCode)
+                 try
                  {
-                     case ResponseCode.ClientConnected:
-                         if (papers.Rows.Count > 0)
-                         {
-                             DisabledMian(true);
-                         }
-                         break;
-                     case ResponseCode.CheckOnLine:
-                         ShowStatus(false);
-                         break;
-                     case ResponseCode.StartExam:
-                         SetPaper();
-                         break;
-                     case ResponseCode.EndExam:
-                         SaveData(true);
-                         break;
-                     case ResponseCode.DisabledExam:
-                         DisabledExam();
-                         break;
-                     case ResponseCode.ServerColseConnected:
-                         DisabledMian(false);
-                         SaveData(false);
-                         ShowStatus();
-                         cl.Dispose();
-                         this.Invoke(new Action(() =>
-                         {
-                             CShowDialog("服务器已断开!");
+                     switch (c.RCode)
+                     {
+                         case ResponseCode.ClientConnected:
+                             if (papers != null && papers.Rows.Count > 0)
+                             {
+                                 DisabledMian(true);
+                                 if (Convert.ToInt32(UserRow["EStatus"]) == 1)  //考试中要直接加入
+                                 {
+                                     this.Invoke(new Action(() => { SetPaper(); }));
+                                 }
+                             }
+                             break;
+                         case ResponseCode.CheckOnLine:
+                             ShowStatus(false);
+                             break;
+                         case ResponseCode.StartExam:
+                             SetPaper();
+                             break;
+                         case ResponseCode.EndExam:
+                             SaveData(true);
+                             break;
+                         case ResponseCode.DisabledExam:
+                             DisabledExam();
+                             break;
+                         case ResponseCode.ServerColseConnected:
+                             DisabledMian(false);
+                             SaveData(false);
+                             ShowStatus();
+                             cl.Dispose();
+                             this.Invoke(new Action(() =>
+                             {
+                                 CShowDialog("服务器已断开!");
 
-                         }));
-                         cl.BeginConnction(zkzh);
-                         break;
-                     default:
-                         break;
+                             }));
+                             cl.BeginConnction(zkzh);
+                             break;
+                         default:
+                             break;
+                     }
+                 }
+                 catch (Exception ex)
+                 {
+                     MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace);
                  }
 
              };
@@ -149,20 +162,28 @@ namespace ExamStudent
         private void SetPaper()
         {
             DisabledMian(true);
-            papers = Comm.GetPaperByEID(Convert.ToInt32(UserRow["EID"]));
-            Lab_Name.Text = Convert.ToString(papers.Rows[0]["PaperName"]);
-            E_Test = Comm.GetPaperMx(Convert.ToInt32(papers.Rows[0]["PID"]));
-            //获取学生答案
-            using (StudentB sb = new StudentB())
+            try
             {
-                StuAnswer = sb.GetKSAnswer(Convert.ToInt32(UserRow["EID"]), Convert.ToInt32(papers.Rows[0]["PID"]), Lab_ZKZH.Text);
-            }
+                papers = Comm.GetPaperByEID(Convert.ToInt32(UserRow["EID"]));
+                Lab_Name.Text = Convert.ToString(papers.Rows[0]["PaperName"]);
+                E_Test = Comm.GetPaperMx(Convert.ToInt32(papers.Rows[0]["PID"]));
+                //获取学生答案
+                using (StudentB sb = new StudentB())
+                {
+                    StuAnswer = sb.GetKSAnswer(Convert.ToInt32(UserRow["EID"]), Convert.ToInt32(papers.Rows[0]["PID"]), Lab_ZKZH.Text);
+                }
 
-            Btn_Next_Click(null, null);
-            Btu_Submit.Enabled = true;
-            StuAnswer.Columns["EID"].DefaultValue = Convert.ToInt32(UserRow["EID"]);
-            StuAnswer.Columns["PID"].DefaultValue = Convert.ToInt32(papers.Rows[0]["PID"]);
-            StuAnswer.Columns["ZKZH"].DefaultValue = Lab_ZKZH.Text;
+                Btn_Next_Click(null, null);
+                Btu_Submit.Enabled = true;
+                StuAnswer.Columns["EID"].DefaultValue = Convert.ToInt32(UserRow["EID"]);
+                StuAnswer.Columns["PID"].DefaultValue = Convert.ToInt32(papers.Rows[0]["PID"]);
+                StuAnswer.Columns["ZKZH"].DefaultValue = Lab_ZKZH.Text;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Convert.ToInt32(UserRow["EID"]) + "========" + ex.Message + "\r\n" + ex.StackTrace + "\r\n");
+            }
             this.Invoke(new Action(() =>
             {
                 notifyIcon1_MouseDoubleClick(null, null);
@@ -238,7 +259,7 @@ namespace ExamStudent
             RowIndex++;
             DataRow dr = E_Test.Rows[RowIndex];
 
-            CreateCotronl(dr, StuAnswer.AsEnumerable().Where(c => Convert.ToInt32(c["QID"]) == Convert.ToInt32(dr["QID"])).FirstOrDefault()?["Answers"].ToString());
+            CreateCotronl(dr, StuAnswer.AsEnumerable().Where(c => Convert.ToInt32(c["QID"]) == Convert.ToInt32(dr["QID"]) && Convert.ToInt32(c["QType"]) == Convert.ToInt32(dr["QType"])).FirstOrDefault()?["Answers"].ToString());
 
             Lab_Count.Text = $"共 {E_Test.Rows.Count} 题,第 {RowIndex + 1} 题 ";
 
@@ -254,19 +275,21 @@ namespace ExamStudent
             }
             //记录当前的答案
             DataRow row = E_Test.Rows[RowIndex];
+            int qt = Convert.ToInt32(row["QType"]);
             int qid = Convert.ToInt32(row["QID"]);
-            DataRow arow = StuAnswer.AsEnumerable().Where(c => Convert.ToInt32(c["QID"]) == qid).FirstOrDefault();
+            DataRow arow = StuAnswer.AsEnumerable().Where(c => Convert.ToInt32(c["QID"]) == qid && Convert.ToInt32(c["QType"]) == qt).FirstOrDefault();
             if (arow == null)
             {
                 arow = StuAnswer.NewRow();
                 arow["QID"] = qid;
+                arow["QType"] = qt;
                 StuAnswer.Rows.Add(arow);
             }
             List<string> ans = new List<string>();
 
             foreach (Control cot in panel3.Controls)
             {
-                if (Convert.ToInt32(row["QType"]) == 0)  //选择题
+                if (qt == 0)  //选择题
                 {
                     CheckBox cb = cot as CheckBox;
                     if (cb == null || !cb.Checked)
@@ -281,7 +304,7 @@ namespace ExamStudent
                     ans.Add(tb.Text.Trim());
                 }
             }
-            if (Convert.ToInt32(row["QType"]) == 0)  //选择题
+            if (qt == 0)  //选择题
             {
                 arow["Answers"] = string.Join(",", ans);
 
@@ -304,7 +327,7 @@ namespace ExamStudent
             RowIndex--;
 
             DataRow dr = E_Test.Rows[RowIndex];
-            CreateCotronl(dr, StuAnswer.AsEnumerable().Where(c => Convert.ToInt32(c["QID"]) == Convert.ToInt32(dr["QID"])).FirstOrDefault()?["Answers"].ToString());
+            CreateCotronl(dr, StuAnswer.AsEnumerable().Where(c => Convert.ToInt32(c["QID"]) == Convert.ToInt32(dr["QID"]) && Convert.ToInt32(c["QType"])== Convert.ToInt32(dr["QType"])).FirstOrDefault()?["Answers"].ToString());
             Lab_Count.Text = $"共 {E_Test.Rows.Count} 题,第 {RowIndex + 1} 题 ";
 
             Btn_Perv.Enabled = true;
@@ -352,9 +375,22 @@ namespace ExamStudent
 
         public void Re()
         {
-            
-            RemoteClient rc = new RemoteClient();
-            rc.BeginRemote();
+
+            try
+            {
+                RemoteClient rc = new RemoteClient();
+                rc.BeginRemote();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Test" + ex.Message);
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                }
+                File.AppendAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log.txt"), new string[] { ex.Message, ex.StackTrace });
+            }
         }
     }
 }

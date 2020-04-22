@@ -141,7 +141,15 @@ namespace Business
                         tb.Top = (i * tb.Height + 5 * i);
                         tb.Left = 5;
                         tb.Width = 540;
-                        tb.Text = stu_ans == null ? "" : stu_ans?[i];
+                        if (stu_ans!=null&&stu_ans.Length>i)
+                        {
+                            tb.Text =  stu_ans[i];
+                        }
+                        else
+                        {
+                            tb.Text = "";
+                        }
+                       
                         cots.Add(tb);
                     }
                 }
@@ -154,7 +162,7 @@ namespace Business
         {
             using (SqlServerDBHelper db = new SqlServerDBHelper())
             {
-                return db.GetDataSet("select a.*,b.PaperName From E_ExamInfo a,E_Paper b where a.EID= 3 and b.PID=a.PID").Tables[0];
+                return db.GetDataSet($"select a.*,b.PaperName From E_ExamInfo a,E_Paper b where a.EID= {EID} and b.PID=a.PID").Tables[0];
             }
         }
 
