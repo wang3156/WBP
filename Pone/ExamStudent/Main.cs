@@ -24,7 +24,7 @@ namespace ExamStudent
 
         public DataRow UserRow;
         public Main()
-        {          
+        {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
         }
@@ -133,10 +133,14 @@ namespace ExamStudent
 
         private void SaveData(bool isEnd)
         {
-            using (StudentB sb = new StudentB())
+            if (StuAnswer != null && StuAnswer.Rows.Count > 0)
             {
-                sb.SaveData(StuAnswer);
+                using (StudentB sb = new StudentB())
+                {
+                    sb.SaveData(StuAnswer);
+                }
             }
+
             if (isEnd)
             {
                 this.Invoke(new Action(() =>
@@ -158,12 +162,38 @@ namespace ExamStudent
         {
             panel1.Enabled = groupBox1.Enabled = disabled;
         }
-
+        //考试结束时间
+        DateTime end;
         private void SetPaper()
         {
             DisabledMian(true);
             try
             {
+                end = Convert.ToDateTime(UserRow["EEnd"]);
+                int ms = (int)(end - DateTime.Now).TotalMinutes;
+                if (ms <= 0)
+                {
+                    SaveData(true);
+                    return;
+                }
+                else
+                {
+                    Lab_Ytime.Text = ms.ToString();
+                    Thread tre = new Thread(() =>
+                    {                      
+                        ms = (int)(end - DateTime.Now).TotalMinutes;
+                        while (ms > 0)
+                        {
+                            Lab_Ytime.Text = ms.ToString();
+                            Thread.Sleep(30 * 1000);
+                            ms = (int)(end - DateTime.Now).TotalMinutes;
+                        }
+                        SaveData(true);
+                    });
+                    tre.IsBackground = true;
+                    tre.Start();
+                }
+
                 papers = Comm.GetPaperByEID(Convert.ToInt32(UserRow["EID"]));
                 Lab_Name.Text = Convert.ToString(papers.Rows[0]["PaperName"]);
                 E_Test = Comm.GetPaperMx(Convert.ToInt32(papers.Rows[0]["PID"]));
@@ -327,7 +357,7 @@ namespace ExamStudent
             RowIndex--;
 
             DataRow dr = E_Test.Rows[RowIndex];
-            CreateCotronl(dr, StuAnswer.AsEnumerable().Where(c => Convert.ToInt32(c["QID"]) == Convert.ToInt32(dr["QID"]) && Convert.ToInt32(c["QType"])== Convert.ToInt32(dr["QType"])).FirstOrDefault()?["Answers"].ToString());
+            CreateCotronl(dr, StuAnswer.AsEnumerable().Where(c => Convert.ToInt32(c["QID"]) == Convert.ToInt32(dr["QID"]) && Convert.ToInt32(c["QType"]) == Convert.ToInt32(dr["QType"])).FirstOrDefault()?["Answers"].ToString());
             Lab_Count.Text = $"共 {E_Test.Rows.Count} 题,第 {RowIndex + 1} 题 ";
 
             Btn_Perv.Enabled = true;

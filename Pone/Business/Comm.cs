@@ -178,7 +178,7 @@ namespace Business
             DataTable dt;
             using (SqlServerDBHelper db = new SqlServerDBHelper())
             {
-                dt = db.GetDataSet($"	   select top 1 a.*,b.EStatus From [E_StudentKs] a,E_ExamInfo b where [ZKZH]='{zkzh}' and [JZKS]=0 and b.EID=a.EID order by b.EStart").Tables[0];
+                dt = db.GetDataSet($"	   select top 1 a.*,b.EStatus,b.EEnd From [E_StudentKs] a,E_ExamInfo b where [ZKZH]='{zkzh}' and [JZKS]=0 and b.EID=a.EID order by b.EStart").Tables[0];
             }
             return dt;
         }
