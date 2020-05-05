@@ -12,7 +12,7 @@ namespace CommLibrary.DALBase
     /// </summary>
     public class BaseDAL : IDisposable
     {
-        BaseDBHelper db;
+        protected BaseDBHelper db;
 
         /// <summary>
         /// 创建一个baseDAL对象.
@@ -21,7 +21,7 @@ namespace CommLibrary.DALBase
         public BaseDAL(string connStr = "")
         {
             db = BaseDBHelper.GetDBHelper(connStr);
-             
+
         }
 
         /// <summary>
