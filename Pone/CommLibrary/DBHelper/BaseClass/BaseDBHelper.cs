@@ -80,9 +80,13 @@ namespace CommLibrary.DBHelper.BaseClass
                 throw new Exception("AppSetting中未配置DBType节点指定DB类型或类型不被支持.可选类型:sqlserver,mysql. ");
             }
 
-            if (string.IsNullOrWhiteSpace(connStr = connstr))
+            if (string.IsNullOrWhiteSpace(connstr))
             {
                 connStr = ConfigurationManager.AppSettings["ConStr"];
+            }
+            else
+            {
+                connStr = connstr;
             }
 
 
@@ -106,10 +110,10 @@ namespace CommLibrary.DBHelper.BaseClass
         /// </summary>
         public void Dispose()
         {
-            //如果有事务就尝试提交一下再释放连接,防止用户开了连接池,事务没有提交.而连接被放回连接池影响后续使用的问题.
+            //如果有事务就尝试回滚一下再释放连接,防止用户开了连接池,事务没有提交.而连接被放回连接池影响后续使用的问题.
             try
             {
-                tran?.Commit();
+                tran?.Rollback();
             }
             catch (Exception ex)
             {
@@ -118,7 +122,8 @@ namespace CommLibrary.DBHelper.BaseClass
 
             finally
             {
-                conn?.Dispose();
+                //conn?.Close();
+                conn.Dispose();
             }
 
 
@@ -170,7 +175,7 @@ namespace CommLibrary.DBHelper.BaseClass
             comm.Parameters.AddRange(pars);
             comm.CommandType = ctp;
             comm.ExecuteNonQuery();
-            comm.Dispose();
+            comm.Dispose();          
 
         }
         /// <summary>
@@ -194,7 +199,7 @@ namespace CommLibrary.DBHelper.BaseClass
             comm.CommandType = ctp;
             object o = comm.ExecuteScalar();
             comm.Dispose();
-
+            
             try
             {
                 return (N)Convert.ChangeType(o, typeof(N));
@@ -249,14 +254,19 @@ namespace CommLibrary.DBHelper.BaseClass
             DataSet ds = new DataSet();
             using (DbCommand comm = conn.CreateCommand())
             {
-                DbDataAdapter mad = GetDbDataAdapter();
-                comm.Transaction = tran;
-                comm.CommandText = sql;
-                comm.CommandType = ctype;
-                comm.Parameters.AddRange(pars);
-                mad.SelectCommand = comm;
-                mad.Fill(ds);
+                using (DbDataAdapter mad = GetDbDataAdapter())
+                {
+                    comm.Transaction = tran;
+                    comm.CommandText = sql;
+                    comm.CommandType = ctype;
+                    comm.Parameters.AddRange(pars);
+                    mad.SelectCommand = comm;
+                    mad.Fill(ds);
+                   
+                }
+
             }
+            
             return ds;
         }
         /// <summary>
