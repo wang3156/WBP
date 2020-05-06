@@ -90,6 +90,7 @@
             this.MSetExam.Name = "MSetExam";
             this.MSetExam.Size = new System.Drawing.Size(68, 21);
             this.MSetExam.Text = "设置考试";
+            this.MSetExam.Visible = false;
             this.MSetExam.Click += new System.EventHandler(this.MSetExam_Click);
             // 
             // 监听服务ToolStripMenuItem
@@ -100,18 +101,19 @@
             this.监听服务ToolStripMenuItem.Name = "监听服务ToolStripMenuItem";
             this.监听服务ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
             this.监听服务ToolStripMenuItem.Text = "监听服务";
+            this.监听服务ToolStripMenuItem.Visible = false;
             // 
             // M_StartListener
             // 
             this.M_StartListener.Name = "M_StartListener";
-            this.M_StartListener.Size = new System.Drawing.Size(124, 22);
+            this.M_StartListener.Size = new System.Drawing.Size(152, 22);
             this.M_StartListener.Text = "开启监听";
             this.M_StartListener.Click += new System.EventHandler(this.M_StartListener_Click);
             // 
             // M_EndListener
             // 
             this.M_EndListener.Name = "M_EndListener";
-            this.M_EndListener.Size = new System.Drawing.Size(124, 22);
+            this.M_EndListener.Size = new System.Drawing.Size(152, 22);
             this.M_EndListener.Text = "停止监听";
             this.M_EndListener.Click += new System.EventHandler(this.M_EndListener_Click);
             // 

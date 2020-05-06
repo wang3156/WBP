@@ -4,33 +4,33 @@
         <name>CommLibrary</name>
     </assembly>
     <members>
-        <member name="T:CommLibrary.BLLBase.BaseBLL`1">
+        <member name="T:CommLibrary.BLLBase.BaseBLL">
             <summary>
             BLL基类.添加一些基础方法
             </summary>
         </member>
-        <member name="M:CommLibrary.BLLBase.BaseBLL`1.#ctor(System.String)">
+        <member name="M:CommLibrary.BLLBase.BaseBLL.#ctor(System.String)">
             <summary>
             创建一个baseDAL对象.
             </summary>
             <param name="connStr">初始化对象时用的连接串.不传则使用配置信息</param>
         </member>
-        <member name="M:CommLibrary.BLLBase.BaseBLL`1.Dispose">
+        <member name="M:CommLibrary.BLLBase.BaseBLL.Dispose">
             <summary>
             释放Dal
             </summary>
         </member>
-        <member name="M:CommLibrary.BLLBase.BaseBLL`1.BeginTransaction">
+        <member name="M:CommLibrary.BLLBase.BaseBLL.BeginTransaction">
             <summary>
             开启事务
             </summary>
         </member>
-        <member name="M:CommLibrary.BLLBase.BaseBLL`1.Rollback">
+        <member name="M:CommLibrary.BLLBase.BaseBLL.Rollback">
             <summary>
             圆滚事务(未开事务不抛异常)
             </summary>
         </member>
-        <member name="M:CommLibrary.BLLBase.BaseBLL`1.Commit">
+        <member name="M:CommLibrary.BLLBase.BaseBLL.Commit">
             <summary>
             提交事务(未开事务不抛异常)
             </summary>
@@ -239,11 +239,6 @@
             <param name="word">需要检查的值</param>
             <param name="ignoreCase">是否忽略大小写</param>
             <returns></returns>
-        </member>
-        <member name="T:CommLibrary.MVC.SetNewJsonSoft">
-            <summary>
-            替换系统的JSON序列化器
-            </summary>
         </member>
         <member name="T:CommLibrary.OfficeHelper.Excel.NPOIHelper">
             <summary>

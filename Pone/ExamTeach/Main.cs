@@ -44,34 +44,12 @@ namespace ExamTeach
                 tb.EmptyServerInfo();
 
             }
-            checkend();
+      
 
 
         }
 
-        public void checkend()
-        {
 
-            //检查考试状态
-            Thread ttt = new Thread(() =>
-           {
-               DataTable dt = null;
-               while (true)
-               {
-                   using (TeacherB tb = new TeacherB())
-                   {
-                       dt = tb.CheckEndExam();
-                   }
-                   if (dt.Rows.Count > 0 && TL != null)
-                   {
-                       TL.EndExamByEID(dt.AsEnumerable().Select(c => Convert.ToInt32(c["EID"])));
-                   }
-                   Thread.Sleep(30 * 1000);
-               }
-           });
-            ttt.IsBackground = true;
-            ttt.Start();
-        }
 
         private void AddSelect_Click(object sender, EventArgs e)
         {
@@ -115,15 +93,12 @@ namespace ExamTeach
 
         private void MSetExam_Click(object sender, EventArgs e)
         {
-            MSetExam.Enabled = false;
-            ZuKao zk = new ZuKao();
-            zk.MdiParent = this;
-            zk.Show();
+            //MSetExam.Enabled = false;
+            //ZuKao zk = new ZuKao();
+            //zk.MdiParent = this;
+            //zk.Show();
         }
-        public void DisabledMSetExam()
-        {
-            MSetExam.Enabled = true;
-        }
+  
 
         private void M_StartListener_Click(object sender, EventArgs e)
         {
