@@ -104,6 +104,7 @@
     <Compile Include="Other\Remote\Monitor.cs" />
     <Compile Include="Other\Remote\RemoteClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Secrecy\EncryptionHelper.cs" />
     <Compile Include="Secrecy\MD5Helper.cs" />
   </ItemGroup>
   <ItemGroup>
