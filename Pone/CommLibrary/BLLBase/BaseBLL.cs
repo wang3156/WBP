@@ -11,16 +11,16 @@ namespace CommLibrary.BLLBase
     /// <summary>
     /// BLL基类.添加一些基础方法
     /// </summary>
-    public class BaseBLL
+    public class BaseBLL<T> where T : BaseDAL
     {
-        BaseDAL dal;
+        protected T dal;
         /// <summary>
         /// 创建一个baseDAL对象.
         /// </summary>
         /// <param name="connStr">初始化对象时用的连接串.不传则使用配置信息</param>
         public BaseBLL(string connStr = "")
         {
-            dal = new BaseDAL(connStr);
+            dal = Activator.CreateInstance(typeof(T), new string[] { connStr }) as T;
         }
 
         /// <summary>

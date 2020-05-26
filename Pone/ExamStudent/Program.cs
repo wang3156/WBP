@@ -23,6 +23,7 @@ namespace ExamStudent
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Test"+ex.Message);
                 while (ex.InnerException != null)
                 {
                     ex = ex.InnerException;

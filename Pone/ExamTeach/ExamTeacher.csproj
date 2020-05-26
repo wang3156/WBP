@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\CommLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -52,12 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddExamF.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddExamF.Designer.cs">
-      <DependentUpon>AddExamF.cs</DependentUpon>
-    </Compile>
     <Compile Include="ExamSystemDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -67,12 +65,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ExamSystemDataSet1.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="E_Student.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="E_Student.Designer.cs">
-      <DependentUpon>E_Student.cs</DependentUpon>
     </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
@@ -93,24 +85,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Remote\MonitorClient.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Remote\MonitorClient.designer.cs">
-      <DependentUpon>MonitorClient.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Remote\MonitorUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Remote\MonitorUserControl.designer.cs">
-      <DependentUpon>MonitorUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SetPaperByExam.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SetPaperByExam.Designer.cs">
-      <DependentUpon>SetPaperByExam.cs</DependentUpon>
-    </Compile>
     <Compile Include="SockTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,18 +115,6 @@
     <Compile Include="ZPaperM.Designer.cs">
       <DependentUpon>ZPaperM.cs</DependentUpon>
     </Compile>
-    <Compile Include="ZuKao.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ZuKao.Designer.cs">
-      <DependentUpon>ZuKao.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="AddExamF.resx">
-      <DependentUpon>AddExamF.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="E_Student.resx">
-      <DependentUpon>E_Student.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
@@ -169,15 +131,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Remote\MonitorClient.resx">
-      <DependentUpon>MonitorClient.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Remote\MonitorUserControl.resx">
-      <DependentUpon>MonitorUserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SetPaperByExam.resx">
-      <DependentUpon>SetPaperByExam.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SockTest.resx">
       <DependentUpon>SockTest.cs</DependentUpon>
     </EmbeddedResource>
@@ -192,9 +145,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ZPaperM.resx">
       <DependentUpon>ZPaperM.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ZuKao.resx">
-      <DependentUpon>ZuKao.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ExamSystemDataSet.xsc">
       <DependentUpon>ExamSystemDataSet.xsd</DependentUpon>
@@ -253,10 +203,6 @@
     <ProjectReference Include="..\Business\Business.csproj">
       <Project>{8d41871f-f3e8-4ec8-acdd-71128ead7518}</Project>
       <Name>Business</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CommLibrary\CommLibrary.csproj">
-      <Project>{2b47b0d7-612c-4d4c-abc6-93280d8b3bb7}</Project>
-      <Name>CommLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

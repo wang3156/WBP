@@ -44,8 +44,12 @@ namespace ExamTeach
                 tb.EmptyServerInfo();
 
             }
+      
+
 
         }
+
+
 
         private void AddSelect_Click(object sender, EventArgs e)
         {
@@ -89,15 +93,12 @@ namespace ExamTeach
 
         private void MSetExam_Click(object sender, EventArgs e)
         {
-            MSetExam.Enabled = false;
-            ZuKao zk = new ZuKao();
-            zk.MdiParent = this;
-            zk.Show();
+            //MSetExam.Enabled = false;
+            //ZuKao zk = new ZuKao();
+            //zk.MdiParent = this;
+            //zk.Show();
         }
-        public void DisabledMSetExam()
-        {
-            MSetExam.Enabled = true;
-        }
+  
 
         private void M_StartListener_Click(object sender, EventArgs e)
         {

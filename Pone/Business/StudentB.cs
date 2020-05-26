@@ -50,7 +50,7 @@ namespace Business
 
         public DataTable GetKSAnswer(int EID, int PID, string ZKZH)
         {
-            return db.GetDataSet($"Select [EID],[PID],[ZKZH],[Answers],[QID] From E_StudentAnswer Where EID={EID} and PID={PID} and ZKZH='{ZKZH}'").Tables[0];
+            return db.GetDataSet($"Select [EID],[PID],[ZKZH],[Answers],[QID],[QType] From E_StudentAnswer Where EID={EID} and PID={PID} and ZKZH='{ZKZH}'").Tables[0];
         }
     }
 }

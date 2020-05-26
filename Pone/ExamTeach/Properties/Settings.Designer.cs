@@ -26,8 +26,8 @@ namespace ExamTeach.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=BB-PC\\SQLSERVER01;Initial Catalog=ExamSystem;Persist Security Info=Tr" +
-            "ue;User ID=wang3156")]
+        [global::System.Configuration.DefaultSettingValueAttribute("server=BB-PC\\SQLSERVER01;database=ExamSystem;uid=wang3156;pwd=w315695792m;pooling" +
+            "=true;min pool size=1;max pool size=2;connection reset=true")]
         public string ExamSystemConnectionString {
             get {
                 return ((string)(this["ExamSystemConnectionString"]));

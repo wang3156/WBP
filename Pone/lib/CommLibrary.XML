@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CommLibrary</name>
+    </assembly>
+    <members>
+        <member name="T:CommLibrary.BLLBase.BaseBLL`1">
+            <summary>
+            BLL基类.添加一些基础方法
+            </summary>
+        </member>
+        <member name="M:CommLibrary.BLLBase.BaseBLL`1.#ctor(System.String)">
+            <summary>
+            创建一个baseDAL对象.
+            </summary>
+            <param name="connStr">初始化对象时用的连接串.不传则使用配置信息</param>
+        </member>
+        <member name="M:CommLibrary.BLLBase.BaseBLL`1.Dispose">
+            <summary>
+            释放Dal
+            </summary>
+        </member>
+        <member name="M:CommLibrary.BLLBase.BaseBLL`1.BeginTransaction">
+            <summary>
+            开启事务
+            </summary>
+        </member>
+        <member name="M:CommLibrary.BLLBase.BaseBLL`1.Rollback">
+            <summary>
+            圆滚事务(未开事务不抛异常)
+            </summary>
+        </member>
+        <member name="M:CommLibrary.BLLBase.BaseBLL`1.Commit">
+            <summary>
+            提交事务(未开事务不抛异常)
+            </summary>
+        </member>
+        <member name="T:CommLibrary.DALBase.BaseDAL">
+            <summary>
+            DAL基类.添加一些基础方法
+            </summary>
+        </member>
+        <member name="M:CommLibrary.DALBase.BaseDAL.#ctor(System.String)">
+            <summary>
+            创建一个baseDAL对象.
+            </summary>
+            <param name="connStr">初始化对象时用的连接串.不传则使用配置信息</param>
+        </member>
+        <member name="M:CommLibrary.DALBase.BaseDAL.Dispose">
+            <summary>
+            释放使用的实例 
+            </summary>
+        </member>
+        <member name="M:CommLibrary.DALBase.BaseDAL.BeginTransaction">
+            <summary>
+            开启事务
+            </summary>
+        </member>
+        <member name="M:CommLibrary.DALBase.BaseDAL.Rollback">
+            <summary>
+            圆滚事务(未开事务不抛异常)
+            </summary>
+        </member>
+        <member name="M:CommLibrary.DALBase.BaseDAL.Commit">
+            <summary>
+            提交事务(未开事务不抛异常)
+            </summary>
+        </member>
+        <member name="T:CommLibrary.DBHelper.BaseClass.BaseDBHelper">
+            <summary>
+            使用时请先在config的AppSettings里配置数据库类型 可选类型:sqlserver,mysql
+            连接字符串由AppSettings中的ConStr配置 或 实例化对象时传入
+            </summary>
+        </member>
+        <member name="F:CommLibrary.DBHelper.BaseClass.BaseDBHelper.conn">
+            <summary>
+            连接对象
+            </summary>
+        </member>
+        <member name="F:CommLibrary.DBHelper.BaseClass.BaseDBHelper.tran">
+            <summary>
+            事务对象
+            </summary>
+        </member>
+        <member name="P:CommLibrary.DBHelper.BaseClass.BaseDBHelper.connStr">
+            <summary>
+            连接字符串
+            </summary>
+        </member>
+        <member name="M:CommLibrary.DBHelper.BaseClass.BaseDBHelper.#ctor">
+            <summary>
+            实例化数据库操作对象 
+            </summary>       
+        </member>
+        <member name="M:CommLibrary.DBHelper.BaseClass.BaseDBHelper.GetDBHelper(System.String)">
+            <summary>
+            根据配置的DBType获取一个数据库操作对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CommLibrary.DBHelper.BaseClass.BaseDBHelper.Dispose">
+            <summary>
+            释放使用的实例 ,连接释放时会先尝试提交事务(未开事务不会抛出异常)
+            </summary>
+        </member>
+        <member name="M:CommLibrary.DBHelper.BaseClass.BaseDBHelper.BeginTransaction(System.Data.IsolationLevel)">
+            <summary>
+            开启事务
+            </summary>
+            <param name="level">事务级别,默认为ReadCommitted </param>
+        </member>
+        <member name="M:CommLibrary.DBHelper.BaseClass.BaseDBHelper.Rollback">
+            <summary>
+            回滚事务,如果未开不会抛出异常
+            </summary>
+        </member>
+        <member name="M:CommLibrary.DBHelper.BaseClass.BaseDBHelper.Commit">
+            <summary>
+            提交事务,如果未开不会抛出异常
+            </summary>
+        </member>
+        <member name="M:CommLibrary.DBHelper.BaseClass.BaseDBHelper.ExecuteNonQuery(System.String,System.Data.CommandType,System.Data.IDataParameter[])">
+            <summary>
+            执行无返回的sql
+            </summary>
+            <param name="sql"></param>
+            <param name="ctp">执行Sql的类型,默认为Sql语句</param>
+            <param name="pars">查询参数</param>
+        </member>
+        <member name="M:CommLibrary.DBHelper.BaseClass.BaseDBHelper.ExecuteScalar``1(System.String,System.Data.CommandType,System.Data.IDataParameter[])">
+            <summary>
+            执行一个sql并返回首行首列的值
+            </summary>
+            <typeparam name="N">基础类型</typeparam>
+            <param name="sql"></param>
+            <param name="ctp">执行Sql的类型,默认为Sql语句</param>
+            <param name="pars">查询参数</param>
+            <returns>如果不能转成指定类型则返回指定类型的默认值 </returns>
+        </member>
+        <member name="M:CommLibrary.DBHelper.BaseClass.BaseDBHelper.GetDataSet(System.String,System.Data.CommandType,System.Data.IDataParameter[])">
+            <summary>
+            执行一个sql并返回一个DataSet
+            </summary>
+            <param name="sql"></param>
+            <param name="ctype">执行Sql的类型,默认为Sql语句</param>
+            <param name="pars">查询参数</param>
+        </member>
+        <member name="M:CommLibrary.DBHelper.BaseClass.BaseDBHelper.BulkCopyToDB(System.Data.DataTable,System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            将数据批量插入到指定表(该连接上如果存在事务则会被使用)
+            </summary>
+            <param name="data">数据源</param>
+            <param name="tbName">数据库表名称</param>
+            <param name="mapping">列映射,不传则默认为数据源中的所有列</param>      
+            <returns></returns>
+        </member>
+        <member name="M:CommLibrary.DBHelper.BaseClass.BaseDBHelper.GetDbDataAdapter">
+            <summary>
+            按连接对象的类型返回一个适配器类型
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CommLibrary.DBHelper.MySqlDBHelper">
+            <summary>
+            mysql操作帮助类
+            </summary>
+        </member>
+        <member name="M:CommLibrary.DBHelper.MySqlDBHelper.#ctor(System.String)">
+            <summary>
+            初始化一个MySql操作对象
+            </summary>
+            <param name="connStr">连接字符串,不传则使用config中配置的</param>
+        </member>
+        <member name="M:CommLibrary.DBHelper.MySqlDBHelper.BulkCopyToDB(System.Data.DataTable,System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            批量插入数据到
+            </summary>
+            <param name="data">需要插入的数据</param>
+            <param name="tbName">数据库表名称默认使用数据源Table的Name</param>
+            <param name="mapping">key(数据源列名)和value(表列名)映射关系.默认使用数据源Table的列名</param>
+            <returns></returns>
+        </member>
+        <member name="T:CommLibrary.DBHelper.SqlServerDBHelper">
+            <summary>
+            SqlServer数据库帮助类
+            </summary>
+        </member>
+        <member name="M:CommLibrary.DBHelper.SqlServerDBHelper.#ctor(System.String)">
+            <summary>
+             初始化一个MySql操作对象
+            </summary>
+             <param name="connStr">连接字符串,不传则使用config中配置的</param>
+        </member>
+        <member name="M:CommLibrary.DBHelper.SqlServerDBHelper.BulkCopyToDB(System.Data.DataTable,System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            批量插入数据到
+            </summary>
+            <param name="data">需要插入的数据</param>
+            <param name="tbName">数据库表名称默认使用数据源Table的Name</param>
+            <param name="mapping">key(数据源列名)和value(表列名)映射关系.默认使用数据源Table的列名</param>
+            <returns>如果 有值则是错误信息</returns>
+        </member>
+        <member name="T:CommLibrary.Extension.DataTableExtension">
+            <summary>
+            DataTable 扩展的相关方法
+            </summary>
+        </member>
+        <member name="M:CommLibrary.Extension.DataTableExtension.GetField``1(System.Data.DataRow,System.String,``0)">
+            <summary>
+            从行类取出指定列的值 ,如果列不存在或值为空则返回defautValue
+            </summary>
+            <typeparam name="T">值的类型</typeparam>
+            <param name="row">数据行</param>
+            <param name="colName">列名</param>
+            <param name="defalutValue">如果列没有值则返回的默认值</param>
+            <returns></returns>
+        </member>
+        <member name="T:CommLibrary.Extension.StringExtension">
+            <summary>
+            字符串扩展方法
+            </summary>
+        </member>
+        <member name="M:CommLibrary.Extension.StringExtension.Contains(System.Collections.Generic.IEnumerable{System.String},System.String,System.Boolean)">
+            <summary>
+            检查string的集合中是否包含指定字符v 
+            <!--三个符号合为一个则为保留符. >↑<-->
+            </summary>
+            <param name="list">集合本身</param>
+            <param name="word">需要检查的值</param>
+            <param name="ignoreCase">是否忽略大小写</param>
+            <returns></returns>
+        </member>
+        <member name="M:CommLibrary.Extension.StringExtension.Contains(System.String,System.String,System.Boolean)">
+            <summary>
+            检查string的集合中是否包含指定字符v 
+            <!--三个符号合为一个则为保留符. >↑<-->
+            </summary>
+            <param name="str">字串自己</param>
+            <param name="word">需要检查的值</param>
+            <param name="ignoreCase">是否忽略大小写</param>
+            <returns></returns>
+        </member>
+        <member name="T:CommLibrary.MVC.SetNewJsonSoft">
+            <summary>
+            替换系统的JSON序列化器
+            </summary>
+        </member>
+        <member name="T:CommLibrary.OfficeHelper.Excel.NPOIHelper">
+            <summary>
+            通过NPOI操作Excel的帮助类
+            </summary>
+        </member>
+        <member name="M:CommLibrary.OfficeHelper.Excel.NPOIHelper.ExportxlsxFromDataTable(System.Data.DataTable,System.Collections.Generic.Dictionary{System.String,System.String},System.String,System.Boolean,System.String)">
+             <summary>
+             从DataTable导出一个Excel 默认生成2007以上的
+             </summary>
+             <param name="dt"></param>
+             <param name="dic">DataTable(key)和Excel(value)中列名对照 </param>
+            <param name="FilePath">生成的文件保存路径</param>
+            <param name="Is2007">是否生成2007或以上的Excel 如果FilePath有值并带文件名则以该文件类型为准 默认生成2007以上的</param>
+            <param name="SheetName">需要生成的Sheet名.默认为 sheet1</param>
+            <returns>如果有传文件路径则保存到路径返回文件名,否则返回生成的文件字节数组</returns>
+        </member>
+        <member name="M:CommLibrary.OfficeHelper.Excel.NPOIHelper.GetDataTableFromExcel(System.String,System.String)">
+            <summary>
+            将Excel的内容读出成DataTable 
+            </summary>
+            <param name="fileName">文件路径</param>
+            <param name="sheetName">读取的sheetName,默认为sheet1</param>       
+            <returns></returns>
+        </member>
+        <member name="M:CommLibrary.OfficeHelper.Excel.NPOIHelper.GetFormulaCellValue(NPOI.SS.UserModel.ICell)">
+            <summary>
+            获取公式列的值 
+            </summary>
+            <param name="cell"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CommLibrary.Secrecy.MD5Helper">
+            <summary>
+            MD5加密帮助
+            </summary>
+        </member>
+        <member name="M:CommLibrary.Secrecy.MD5Helper.GenerateMD5(System.String)">
+            <summary>
+            MD5字符串加密
+            </summary>
+            <param name="txt"></param>
+            <returns>加密后字符串</returns>
+        </member>
+        <member name="M:CommLibrary.Secrecy.MD5Helper.GenerateMD5(System.IO.Stream)">
+            <summary>
+            MD5流加密
+            </summary>
+            <param name="inputStream"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CommLibrary.Secrecy.Cut_MD5">
+            <summary>
+            如果MD5Helper引发系统设置问题则使用该类
+            </summary>
+        </member>
+        <member name="M:CommLibrary.Secrecy.Cut_MD5.Encrypt(System.String,System.Int32)">
+            <summary>
+            加密MD5
+            </summary>
+            <param name="sMessage">需要加密的文本</param>
+            <param name="stype">32 或 其他</param>
+            <returns></returns>
+        </member>
+        <member name="T:SmartKernel.Net.RemoteClient">
+            <summary>
+            远程客户端
+            </summary>
+        </member>
+        <member name="M:SmartKernel.Net.RemoteClient.BeginRemote(System.Int32)">
+            <summary>
+            开始一个远程客户端
+            </summary>
+        </member>
+    </members>
+</doc>

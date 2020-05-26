@@ -86,6 +86,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc">
+      <HintPath>Lib\MVC\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
@@ -99,6 +103,7 @@
     <Compile Include="DBHelper\MySqlDBHelper.cs" />
     <Compile Include="DBHelper\SqlServerDBHelper.cs" />
     <Compile Include="Extension\DataTableExtension.cs" />
+    <Compile Include="MVC\JsonNetValueProviderFactory.cs" />
     <Compile Include="OfficeHelper\Excel\NPOIHelper.cs" />
     <Compile Include="Extension\StringExtension.cs" />
     <Compile Include="Other\Remote\Monitor.cs" />

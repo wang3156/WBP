@@ -49,6 +49,9 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.Lab_Connection = new System.Windows.Forms.Label();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.Lab_Ytime = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -56,12 +59,15 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.Lab_Ytime);
             this.panel1.Controls.Add(this.Lab_Name);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.Btu_Submit);
             this.panel1.Controls.Add(this.Lab_UName);
             this.panel1.Controls.Add(this.Lab_XH);
+            this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.Lab_ZKZH);
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
@@ -75,7 +81,7 @@
             // Lab_Name
             // 
             this.Lab_Name.AutoSize = true;
-            this.Lab_Name.Location = new System.Drawing.Point(714, 16);
+            this.Lab_Name.Location = new System.Drawing.Point(559, 17);
             this.Lab_Name.Name = "Lab_Name";
             this.Lab_Name.Size = new System.Drawing.Size(41, 12);
             this.Lab_Name.TabIndex = 3;
@@ -104,7 +110,7 @@
             // Lab_UName
             // 
             this.Lab_UName.AutoSize = true;
-            this.Lab_UName.Location = new System.Drawing.Point(533, 16);
+            this.Lab_UName.Location = new System.Drawing.Point(410, 16);
             this.Lab_UName.Name = "Lab_UName";
             this.Lab_UName.Size = new System.Drawing.Size(41, 12);
             this.Lab_UName.TabIndex = 1;
@@ -113,7 +119,7 @@
             // Lab_XH
             // 
             this.Lab_XH.AutoSize = true;
-            this.Lab_XH.Location = new System.Drawing.Point(320, 16);
+            this.Lab_XH.Location = new System.Drawing.Point(240, 16);
             this.Lab_XH.Name = "Lab_XH";
             this.Lab_XH.Size = new System.Drawing.Size(41, 12);
             this.Lab_XH.TabIndex = 1;
@@ -131,7 +137,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(486, 16);
+            this.label4.Location = new System.Drawing.Point(363, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 0;
@@ -140,7 +146,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(273, 16);
+            this.label3.Location = new System.Drawing.Point(193, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 0;
@@ -210,6 +216,7 @@
             // 
             this.richTextBox1.Location = new System.Drawing.Point(12, 20);
             this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Size = new System.Drawing.Size(988, 183);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
@@ -238,6 +245,33 @@
             this.notifyIcon1.Text = "考试系统";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(512, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "试卷：";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(676, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(89, 12);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "剩余时间(分)：";
+            // 
+            // Lab_Ytime
+            // 
+            this.Lab_Ytime.AutoSize = true;
+            this.Lab_Ytime.Location = new System.Drawing.Point(770, 16);
+            this.Lab_Ytime.Name = "Lab_Ytime";
+            this.Lab_Ytime.Size = new System.Drawing.Size(41, 12);
+            this.Lab_Ytime.TabIndex = 3;
+            this.Lab_Ytime.Text = "label1";
             // 
             // Main
             // 
@@ -286,6 +320,9 @@
         private System.Windows.Forms.Label Lab_Count;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label Lab_Ytime;
+        private System.Windows.Forms.Label label5;
     }
 }
 

@@ -55,6 +55,16 @@ namespace Business
             db.Dispose();
         }
 
+        public DataTable CheckEndExam()
+        {
+            DataSet ds = db.GetDataSet("update E_ExamInfo set EStatus=2 output deleted.EID where EEnd<=getdate()  ");
+            if (ds.Tables.Count > 0)
+            {
+                return ds.Tables[0];
+            }
+            return new DataTable();
+        }
+
 
 
 

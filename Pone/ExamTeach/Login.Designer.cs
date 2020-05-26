@@ -101,7 +101,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(172, 27);
             this.label3.TabIndex = 3;
-            this.label3.Text = "机 考 系 统 (考务)";
+            this.label3.Text = "机 考 系 统 (教师)";
             // 
             // pictureBox1
             // 
