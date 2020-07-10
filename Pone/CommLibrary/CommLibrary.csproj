@@ -103,6 +103,7 @@
     <Compile Include="DBHelper\MySqlDBHelper.cs" />
     <Compile Include="DBHelper\SqlServerDBHelper.cs" />
     <Compile Include="Extension\DataTableExtension.cs" />
+    <Compile Include="Extension\ObjectExtension.cs" />
     <Compile Include="MVC\JsonNetValueProviderFactory.cs" />
     <Compile Include="OfficeHelper\Excel\NPOIHelper.cs" />
     <Compile Include="Extension\StringExtension.cs" />

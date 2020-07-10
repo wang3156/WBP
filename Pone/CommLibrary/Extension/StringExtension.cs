@@ -13,7 +13,7 @@ namespace CommLibrary.Extension
     {
         /// <summary>
         /// 检查string的集合中是否包含指定字符v 
-        /// <!--三个符号合为一个则为保留符. >↑<-->
+        /// <!--三个符号合为一个则为保留符. >↑<   -->
         /// </summary>
         /// <param name="list">集合本身</param>
         /// <param name="word">需要检查的值</param>
