@@ -39,6 +39,10 @@
       <HintPath>..\packages\SharpZipLib.1.0.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MySqlConnector, Version=0.61.0.0, Culture=neutral, PublicKeyToken=d33d3e53aa5f8c92, processorArchitecture=MSIL">
       <HintPath>..\packages\MySqlConnector.0.61.0\lib\net45\MySqlConnector.dll</HintPath>
       <Private>True</Private>
@@ -107,6 +111,7 @@
     <Compile Include="MVC\JsonNetValueProviderFactory.cs" />
     <Compile Include="OfficeHelper\Excel\NPOIHelper.cs" />
     <Compile Include="Extension\StringExtension.cs" />
+    <Compile Include="Other\LogHelper\Log4Helper.cs" />
     <Compile Include="Other\Remote\Monitor.cs" />
     <Compile Include="Other\Remote\RemoteClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -116,6 +121,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Other\LogHelper\log4Config.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
