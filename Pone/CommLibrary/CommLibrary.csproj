@@ -104,9 +104,11 @@
     <Compile Include="DALBase\BaseDAL.cs" />
     <Compile Include="DBHelper\BaseClass\BaseDBHelper.cs" />
     <Compile Include="DBHelper\MySqlDBHelper.cs" />
+    <Compile Include="DBHelper\PageInfo.cs" />
     <Compile Include="DBHelper\SqlServerDBHelper.cs" />
     <Compile Include="Extension\DataTableExtension.cs" />
     <Compile Include="Extension\ObjectExtension.cs" />
+    <Compile Include="MVC\Controllers\CutBaseController.cs" />
     <Compile Include="MVC\JsonNetValueProviderFactory.cs" />
     <Compile Include="OfficeHelper\Excel\NPOIHelper.cs" />
     <Compile Include="Extension\StringExtension.cs" />

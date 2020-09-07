@@ -13,13 +13,14 @@ namespace CommLibrary.DBHelper.BaseClass
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Configuration;
+    using System.Text.RegularExpressions;
 
 
     /// <summary>
     /// 使用时请先在config的AppSettings里配置数据库类型 可选类型:sqlserver,mysql
     /// 连接字符串由AppSettings中的ConStr配置 或 实例化对象时传入
     /// </summary>
-    public abstract class BaseDBHelper
+    public abstract class BaseDBHelper : IDisposable
     {
         /// <summary>
         /// 连接对象
@@ -175,7 +176,7 @@ namespace CommLibrary.DBHelper.BaseClass
             comm.Parameters.AddRange(pars);
             comm.CommandType = ctp;
             comm.ExecuteNonQuery();
-            comm.Dispose();          
+            comm.Dispose();
 
         }
         /// <summary>
@@ -199,7 +200,7 @@ namespace CommLibrary.DBHelper.BaseClass
             comm.CommandType = ctp;
             object o = comm.ExecuteScalar();
             comm.Dispose();
-            
+
             try
             {
                 return (N)Convert.ChangeType(o, typeof(N));
@@ -212,32 +213,54 @@ namespace CommLibrary.DBHelper.BaseClass
 
         }
 
-        ///// <summary>
-        ///// 执行一个sql并返回一个DataTable
-        ///// </summary>
-        ///// <param name="sql"></param>
-        ///// <param name="ctype">执行Sql的类型,默认为Sql语句</param>
-        ///// <param name="pars">查询参数</param>
-        ///// <returns></returns>
-        //public DataTable GetDataTable(string sql, CommandType ctype = CommandType.Text, params IDataParameter[] pars)
-        //{
-        //    if (conn.State == ConnectionState.Closed)
-        //    {
-        //        conn.Open();
-        //    }
-        //    DataTable dt = new DataTable();
-        //    using (DbCommand comm = conn.CreateCommand())
-        //    {
-        //        DbDataAdapter mad = GetDbDataAdapter();
-        //        comm.Transaction = tran;
-        //        comm.CommandText = sql;
-        //        comm.CommandType = ctype;
-        //        comm.Parameters.AddRange(pars);
-        //        mad.SelectCommand = comm;
-        //        mad.Fill(dt);
-        //    }
-        //    return dt;
-        //}
+        /// <summary>
+        /// 执行一个sql并返回一个DataTable
+        /// </summary>
+        /// <param name="sql">如果 以 - 开头表示不允许脏读</param>
+        /// <param name="ctype">执行Sql的类型,默认为Sql语句</param>
+        /// <param name="pars">查询参数</param>
+        /// <returns></returns>
+        public DataTable GetDataTable(string sql, IDataParameter[] pars, PageInfo pginfo = null, CommandType ctype = CommandType.Text)
+        {
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+            }
+            DataTable dt = new DataTable();
+            if (sql.StartsWith("-"))
+            {
+                sql = sql.Substring(1);
+            }
+            else
+            {
+                sql = "SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;" + sql;
+            }
+             
+            if (pginfo != null)
+            {
+                string[] sqpls = Regex.Split(sql, "From", RegexOptions.IgnoreCase);
+                sqpls[0] += " into #k ";
+                sql = string.Join(" From ", sqpls);
+                sql += $" select count(1) From #k ; select * From #k order by {pginfo.SortExpression} offset {(pginfo.PageNumber - 1) * pginfo.PageSize} rows fetch next  {pginfo.PageSize} rows only";
+                DataSet ds = GetDataSet("-" + sql, pars);
+                pginfo.TotalRows = Convert.ToInt32(ds.Tables[0].Rows[0][0]);
+                return ds.Tables[1];
+
+            }
+
+
+            using (DbCommand comm = conn.CreateCommand())
+            {
+                DbDataAdapter mad = GetDbDataAdapter();
+                comm.Transaction = tran;
+                comm.CommandText = sql;
+                comm.CommandType = ctype;
+                comm.Parameters.AddRange(pars);
+                mad.SelectCommand = comm;
+                mad.Fill(dt);
+            }
+            return dt;
+        }
 
         /// <summary>
         /// 执行一个sql并返回一个DataSet
@@ -245,13 +268,21 @@ namespace CommLibrary.DBHelper.BaseClass
         /// <param name="sql"></param>
         /// <param name="ctype">执行Sql的类型,默认为Sql语句</param>
         /// <param name="pars">查询参数</param>
-        public DataSet GetDataSet(string sql, CommandType ctype = CommandType.Text, params IDataParameter[] pars)
+        public DataSet GetDataSet(string sql, IDataParameter[] pars, CommandType ctype = CommandType.Text)
         {
             if (conn.State == ConnectionState.Closed)
             {
                 conn.Open();
             }
             DataSet ds = new DataSet();
+            if (sql.StartsWith("-"))
+            {
+                sql = sql.Substring(1);
+            }
+            else
+            {
+                sql = "SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;" + sql;
+            }
             using (DbCommand comm = conn.CreateCommand())
             {
                 using (DbDataAdapter mad = GetDbDataAdapter())
@@ -262,11 +293,11 @@ namespace CommLibrary.DBHelper.BaseClass
                     comm.Parameters.AddRange(pars);
                     mad.SelectCommand = comm;
                     mad.Fill(ds);
-                   
+
                 }
 
             }
-            
+
             return ds;
         }
         /// <summary>
