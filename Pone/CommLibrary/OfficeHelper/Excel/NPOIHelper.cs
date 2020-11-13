@@ -12,6 +12,7 @@ namespace CommLibrary.OfficeHelper.Excel
     using System.IO;
     using System.Text;
     using System.Collections.Generic;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// 通过NPOI操作Excel的帮助类
@@ -320,8 +321,67 @@ namespace CommLibrary.OfficeHelper.Excel
                     return DBNull.Value;
             }
         }
+        /// <summary>
+        /// 通过传入的Excel单元格号转换成行列坐标 如 A1={Row:0,Col:0}
+        /// </summary>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        public static ExcelPos GetPositionFromExcelCol(string col)
+        {
+            if (Regex.IsMatch(col, @"^\d+$"))
+            {
+                throw new Exception($"传入的列名: {col},无效,Excel中正确的表示方式应该是A1");
+            }
+            col = col.ToUpper();
+            const int BaseNum = 64;
+            const int zj = 26;
+            ExcelPos e = new ExcelPos();
+            string colMark = Regex.Replace(col, @"([A-Z]+)\d+", "$1");
+            e.Row = Convert.ToInt32(col.Replace(colMark, "")) - 1;
+            int code, sum = 0;
 
+
+            for (int i = 0; i < colMark.Length; i++)
+            {
+                code = (int)colMark[i];
+                sum += (int)((code - BaseNum) * Math.Pow(zj, colMark.Length - i - 1));
+
+            }
+            e.Col = sum - 1;
+            return e;
+        }
+        /// <summary>
+        /// 通过Excel的列索引返回列名 如0 列 转为 A列
+        /// </summary>
+        /// <param name="ColIndex"></param>
+        /// <returns></returns>
+        public static string GetColNameFromColIndex(int ColIndex)
+        {
+            System.Diagnostics.Debugger.Launch();
+            string s = "";
+            int ys = 0, san;
+            const int BaseNum = 65;
+            const int zj = 26;
+            san = ColIndex / zj;
+            ys = (ColIndex % zj);
+            s += (char)(ys + BaseNum);
+            while (san > 0)
+            {
+                san = san / zj;
+                ys = (san % zj);
+                s += (char)(ys + BaseNum);
+            }
+
+            return new string(s.Reverse().ToArray());
+        }
     }
 
+
+    public struct ExcelPos
+    {
+        public int Row;
+        public int Col;
+
+    }
 
 }
