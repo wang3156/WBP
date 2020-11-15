@@ -20,55 +20,6 @@ namespace CommLibrary.OfficeHelper.Excel
     public class NPOIHelper
     {
 
-        //public string FileName { get; set; }
-
-        //public List<T> DataList { get; set; }
-
-        //public List<string> Nofileds { get; set; } = new List<string>();
-
-        //public List<string> TitleRow { get; set; }
-
-        //public override void ExecuteResult(ControllerContext context)
-        //{
-        //    if (DataList == null)
-        //    {
-        //        throw new InvalidDataException("DataList");
-        //    }
-        //    if (string.IsNullOrWhiteSpace(this.SheetName))
-        //    {
-        //        this.SheetName = "Sheet1";
-        //    }
-        //    if (string.IsNullOrWhiteSpace(this.FileName))
-        //    {
-        //        this.FileName = string.Concat(
-        //            "ExportData_",
-        //            DateTime.Now.ToString("yyyyMMddHHmmss"),
-        //            ".xls");
-        //    }
-
-        //    this.ExportExcelEventHandler(context);
-        //}
-
-        ///// <summary>
-        ///// Exports the excel event handler.
-        ///// </summary>
-        ///// <param name="context">The context.</param>
-        //private void ExportExcelEventHandler(ControllerContext context)
-        //{
-        //    try
-        //    {
-        //        string fileExt = Path.GetExtension(FileName).ToLower();
-        //        if (fileExt == ".xlsx")
-        //            Exportxlsx(context);
-        //        else
-        //            Exportxls(context);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
         /// <summary>
         /// 从DataTable导出一个Excel 默认生成2007以上的
         /// </summary>
@@ -357,19 +308,33 @@ namespace CommLibrary.OfficeHelper.Excel
         /// <returns></returns>
         public static string GetColNameFromColIndex(int ColIndex)
         {
-            System.Diagnostics.Debugger.Launch();
+
             string s = "";
             int ys = 0, san;
-            const int BaseNum = 65;
+            const int BaseNum = 64;
             const int zj = 26;
             san = ColIndex / zj;
             ys = (ColIndex % zj);
+            int z = 0;
+            if (ys == 0)
+            {
+                ys = 26;
+                z = 1;
+            }
+
             s += (char)(ys + BaseNum);
             while (san > 0)
             {
-                san = san / zj;
                 ys = (san % zj);
-                s += (char)(ys + BaseNum);
+                san = san / zj;
+                if (ys == 0||(ys - z == 0))
+                {
+                    z = z == 1 ? 0 : 1;
+                    ys = 26;
+                }
+                s += (char)(ys + BaseNum - z);
+                z = 0;
+                
             }
 
             return new string(s.Reverse().ToArray());

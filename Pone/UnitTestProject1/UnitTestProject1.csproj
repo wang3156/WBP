@@ -67,6 +67,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommLibrary\CommLibrary.csproj">
+      <Project>{2b47b0d7-612c-4d4c-abc6-93280d8b3bb7}</Project>
+      <Name>CommLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CommLibrary.OfficeHelper.Excel;
 
 namespace UnitTestProject1
 {
@@ -9,6 +10,8 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestMethod1()
         {
+            string col = NPOIHelper.GetColNameFromColIndex(2048);
+            Console.WriteLine(col);
         }
     }
 }
