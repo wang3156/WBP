@@ -227,6 +227,7 @@ namespace CommLibrary.OfficeHelper.Excel
                                 nrow[i] = "=" + cell.CellFormula;
                                 break;
                         }
+                        nrow[i] = Convert.ToString(nrow[i]).Trim();
 
                     }
                 }
