@@ -277,7 +277,7 @@ namespace CommLibrary.OfficeHelper.Excel
         /// </summary>
         /// <param name="col"></param>
         /// <returns></returns>
-        public static ExcelPos GetPositionFromExcelCol(string col)
+        public static ExcelPos GetPositionByExcelCol(string col)
         {
             if (Regex.IsMatch(col, @"^\d+$"))
             {
@@ -306,45 +306,38 @@ namespace CommLibrary.OfficeHelper.Excel
         /// </summary>
         /// <param name="ColIndex"></param>
         /// <returns></returns>
-        public static string GetColNameFromColIndex(int ColIndex)
+        public static string GetColNameByColIndex(int ColIndex)
         {
 
             string s = "";
-            int ys = 0, san;
-            const int BaseNum = 64;
+            const int BaseNum = 65;
             const int zj = 26;
-            san = ColIndex / zj;
-            ys = (ColIndex % zj);
-            int z = 0;
-            if (ys == 0)
+            do
             {
-                ys = 26;
-                z = 1;
-            }
-
-            s += (char)(ys + BaseNum);
-            while (san > 0)
-            {
-                ys = (san % zj);
-                san = san / zj;
-                if (ys == 0||(ys - z == 0))
+                if (s.Length > 0)
                 {
-                    z = z == 1 ? 0 : 1;
-                    ys = 26;
+                    ColIndex--;
                 }
-                s += (char)(ys + BaseNum - z);
-                z = 0;
-                
-            }
+                s = ((char)(ColIndex % zj + BaseNum)).ToString() + s;
+                ColIndex = ((ColIndex - ColIndex % 26) / 26);
+            } while (ColIndex > 0);
 
-            return new string(s.Reverse().ToArray());
+            return s;
         }
     }
-
+    /// <summary>
+    /// 二维坐标索引
+    /// </summary>
 
     public struct ExcelPos
     {
+        /// <summary>
+        /// 行
+        /// </summary>
         public int Row;
+        /// <summary>
+        /// 列索引
+        /// </summary>
         public int Col;
 
     }
