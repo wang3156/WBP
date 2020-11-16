@@ -146,9 +146,11 @@ namespace CommLibrary.OfficeHelper.Excel
         /// 将Excel的内容读出成DataTable 
         /// </summary>
         /// <param name="fileName">文件路径</param>
-        /// <param name="sheetName">读取的sheetName,默认为sheet1</param>       
+        /// <param name="sheetName">读取的sheetName,默认为sheet1</param>    
+        /// <param name="firstColName">首行是否为列名 默认 是</param>
+        /// <param name="IsEmptyRow">是否空行自定义检测方法默认都不是空行</param>
         /// <returns></returns>
-        public static DataTable GetDataTableFromExcel(string fileName, string sheetName = "sheet1")
+        public static DataTable GetDataTableFromExcel(string fileName, string sheetName = "sheet1", bool firstColName = true, Func<IRow, bool> IsEmptyRow = null)
         {
             IWorkbook wr;
             // IFormulaEvaluator ife;
@@ -156,12 +158,10 @@ namespace CommLibrary.OfficeHelper.Excel
             if (fileName.EndsWith(".xlsx"))
             {
                 wr = new XSSFWorkbook(fi);
-                // ife = new XSSFFormulaEvaluator(wr);
             }
             else
             {
                 wr = new HSSFWorkbook(fi);
-                //  ife = new HSSFFormulaEvaluator(wr);
             }
 
 
@@ -169,31 +169,64 @@ namespace CommLibrary.OfficeHelper.Excel
 
             // int rowIndex = 0, cellIndex = 0;
             ISheet sh = wr.GetSheet(sheetName);
-
+            if (sh == null)
+            {
+                throw new Exception("未能找到指定的Sheet :" + sheetName);
+            }
 
             IRow row = sh.GetRow(0);
+            if (row == null)
+            {
+                throw new Exception("首行为空或没有数据行!");
+            }
+
             ICell cell;
             DataRow nrow;
 
             int lastCellNum = row.LastCellNum;
             for (int i = 0; i < lastCellNum; i++)
             {
-                dt.Columns.Add(row.Cells[i].StringCellValue);
+                if (firstColName)
+                {
+                    dt.Columns.Add(row.Cells[i].StringCellValue);
+                }
+                else
+                {
+                    dt.Columns.Add("F" + (i + 1));
+                }
+
             }
 
 
             try
             {
-                var igrow = sh.GetRowEnumerator();
-                igrow.MoveNext();//跳过首行
-                while (igrow.MoveNext())
+                if (IsEmptyRow == null)
                 {
-                    row = igrow.Current as IRow;
+                    IsEmptyRow = c => false;
+                }
+
+                int irow = 0;
+                if (firstColName)
+                {
+                    irow = 1;
+                }
+                int rowCount = sh.LastRowNum;
+                for (; irow < rowCount; irow++)
+                {
+                    row = sh.GetRow(irow);
+                    if (IsEmptyRow(row))
+                    {
+                        continue;
+                    }
                     nrow = dt.NewRow();
                     dt.Rows.Add(nrow);
                     for (int i = 0; i < lastCellNum; i++)
                     {
-                        cell = row.Cells[i];
+                        cell = row.GetCell(i);
+                        if (cell == null)
+                        {
+                            break;
+                        }
 
                         switch (cell.CellType)
                         {
@@ -231,10 +264,11 @@ namespace CommLibrary.OfficeHelper.Excel
 
                     }
                 }
+
             }
             catch (Exception ex)
             {
-                string s = ex.Message;
+                throw ex;
             }
             finally
             {

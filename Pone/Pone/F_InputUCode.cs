@@ -35,7 +35,7 @@ namespace Pone
                 DataTable dt = new DataTable();
                 using (MySqlDBHelper db = new MySqlDBHelper())
                 {
-                    dt = db.GetDataSet("select * From db_admin where name=@code", pars: new MySqlParameter("@code", SqlDbType.VarChar) { Value = UCode }).Tables[0];
+                    dt = db.GetDataSet("select * From db_admin where name=@code", pars: new MySqlParameter[] { new MySqlParameter("@code", SqlDbType.VarChar) { Value = UCode } }).Tables[0];
                 }
 
                 if (dt.Rows.Count > 0)

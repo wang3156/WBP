@@ -10,7 +10,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestMethod1()
         {
-            var n = NPOIHelper.GetPositionByExcelCol("AZA1");
+            var n = NPOIHelper.GetPositionByExcelCol("BD1");
             string col = NPOIHelper.GetColNameByColIndex(25);
             Console.WriteLine(col);
         }
