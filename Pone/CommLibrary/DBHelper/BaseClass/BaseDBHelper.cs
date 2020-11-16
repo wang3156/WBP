@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace CommLibrary.DBHelper.BaseClass
 {
-    using CommLibrary.Extension;
-    using MySql.Data.MySqlClient;
+    using CommLibrary.Extension; 
     using System.Data;
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Configuration;
     using System.Text.RegularExpressions;
+    using MySqlConnector;
 
 
     /// <summary>

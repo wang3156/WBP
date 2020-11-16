@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
-using MySql.Data;
-using MySql.Data.MySqlClient;
 using System.Data;
 using Newtonsoft.Json;
 using CommLibrary.DBHelper.BaseClass;
+using MySqlConnector;
 
 namespace CommLibrary.DBHelper
 {
@@ -143,7 +142,25 @@ namespace CommLibrary.DBHelper
         /// <returns></returns>
         public override void BulkCopyToDB(DataTable data, string tbName = "", Dictionary<string, string> mapping = null)
         {
-             
+            MySqlBulkCopy msb = new MySqlBulkCopy(conn as MySqlConnection);
+            msb.DestinationTableName = tbName;
+            DataColumnCollection dc = data.Columns;
+            if (mapping != null)
+            {
+                foreach (var item in mapping)
+                {
+                    msb.ColumnMappings.Add(new MySqlBulkCopyColumnMapping(dc[item.Key].Ordinal, item.Value.Trim()));
+                }
+            }
+            else
+            {
+                for (int i = 0; i < dc.Count; i++)
+                {
+                    msb.ColumnMappings.Add(new MySqlBulkCopyColumnMapping(i, dc[i].ColumnName.Trim()));
+                }
+            }
+            msb.WriteToServer(data);
+
         }
     }
 
