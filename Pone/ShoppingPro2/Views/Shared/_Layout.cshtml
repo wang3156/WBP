@@ -1,15 +1,73 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
+    <link href="~/Content/ElementUI/element-ui.css" rel="stylesheet" />
+    <style>
+        html, body, #div_content {
+            padding: 5px;
+            margin: 0px;
+            height: 100%;
+            width: 100%;
+        }
+
+        #div_content {
+            display: flex;
+        }
+    </style>
+
     @RenderSection("styles", required: false)
 </head>
 <body>
-    @RenderBody()
- 
+    <div id="div_content">
+        @RenderBody()
+    </div>
+
+
+    <script src="~/Scripts/jquery-3.5.1.js"></script>
+    <script src="~/Scripts/vue.js"></script>
+    <script src="~/Scripts/ElementUI/element-ui.js"></script>
+    <script src="~/Scripts/jsObjectExtend.js"></script>
+    <!--Vue使用的基本对象-->
+    <script type="text/javascript">
+        let vue_data = {
+            baseUrl: '@Url.Content("~/")',
+            menuTheme: "light",
+            pageLoading:false
+        };
+
+        let vue_methods = {
+
+        }
+        let vue_computed = {
+
+        };
+
+        //vue加载完后执行的事件(里面只能给方法对象),方法里的this为vue对象
+        let vue_mounted = {
+
+        }
+
+
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
+<script>
+    window.$Vue = new Vue({
+        el: '#div_content',
+        data: vue_data,
+        methods: vue_methods,
+        computed: vue_computed,
+        mounted: function () {
+            for (var i in vue_mounted) {
+                if ((typeof vue_mounted[i]) == 'function')
+                    vue_mounted[i].call(this);
+            }
+
+        }
+    });
+</script>

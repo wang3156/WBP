@@ -1,18 +1,98 @@
 ﻿
 @{
-    Layout = null;
+    ViewBag.Title = "商城后台登录";
+}
+@section styles{
+    <style>
+        #div_content {
+            align-items: center; /*定义body的元素垂直居中*/
+            justify-content: center; /*定义body的里的元素水平居中*/
+        }
+
+        .login-card {
+            width: 22%;
+        }
+
+        .txt_right {
+            text-align: right;
+            margin-bottom: 5px;
+        }
+    </style>
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div> 
-
+<el-card class="login-card">
+    <div slot="header" class="clearfix">
+        <span>登录</span>
     </div>
-</body>
-</html>
+    <el-form ref="formInline" :model="formEntity" v-bind:rules="ruleInline" label-width="80px">
+        <el-form-item prop="UserID" label="账号：">
+            <el-input type="text" v-model="formEntity.UserID" placeholder="请输入账号" prefix-icon="el-icon-user-solid">
+            </el-input>
+        </el-form-item>
+        <el-form-item prop="PassWord" label="密码：">
+            <el-input type="password" v-model="formEntity.PassWord" placeholder="请输入密码" prefix-icon="el-icon-lock">
+            </el-input>
+        </el-form-item>
+        <el-form-item class="txt_right">
+            <el-button v-on:click="onLogin" v-bind:loading="loading" type="primary" size="medium">登陆</el-button>
+        </el-form-item>
+    </el-form>
+</el-card>
+
+@section scripts{
+    <script>
+        $.extend(vue_methods, {
+            onLogin: function () {
+                var self = this;
+                self.$refs["formInline"].validate((valid) => {
+                    if (!valid) {
+                        return;
+                    }
+                    self.loading = true;
+                    //url, paras, type, success, error, complete, beforeSend, async
+                    $.cutPost('@Url.Action("Login")', this.formEntity, null, function () {
+                        self.$message.success({
+                            message: '登录成功,正在跳转...',
+                            onClose: function () {
+                                window.location.href = '@Url.Content("~/AdminHome/MainPage")'
+                            }
+                        });
+                    }, null, function () {
+                        self.loading = false;
+                    });
+                })
+
+            }
+
+        });
+
+        //本页面使用的data
+        $.extend(vue_data, {
+            formEntity: {
+                UserID: '',
+                PassWord: ''
+            },
+            ruleInline: {
+                UserID: [{ required: true, message: '请输入登录账号!', trigger: 'blur' },
+                { type: 'string', min: 4, message: '账号至少4位!', trigger: 'change blur' }],
+                PassWord: [
+                    { required: true, message: '请输入密码!', trigger: 'blur' },
+
+                ],
+            },
+            loading: false
+        });
+
+        $.extend(vue_computed, {
+
+
+        });
+
+        var vmounted = {
+
+        }
+        $.extend(vue_mounted, vmounted);
+
+    </script>
+}
