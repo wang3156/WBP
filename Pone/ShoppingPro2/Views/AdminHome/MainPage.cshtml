@@ -4,74 +4,117 @@
 }
 @section styles{
     <style>
-        /*.box {
+        .el-aside {
             display: flex;
-            flex-flow: column wrap;
-            height: 100vh;
+            flex-direction: column;
+            background-color: #D3DCE6;
+            color: #333;
+            text-align: center;
+            line-height: 200px;
         }
 
-        .item {
-            margin: 10px;
-            width: calc(100%/3 - 20px);
-            border:1px solid #000;
-            height:60px;
+        .el-header, .el-footer {
+            background-color: #B3C0D1;
+            color: #333;
+            text-align: center;
+            line-height: 60px;
+        }
+
+        .el-divider--horizontal {
+            height: 10px;
+        }
+
+        .div_userinfo {
+            height: 150px;
+        }
+
+        .box-card {
+            display: flex;
+            flex-direction: column;
+            flex:1;
             
         }
 
-            .item img {
-                width: 100%;
-                height: 100%;
-            }*/
-
-            .box {
-            margin: 10px;
-            column-count: 3;
-            column-gap: 10px;
-        }
-        .item {
-            margin-bottom: 10px;
-            border:1px solid #000;
-            width:60px;
-        }
-        .item img{
-            width: 100%;
-            height:100%;
+        .clearfix {
+            height: 40px;
         }
     </style>
 }
 
-<el-container class="box">
-    <div class="item">
+<el-container>
+    <el-aside width="150px" class="asi_left">
+        <div class="div_userinfo">
+            这里是用户信息
+        </div>
+        <el-divider></el-divider>
+        <div class="div_menu">
+            <el-menu default-active="2"
+                     class="el-menu-vertical-demo"
+                     @*@open="handleOpen"
+                     @close="handleClose"*@>
+                <el-menu-item index="">
+                    <i class="el-icon-menu"></i>
+                    <span slot="title">商品管理</span>
+                </el-menu-item>
+            </el-menu>
+        </div>
+    </el-aside>
+    <el-container>
+        <el-header class="">商城后台管理系统</el-header>
+        <el-main style="display:flex;flex-direction:column;">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <el-input v-model="SearchModel.SPName" placeholder="请输入商品名" style="width:30%"></el-input>
+                    <el-button type="primary" v-on:click="onSearch">查找</el-button>
+                    <el-button type="success">添加</el-button>
+                </div>
+                <div style="flex:1">
+                    <el-table :data="MainData"
+                              style="width: 100%">
+                        <el-table-column prop="SPID"
+                                         label="商品编号"
+                                         width="120">
+                        </el-table-column>
+                        <el-table-column prop="SPImg"
+                                         label="商品缩略图"
+                                         width="150">
+                        </el-table-column>
+                        <el-table-column prop="SPName"
+                                         label="商品名称" width="200">
+                        </el-table-column>
+                        <el-table-column prop="SPName"
+                                         label="商品简介">
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template>
 
-    </div>
-    <div class="item">
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-card>
 
-    </div>
-    <div class="item">
-
-    </div>
-    <div class="item">
-
-    </div>
-    <div class="item">
-
-    </div>
-    <div class="item">
-
-    </div>
-    <div class="item">
-
-    </div>
-    <div class="item">
-
-    </div>
-    <div class="item">
-
-    </div>
-    <div class="item">
-
-    </div>
-    <div class="item">
-
-    </div>
+        </el-main>
+    </el-container>
 </el-container>
+
+@section scripts{
+    <script>
+        $.extend(vue_data, {
+            SearchModel: {
+                SPName: ''
+            },
+            MainData: []
+
+        });
+
+
+        $.extend(vue_methods, {
+            onSearch: function () {
+                alert(this.SearchModel.SPName)
+            }
+
+
+        });
+    </script>
+}

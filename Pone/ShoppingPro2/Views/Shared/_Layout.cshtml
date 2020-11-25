@@ -7,15 +7,21 @@
     <title>@ViewBag.Title</title>
     <link href="~/Content/ElementUI/element-ui.css" rel="stylesheet" />
     <style>
-        html, body, #div_content {
-            padding: 5px;
-            margin: 0px;
+        html, body {
             height: 100%;
             width: 100%;
+            margin:0px;
+            padding:0px;
+        }
+
+        body {
+            display: flex;
         }
 
         #div_content {
             display: flex;
+            flex:1;
+            padding:5px;
         }
     </style>
 
@@ -36,7 +42,7 @@
         let vue_data = {
             baseUrl: '@Url.Content("~/")',
             menuTheme: "light",
-            pageLoading:false
+            pageLoading: false
         };
 
         let vue_methods = {
