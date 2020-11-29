@@ -19,7 +19,7 @@ namespace ShoppingPro2.Code.Entity
 
     public class ResultEntity
     {
-        public bool Success { get; set; }
+        public bool Success { get; set; } = true;
 
         public Object Data { get; set; }
 

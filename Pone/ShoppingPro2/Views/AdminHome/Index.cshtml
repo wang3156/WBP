@@ -51,7 +51,7 @@
                     }
                     self.loading = true;
                     //url, paras, type, success, error, complete, beforeSend, async
-                    $.cutPost('@Url.Action("Login")', this.formEntity, null, function () {
+                    $.cutPost('@Url.Action("Login")', this.formEntity, function () {
                         self.$message.success({
                             message: '登录成功,正在跳转...',
                             onClose: function () {

@@ -129,6 +129,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="js\jsObjectExtend.js" />
     <Content Include="Other\LogHelper\log4Config.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

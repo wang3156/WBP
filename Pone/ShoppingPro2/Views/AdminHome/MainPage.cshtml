@@ -31,13 +31,21 @@
         .box-card {
             display: flex;
             flex-direction: column;
-            flex:1;
-            
+            flex: 1;
         }
 
         .clearfix {
             height: 40px;
         }
+
+        .eidt_div {
+            min-height: 250px;
+            border: 2px solid #B3C0D1;
+        }
+
+            .eidt_div img {
+                max-width: 100%;
+            }
     </style>
 }
 
@@ -62,11 +70,11 @@
     <el-container>
         <el-header class="">商城后台管理系统</el-header>
         <el-main style="display:flex;flex-direction:column;">
-            <el-card class="box-card">
+            <el-card class="box-card" style="overflow:auto;">
                 <div slot="header" class="clearfix">
-                    <el-input v-model="SearchModel.SPName" placeholder="请输入商品名" style="width:30%"></el-input>
+                    <el-input v-model="SearchModel.SPName" placeholder="请输入商品名" style="width:30%;min-width:150px;" clearable></el-input>
                     <el-button type="primary" v-on:click="onSearch">查找</el-button>
-                    <el-button type="success">添加</el-button>
+                    <el-button type="success" v-on:click="onAdd">添加</el-button>
                 </div>
                 <div style="flex:1">
                     <el-table :data="MainData"
@@ -78,16 +86,26 @@
                         <el-table-column prop="SPImg"
                                          label="商品缩略图"
                                          width="150">
+                            <template slot-scope="scope">
+                                <img v-bind:src="JSON.parse(scope.row.SPImg)[0].base64" style="width:60px;height:60px;" />
+                            </template>
                         </el-table-column>
                         <el-table-column prop="SPName"
                                          label="商品名称" width="200">
                         </el-table-column>
-                        <el-table-column prop="SPName"
+                        <el-table-column prop="SPStock"
+                                         label="库存" width="150">
+                        </el-table-column>
+                        <el-table-column prop="SPUnitPrice"
+                                         label="单价" width="150">
+                        </el-table-column>
+                        <el-table-column prop="SPRemark"
                                          label="商品简介">
                         </el-table-column>
-                        <el-table-column label="操作">
-                            <template>
 
+                        <el-table-column label="操作" width="80">
+                            <template slot-scope="scope">
+                                <el-button type="primary" icon="el-icon-edit" circle v-on:click="onEdit(scope.row)"></el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -96,7 +114,82 @@
 
         </el-main>
     </el-container>
+
+    <el-dialog v-bind:title="DialogForm.title"
+               v-bind:visible.sync="DialogForm.visible"
+               width="60%"
+               v-bind:before-close="onCloseEditDialog" v-bind:close-on-click-modal="false">
+        <div>
+            <el-form ref="DialogForm" v-bind:model="DialogForm.Form" label-width="80px" v-bind:rules="editRules">
+                <el-form-item label="商品名称" prop="SPName">
+                    <el-input v-model="DialogForm.Form.SPName" placeholder="请输入商品名称" show-word-limit maxlength="60"></el-input>
+                </el-form-item>
+                <el-form-item label="商品简介" prop="SPRemark">
+                    <el-input v-model="DialogForm.Form.SPRemark" type="textarea" placeholder="请输入商品简介" show-word-limit maxlength="500" v-bind:rows="3"></el-input>
+                </el-form-item>
+                <el-form-item label="库存" prop="SPStock">
+                    <el-input v-model.number="DialogForm.Form.SPStock" placeholder="商品库存"></el-input>
+                </el-form-item>
+                <el-form-item label="单价" prop="SPUnitPrice">
+                    <el-input v-model.number="DialogForm.Form.SPUnitPrice" placeholder="商品单价"></el-input>
+                </el-form-item>
+                <el-form-item label="图片(至多5张)" prop="SPImg">
+                    <ul class="el-upload-list el-upload-list--picture-card">
+                        <li v-for="d in DialogForm.Form.SPImg" class="el-upload-list__item is-ready">
+                            <div><img v-bind:src="d.base64"  v-bind:alt="d.fileName" class="el-upload-list__item-thumbnail"> 
+                            <span class="el-upload-list__item-actions">
+                                <span class="el-upload-list__item-preview">
+                                <i class="el-icon-zoom-in"></i></span> 
+
+                                <span class="el-upload-list__item-delete">
+                                <i class="el-icon-delete"></i></span>
+                                </span>
+                            </div>
+                            
+                        </li>
+                    </ul>
+                    <el-upload action="#"
+                               list-type="picture-card"
+                               v-bind:auto-upload="false" multiple ref="upLoadFiles" v-bind:limit="5"
+                               v-bind:on-change="onfileChange">
+                        <i slot="default" class="el-icon-plus addimage_icon"></i>
+                        <div slot="file" slot-scope="{file}">
+                            <img class="el-upload-list__item-thumbnail"
+                                 :src="file.url" alt="">
+                            <span class="el-upload-list__item-actions">
+                                <span class="el-upload-list__item-preview"
+                                      @@click="handlePictureCardPreview(file)">
+                                    <i class="el-icon-zoom-in"></i>
+                                </span>
+                                <span class="el-upload-list__item-delete"
+                                      @@click="handleRemove(file)">
+                                    <i class="el-icon-delete"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="商品详情" prop="SPDetails">
+                    <div contenteditable="true" ref="SPDetails" class="eidt_div">
+
+                    </div>
+                </el-form-item>
+            </el-form>
+        </div>
+        <span slot="footer" class="dialog-footer">
+            <el-button @@click="DialogForm.visible = false">取 消</el-button>
+            <el-button type="primary" @@click="sumbitAddData">确 定</el-button>
+        </span>
+    </el-dialog>
+
 </el-container>
+
+
+
+
+<el-dialog v-bind:visible.sync="DialogForm.dialogVisible">
+    <img style="width:100%;" v-bind:src="DialogForm.dialogImageUrl" alt="">
+</el-dialog>
 
 @section scripts{
     <script>
@@ -104,14 +197,147 @@
             SearchModel: {
                 SPName: ''
             },
-            MainData: []
+            MainData: [],
+            DialogForm: {
+                visible: false,
+                title: '',
+                Form: {
+                    SPID: 0
+
+                   , SPName: ''
+                   , SPRemark: ''
+                    , SPImg: []
+                    , SPUnitPrice: 0.01
+                    , SPStock: 1
+                },
+                dialogImageUrl: '',
+                dialogVisible: false,
+                showAddImage: true
+            },
+            editRules: {
+                SPName: [
+                { required: true, message: '请输入商品名称', trigger: 'blur' },
+                { min: 3, max: 64, message: '长度在 3 到 64 个字', trigger: 'blur' }
+                ],
+                SPStock: [
+                     { required: true, message: '请输入库存', trigger: 'blur' },
+                     { type: 'integer', min: 1, max: 55555, message: '库存不能小于0', trigger: 'blur' },
+                ],
+
+            },
+
 
         });
 
 
         $.extend(vue_methods, {
+            onfileChange: function (file, files) {
+                if (files.length > 4) {
+                    $(".addimage_icon").parent().hide();
+                } else {
+                    $(".addimage_icon").parent().show();
+                }
+            },
+            handleRemove: function (file) {
+                var files = this.$refs.upLoadFiles.uploadFiles;
+                for (var i = 0; i < files.length; i++) {
+                    if (file.uid == files[i].uid) {
+                        files.splice(i, 1);
+                        this.onfileChange(file, files);
+                        break;
+                    }
+                }
+            },
+            handlePictureCardPreview(file) {
+                this.DialogForm.dialogImageUrl = file.url;
+                this.DialogForm.dialogVisible = true;
+            },
             onSearch: function () {
-                alert(this.SearchModel.SPName)
+                var self = this;
+                self.pageLoading = true;
+                $.cutPost('@Url.Action("onSearch")', { SPName: this.SearchModel.SPName }, function (msg) {
+                    self.MainData = msg.Data;
+                }, null, function () {
+                    self.pageLoading = false;
+                })
+            },
+            onCloseEditDialog: function (done) {
+                done();
+            },
+            sumbitAddData: function () {
+                var self = this;
+                self.$refs.DialogForm.validate(function (ok) {
+                    if (!ok) {
+                        return;
+                    }
+                    self.pageLoading = true;
+                    var files = self.$refs.upLoadFiles.uploadFiles;
+                    if (files.length > 0) {
+                        var imgs = [];
+                        for (var i = 0; i < files.length; i++) {
+                            $.fileToBase64({ files: [files[i].raw] }, function (f) {
+                                imgs.push(f[0]);
+                            }, true);
+                        }
+                    }
+
+
+                    var t = setInterval(function () {
+                        if (imgs.length != files.length) {
+                            return;
+                        }
+                        clearInterval(t);
+                        var o = $.extend(true, { SPImg: JSON.stringify(imgs) }, self.DialogForm.Form);
+                        if (imgs.length == 0) {
+                            delete o.SPImg;
+                        }
+                        o.SPDetails = self.$refs.SPDetails.innerHTML;
+                        $.cutPost('@Url.Action("onSaveData")', { entity: JSON.stringify(o) }, function (msg) {
+
+                            if (o.SPID == 0) {
+                                o.SPID = msg.Data;
+                                self.MainData.push(o);
+
+                            }
+                            self.DialogForm.visible = false;
+                            self.$message.success("保存成功!");
+                        }, null, function () {
+                            self.pageLoading = false;
+                        });
+
+                    }, 1000);
+                });
+            },
+            onAdd: function () {
+                var self = this;
+                self.DialogForm.visible = true;
+                self.DialogForm.title = "添加商品";
+                self.$nextTick(function () {
+                    self.$refs.DialogForm.resetFields();
+                    self.$refs.SPDetails.innerHTML = '';
+                });
+            },
+            onEdit: function (row) {
+                this.onAdd();
+                var self = this;
+                var f = self.DialogForm.Form;
+                self.$nextTick(function () {
+                    self.DialogForm.title = "编辑商品";
+
+                    for (var i in f) {
+                        if (i == "SPImg") {
+                            if (row[i]) {
+                                f[i] = JSON.parse(row[i]);
+                            }
+                        } else {
+                            f[i] = row[i];
+                        }
+                       
+                    }
+                    self.$refs.SPDetails.innerHTML = row.SPDetails;
+
+                });
+
             }
 
 
