@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\ElementUI\element-ui.css" />
+    <Content Include="Content\img\header.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\ElementUI\fonts\element-icons.woff" />
     <Content Include="Content\ElementUI\fonts\element-icons.ttf" />

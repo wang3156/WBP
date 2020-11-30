@@ -43,7 +43,15 @@ namespace ShoppingPro2.Controllers
         }
 
         public ActionResult MainPage()
-        {
+        { 
+            if (Session["UserInfo"] != null)
+            {
+                ViewBag.Zh = (Session["UserInfo"] as UserInfo).AccountNumber;
+            }
+            else
+            {
+                return View("Index");
+            }
             return View();
         }
 
@@ -62,7 +70,7 @@ namespace ShoppingPro2.Controllers
 
         public ActionResult onSaveData(string entity)
         {
-            System.Diagnostics.Debugger.Launch();
+
             ResultEntity re = new ResultEntity();
             Dictionary<string, string> en = JsonConvert.DeserializeObject<Dictionary<string, string>>(entity);
             List<string> sql_li = new List<string>();
@@ -110,6 +118,13 @@ namespace ShoppingPro2.Controllers
                 dr = ub.GetData<DataRow>(sql, pars.ToArray());
             }
             re.Data = dr[0];
+            return Json(re);
+        }
+
+        public ActionResult offLine()
+        {
+            Session["UserInfo"] = null;
+            ResultEntity re = new ResultEntity();
             return Json(re);
         }
 

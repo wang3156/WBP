@@ -16,7 +16,7 @@ namespace ShoppingPro2.Code.ConnDB
         public DbProcess(string connStr = "") : base(connStr)
         {
         }
-        
+
         public T GetData<T>(string sql, params SqlParameter[] pars) where T : class
         {
             DataTable dt = db.GetDataTable(sql, pars);
@@ -35,7 +35,14 @@ namespace ShoppingPro2.Code.ConnDB
             }
             else if (dt.Rows.Count > 0)
             {
-                return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(dt.Rows[0]));
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                DataRow row = dt.Rows[0];
+                foreach (DataColumn item in dt.Columns)
+                {
+                    dic.Add(item.ColumnName, row[item.ColumnName].ToString());
+                }
+
+                return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(dic));
             }
             else
             {
