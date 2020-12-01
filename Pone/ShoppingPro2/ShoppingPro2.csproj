@@ -103,6 +103,24 @@
     <Content Include="Scripts\jquery-3.5.1.slim.js" />
     <Content Include="Scripts\jquery-3.5.1.slim.min.js" />
     <Content Include="Scripts\jsObjectExtend.js" />
+    <Content Include="Scripts\pbl\css\component.css" />
+    <Content Include="Scripts\pbl\css\demo.css" />
+    <Content Include="Scripts\pbl\css\flickity.css" />
+    <Content Include="Scripts\pbl\fonts\pbl\font-awesome.min.css" />
+    <Content Include="Scripts\pbl\fonts\bpicons\bpicons.svg" />
+    <Content Include="Scripts\pbl\fonts\bpicons\license.txt" />
+    <Content Include="Scripts\pbl\fonts\pixelfabric-clothes\fonts\pixelfabric-clothes.svg" />
+    <Content Include="Scripts\pbl\fonts\pixelfabric-clothes\style.css" />
+    <Content Include="Scripts\pbl\images\dress.png" />
+    <Content Include="Scripts\pbl\images\grid.svg" />
+    <Content Include="Scripts\pbl\images\jacket.png" />
+    <Content Include="Scripts\pbl\images\shirt.png" />
+    <Content Include="Scripts\pbl\images\shoe.png" />
+    <Content Include="Scripts\pbl\images\trousers.png" />
+    <Content Include="Scripts\pbl\js\flickity.pkgd.min.js" />
+    <Content Include="Scripts\pbl\js\isotope.pkgd.min.js" />
+    <Content Include="Scripts\pbl\js\main.js" />
+    <Content Include="Scripts\pbl\js\modernizr.custom.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Web.config" />
@@ -112,6 +130,7 @@
     <Compile Include="Code\ConnDB\DbProcess.cs" />
     <Compile Include="Code\Entity\UserInfo.cs" />
     <Compile Include="Controllers\AdminHomeController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -127,6 +146,15 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\AdminHome\MainPage.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Scripts\pbl\fonts\bpicons\bpicons.eot" />
+    <Content Include="Scripts\pbl\fonts\bpicons\bpicons.ttf" />
+    <Content Include="Scripts\pbl\fonts\bpicons\bpicons.woff" />
+    <Content Include="Scripts\pbl\fonts\pixelfabric-clothes\fonts\pixelfabric-clothes.eot" />
+    <Content Include="Scripts\pbl\fonts\pixelfabric-clothes\fonts\pixelfabric-clothes.ttf" />
+    <Content Include="Scripts\pbl\fonts\pixelfabric-clothes\fonts\pixelfabric-clothes.woff" />
+    <Content Include="Scripts\pbl\fonts\fonts\fontawesome-webfont.woff" />
+    <Content Include="Scripts\pbl\fonts\fonts\fontawesome-webfont.woff2" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

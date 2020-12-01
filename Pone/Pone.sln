@@ -43,6 +43,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingPro1", "ShoppingPro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingPro2", "ShoppingPro2\ShoppingPro2.csproj", "{06B2F29C-6EAD-4E65-A2E7-C35796A98F5F}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "201506171514", "C:\Users\ROG\Downloads\201506171514\", "{5CE57AAD-E3D9-4698-967F-64B63AFBCA52}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_56318"
+		Debug.AspNetCompiler.PhysicalPath = "C:\Users\ROG\Downloads\201506171514\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_56318\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_56318"
+		Release.AspNetCompiler.PhysicalPath = "C:\Users\ROG\Downloads\201506171514\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_56318\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "56318"
+		SlnRelativePath = "C:\Users\ROG\Downloads\201506171514\"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +126,10 @@ Global
 		{06B2F29C-6EAD-4E65-A2E7-C35796A98F5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06B2F29C-6EAD-4E65-A2E7-C35796A98F5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06B2F29C-6EAD-4E65-A2E7-C35796A98F5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CE57AAD-E3D9-4698-967F-64B63AFBCA52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CE57AAD-E3D9-4698-967F-64B63AFBCA52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CE57AAD-E3D9-4698-967F-64B63AFBCA52}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CE57AAD-E3D9-4698-967F-64B63AFBCA52}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
