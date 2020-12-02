@@ -135,7 +135,7 @@
                     <el-input v-model.number="DialogForm.Form.SPStock" placeholder="商品库存"></el-input>
                 </el-form-item>
                 <el-form-item label="单价" prop="SPUnitPrice">
-                    <el-input v-model.number="DialogForm.Form.SPUnitPrice" placeholder="商品单价"></el-input>
+                    <el-input v-model="DialogForm.Form.SPUnitPrice" placeholder="商品单价"></el-input>
                 </el-form-item>
                 <el-form-item label="图片(至多5张)" prop="SPImg">
                     <ul class="el-upload-list el-upload-list--picture-card">
@@ -231,14 +231,21 @@
                 ],
                 SPUnitPrice: [
                      { required: true, message: '请输入单价', trigger: 'blur' },
-                     { type: 'number', min: 0.01, max: 5555555, message: '不能小于0.01', trigger: 'blur' },
+                     { validator:checkPrice, message: '不能小于0.01', trigger: 'blur' },
                 ]
 
             },
             editEntity: {}
 
         });
-
+        function checkPrice(rule, value, callback) {
+            if (value = value*1&&value>0.01) {
+                callback();
+            } else {
+                callback(new Error('请输入大于0.01的数字!'));
+            }
+           
+        }
 
         $.extend(vue_methods, {
             onfileChange: function (file, files) {

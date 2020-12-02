@@ -5,7 +5,7 @@
 @section styles{
     <link href="~/Scripts/pbl/fonts/pbl/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Scripts/pbl/fonts/pixelfabric-clothes/style.css" rel="stylesheet" />
-     <link href="~/Scripts/pbl/css/demo.css" rel="stylesheet" />
+    <link href="~/Scripts/pbl/css/demo.css" rel="stylesheet" />
     <link href="~/Scripts/pbl/css/flickity.css" rel="stylesheet" />
     <link href="~/Scripts/pbl/css/component.css" rel="stylesheet" />
     <script src="~/Scripts/pbl/js/modernizr.custom.js"></script>
@@ -16,8 +16,17 @@
             background-color: aliceblue;
         }
 
+        body {
+            color: #806b6b;
+        }
+
         .div_user {
             width: 10%;
+        }
+
+        .txt_right {
+            text-align: right;
+            margin-bottom: 5px;
         }
     </style>
 }
@@ -27,8 +36,16 @@
             XX商城
         </div>
         <div class="div_user">
-            <i class="el-icon-user"><el-link type="danger">请登录</el-link></i>
+            <i class="el-icon-user">
+                <el-link type="danger" v-if="!@ViewBag.Logon" v-on:click="DialogForm.visible=true">请登录</el-link>
+                <el-link type="danger" v-else>@ViewBag.Zh</el-link>
+            </i>
 
+            <button class="cart" v-if="@ViewBag.Logon">
+                <i class="cart__icon fa fa-shopping-cart"></i>
+                <span class="text-hidden">Shopping cart</span>
+                <span class="cart__count">0</span>
+            </button>
         </div>
     </el-header>
     <el-main>
@@ -42,37 +59,54 @@
                 <!-- Grid sizer for a fluid Isotope (Masonry) layout -->
                 <div class="grid__sizer"></div>
                 <template v-for="(d,index) in MainData">
-                    <div class="grid__item dresses">
+                    <div class="grid__item dresses" v-bind:data-row="d" v-if="(index%4>0)">
                         <div class="slider">
-                            <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" /></div>
+                            <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" v-bind:alt="dimg.filename" /></div>
                         </div>
                         <div class="meta">
                             <h3 class="meta__title">{{d.SPName}}</h3>
                             <span class="meta__brand">{{d.SPRemark}}</span>
                             <span class="meta__price">￥{{d.SPUnitPrice}}</span>
                         </div>
-                        <button class="action action--button action--buy" v-bind:data-row="d"><i class="fa fa-shopping-cart"></i></button>
+                        <button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i></button>
                     </div>
-                </template>
-                @*<div class="grid__item grid__item--size-a shirts">
+                    <div class="grid__item grid__item--size-a shirts" v-else>
                         <div class="slider">
-                            <div class="slider__item"><img src="~/Scripts/pbl/images/shirt.png" alt="Dummy" /></div>
-                            <div class="slider__item"><img src="~/Scripts/pbl/images/shirt.png" alt="Dummy" /></div>
-                            <div class="slider__item"><img src="~/Scripts/pbl/images/shirt.png" alt="Dummy" /></div>
+                            <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" v-bind:alt="dimg.filename" /></div>
                         </div>
                         <div class="meta">
-                            <h3 class="meta__title">Dummy Product</h3>
-                            <span class="meta__brand">Dummy Brand</span>
-                            <span class="meta__price">$99</span>
+                            <h3 class="meta__title">{{d.SPName}}</h3>
+                            <span class="meta__brand">{{d.SPRemark}}</span>
+                            <span class="meta__price">￥{{d.SPUnitPrice}}</span>
                         </div>
-                        <button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i><span class="text-hidden">Add to cart</span></button>
-                    </div>*@
+                        <button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i></button>
+                    </div>
+                </template>
 
             </section>
             <!-- /grid-->
         </div>
 
     </el-main>
+
+    <el-dialog v-bind:title="DialogForm.title"
+               v-bind:visible.sync="DialogForm.visible"
+               width="25%"
+               v-bind:close-on-click-modal="false">
+        <el-form ref="formInline" :model="DialogForm.formEntity" v-bind:rules="ruleInline" label-width="80px">
+            <el-form-item prop="UserID" label="账号：">
+                <el-input type="text" v-model="DialogForm.formEntity.UserID" placeholder="请输入账号" prefix-icon="el-icon-user-solid">
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="PassWord" label="密码：">
+                <el-input type="password" v-model="DialogForm.formEntity.PassWord" placeholder="请输入密码" prefix-icon="el-icon-lock">
+                </el-input>
+            </el-form-item>
+            <el-form-item class="txt_right">
+                <el-button v-on:click="onLogin" v-bind:loading="loading" type="primary" size="medium">登陆</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
 </el-container>
 
 
@@ -82,33 +116,81 @@
     <script>
 
         $.extend(vue_data, {
-            MainData:[]
+            MainData: [],
+            DialogForm: {
+                title: '登录',
+                visible: false,
+                formEntity: {
+                    UserID: '',
+                    PassWord: ''
+                }
+            },
+            ruleInline: {
+                UserID: [{ required: true, message: '请输入登录账号!', trigger: 'blur' },
+                { type: 'string', min: 4, message: '账号至少4位!', trigger: 'change blur' }],
+                PassWord: [
+                    { required: true, message: '请输入密码!', trigger: 'blur' },
+
+                ],
+            },
+            loading:false
 
         });
+
+        $.extend(vue_methods, {
+            onLogin: function () {
+                var self = this;
+                self.$refs["formInline"].validate((valid) => {
+                    if (!valid) {
+                        return;
+                    }
+                    self.loading = true;
+                    //url, paras, type, success, error, complete, beforeSend, async
+                    $.cutPost('@Url.Action("Login", "AdminHome")', self.DialogForm.formEntity, function () {
+                        self.$message.success({
+                            message: '登录成功,正在跳转...',
+                            onClose: function () {
+                                @*window.location.href = '@Url.Content("~/AdminHome/MainPage")'*@
+                            }
+                        });
+                    }, null, function () {
+                        self.loading = false;
+                    });
+                })
+            }
+
+        });
+
+        function loadjs() {
+            var sc = document.createElement("script");
+            sc.src = '@Url.Content("~/Scripts/pbl/js/isotope.pkgd.min.js")';
+            $(sc).appendTo('body');
+            sc = document.createElement("script");
+            sc.src = '@Url.Content("~/Scripts/pbl/js/flickity.pkgd.min.js")';
+            $(sc).appendTo('body');
+            sc = document.createElement("script");
+            sc.src = '@Url.Content("~/Scripts/pbl/js/main.js")';
+            $(sc).appendTo('body');
+        }
 
         $.extend(vue_mounted, {
             LoadingJs: function () {
 
-                var sc = document.createElement("script");
-                sc.src = '@Url.Content("~/Scripts/pbl/js/isotope.pkgd.min.js")';
-                $(sc).appendTo('body');
-                sc = document.createElement("script");
-                sc.src = '@Url.Content("~/Scripts/pbl/js/flickity.pkgd.min.js")';
-                $(sc).appendTo('body');
-                sc = document.createElement("script");
-                sc.src = '@Url.Content("~/Scripts/pbl/js/main.js")';
-                $(sc).appendTo('body');
+
             },
             LoadSP: function () {
                 var self = this;
                 self.pageLoading = true;
-                $.cutPost('@Url.Action("onSearch", "AdminHome")', { SPName: this.SearchModel.SPName }, function (msg) {
+                $.cutPost('@Url.Action("onSearch", "AdminHome")', { SPName: '' }, function (msg) {
                     var c;
-                    for (var i = 0; i <  msg.Data.length; i++) {
-                        c=msg.Data[i];
-                        c.SPImg=JSON.parse(c.SPImg);
+                    for (var i = 0; i < msg.Data.length; i++) {
+                        c = msg.Data[i];
+                        c.SPImg = JSON.parse(c.SPImg);
                     }
-                    self.MainData =msg.Data;
+                    self.MainData = msg.Data;
+                    self.$nextTick(function () {
+                        loadjs();
+                    });
                 }, null, function () {
                     self.pageLoading = false;
                 })

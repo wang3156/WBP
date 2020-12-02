@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShoppingPro2.Code.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,17 @@ namespace ShoppingPro2.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            UserInfo uf = (Session["UserInfo"] as UserInfo);
+            
+            if (uf!=null)
+            {
+                ViewBag.Logon = "true";
+                ViewBag.Zh = uf.AccountNumber;
+            }
+            else
+            {
+                ViewBag.Logon = "false";
+            }
             return View();
         }
     }
