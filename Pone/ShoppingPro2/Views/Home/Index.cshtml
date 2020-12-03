@@ -28,7 +28,30 @@
             text-align: right;
             margin-bottom: 5px;
         }
+
+        .cart {
+            background-color: transparent !important;
+            padding: 0px;
+            padding-right: 16px;
+            position: relative;
+            color: #f55f5f;
+        }
+
+        .cart__count {
+            top: 58%;
+            right: 0px;
+            background-color: red;
+        }
+
+        .el-popover .el-form-item {
+            margin-bottom: 0px;
+        }
+
+        .no-touch .cart:hover {
+            color: red;
+        }
     </style>
+
 }
 <el-container>
     <el-header>
@@ -37,18 +60,76 @@
         </div>
         <div class="div_user">
             <i class="el-icon-user">
-                <el-link type="danger" v-if="!@ViewBag.Logon" v-on:click="DialogForm.visible=true">请登录</el-link>
-                <el-link type="danger" v-else>@ViewBag.Zh</el-link>
+                <el-link type="danger" v-if="!userInfoForm.userInfo" v-on:click="DialogForm.visible=true">请登录</el-link>
+                <template v-else>
+                    <el-popover placement="bottom-end"
+                                title="用户信息"
+                                width="300"
+                                trigger="click">
+                        <el-form ref="formInline" v-bind:model="userInfoForm.userInfo" label-width="80px" size="mini">
+                            <el-form-item label="账号：">
+                                <span>{{userInfoForm.userInfo.AccountNumber}}</span>
+                            </el-form-item>
+                            <el-form-item label="邮箱：">
+                                <span>{{userInfoForm.userInfo.Email}}</span>
+                            </el-form-item>
+                            <el-form-item label="地址：">
+                                <span>{{userInfoForm.userInfo.Address}}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-link type="danger" slot="reference">{{userInfoForm.userInfo.AccountNumber}}</el-link>
+                    </el-popover>
+                </template>
             </i>
-
-            <button class="cart" v-if="@ViewBag.Logon">
-                <i class="cart__icon fa fa-shopping-cart"></i>
-                <span class="text-hidden">Shopping cart</span>
-                <span class="cart__count">0</span>
-            </button>
+            <el-popover placement="bottom-end"
+                        title="购物车"
+                        width="650"
+                        trigger="click">
+                <div>
+                    <el-table v-bind:data="cartData">
+                        <el-table-column width="180" prop="SPName" label="商品名称"></el-table-column>
+                        <el-table-column width="150" label="图片">
+                            <template slot-scope="scope">
+                                <img v-if="scope.row.SPImg.length>0" v-bind:src="scope.row.SPImg[0].base64" v-bind:alt="scope.row.SPImg[0].filename" />
+                            </template>
+                        </el-table-column>
+                        <el-table-column width="100" label="数量">
+                            <template slot-scope="scope">
+                                <el-input-number style="width:90px;" v-model="scope.row.QCount" type="number" v-bind:min="1" size="mini" controls-position="right"></el-input-number>
+                            </template>
+                        </el-table-column>
+                        <el-table-column width="80" prop="SPUnitPrice" label="单价"></el-table-column>
+                        <el-table-column width="80" label="金额">
+                            <template slot-scope="scope">
+                                {{scope.row.QCount.mul(scope.row.SPUnitPrice)}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column width="50" label="操作">
+                            <template slot-scope="scope">
+                                <el-button type="danger" size="mini" icon="el-icon-delete" circle v-on:click="removeSP(scope.row)"></el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <span class="cart" slot="reference">
+                    <i class="cart__icon fa fa-shopping-cart"></i>
+                    <span class="cart__count">0</span>
+                </span>
+            </el-popover>
         </div>
     </el-header>
+
+
+
     <el-main>
+        <div class="grid">
+            <div class="grid__item" v-bind:data-row="JSON.stringify(o)">
+                <div class="action--buy">
+                    XXXXXXXXXXXXXXXX
+                </div>
+            </div>
+        </div>
+
 
         <div class="view">
             <!-- Blueprint header -->
@@ -70,7 +151,7 @@
                         </div>
                         <button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i></button>
                     </div>
-                    <div class="grid__item grid__item--size-a shirts" v-else>
+                    <div class="grid__item grid__item--size-a shirts" v-else v-bind:data-row="d">
                         <div class="slider">
                             <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" v-bind:alt="dimg.filename" /></div>
                         </div>
@@ -107,15 +188,43 @@
             </el-form-item>
         </el-form>
     </el-dialog>
+
+
 </el-container>
 
 
 
 @section scripts{
-
+    <script src="~/Scripts/jquery.cookie.js"></script>
     <script>
+        /**
+ ** 乘法函数，用来得到精确的乘法结果
+ ** 说明：javascript的乘法结果会有误差，在两个浮点数相乘的时候会比较明显。这个函数返回较为精确的乘法结果。
+ ** 调用：accMul(arg1,arg2)
+ ** 返回值：arg1乘以 arg2的精确结果
+ **/
+        function accMul(arg1, arg2) {
+            var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+            try {
+                m += s1.split(".")[1].length;
+            }
+            catch (e) {
+            }
+            try {
+                m += s2.split(".")[1].length;
+            }
+            catch (e) {
+            }
+            return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+        }
+
+        // 给Number类型增加一个mul方法，调用起来更加方便。
+        Number.prototype.mul = function (arg) {
+            return accMul(arg, this);
+        };
 
         $.extend(vue_data, {
+            offset: 0,
             MainData: [],
             DialogForm: {
                 title: '登录',
@@ -133,11 +242,20 @@
 
                 ],
             },
-            loading:false
+            loading: false,
+            userInfoForm: {
+                userInfo: null
+
+            },
+            cartData: [],
+            o: { sss: 'sss' }
 
         });
 
         $.extend(vue_methods, {
+            removeSP: function () {
+
+            },
             onLogin: function () {
                 var self = this;
                 self.$refs["formInline"].validate((valid) => {
@@ -146,10 +264,15 @@
                     }
                     self.loading = true;
                     //url, paras, type, success, error, complete, beforeSend, async
-                    $.cutPost('@Url.Action("Login", "AdminHome")', self.DialogForm.formEntity, function () {
+                    $.cutPost('@Url.Action("Login", "AdminHome")', self.DialogForm.formEntity, function (msg) {
+                        self.userInfoForm.userInfo = msg.Data;
+                        var expiresDate = new Date();
+                        expiresDate.setTime(expiresDate.getTime() + (4 * 60 * 60 * 1000));
+                        $.cookie("userinfo", JSON.stringify(msg.Data), { expires: expiresDate });
                         self.$message.success({
-                            message: '登录成功,正在跳转...',
+                            message: '登录成功...',
                             onClose: function () {
+                                self.DialogForm.visible = false;
                                 @*window.location.href = '@Url.Content("~/AdminHome/MainPage")'*@
                             }
                         });
@@ -160,6 +283,23 @@
             }
 
         });
+
+        function addToCartEvent(d) {
+            var row = $(d).parents(".grid__item").data("row");
+            if (!row && (row = JSON.parse(row))) {
+                $Vue.$message.error('添加商品异常!');
+                return false;
+            }
+
+            var d = vue_data.cartData.find(function (a) { return a.SPID == row.SPID });
+            if (d) {
+                d.QCount++;
+            } else {
+                row.QCount = 1;
+                vue_data.cartData.push(row);
+            }
+            return true;
+        }
 
         function loadjs() {
             var sc = document.createElement("script");
@@ -174,11 +314,18 @@
         }
 
         $.extend(vue_mounted, {
-            LoadingJs: function () {
-
+            getUserInfo: function () {
+                var u = $.cookie("userinfo");
+                if (u) {
+                    this.userInfoForm.userInfo = JSON.parse(u);
+                } else {
+                    this.userInfoForm.userInfo = { AccountNumber: 'ZH0001', Email: 'xx@xx.com', Address: 'xx省xx市大待' };
+                }
 
             },
             LoadSP: function () {
+                setTimeout(loadjs, 2 * 1000);
+                return;
                 var self = this;
                 self.pageLoading = true;
                 $.cutPost('@Url.Action("onSearch", "AdminHome")', { SPName: '' }, function (msg) {

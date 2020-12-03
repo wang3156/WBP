@@ -250,7 +250,7 @@
 	background-color: #131415;
 }
 
-.no-touch .cart:focus,
+/*.no-touch .cart:focus,*/
 .no-touch .cart:hover {
 	color: #fff;
 	outline: none;
@@ -263,24 +263,24 @@
 
 @-webkit-keyframes cartAnim {
 	50% {
-		opacity: 0;
-		-webkit-transform: translate3d(50px, 0, 0);
-		transform: translate3d(50px, 0, 0);
+		opacity: 0.5;
+		-webkit-transform: scale(1);
+		transform: scale(1);
 	}
 	51% {
-		opacity: 0;
-		-webkit-transform: translate3d(-50px, 0, 0);
-		transform: translate3d(-50px, 0, 0);
+		opacity: 0.8;
+		-webkit-transform:  scale(1.2);
+		transform:  scale(1.2);
 	}
 	100% {
 		opacity: 1;
-		-webkit-transform: translate3d(0, 0, 0);
-		transform: translate3d(0, 0, 0);
+		-webkit-transform:  scale(1);
+		transform:  scale(1);
 	}
 }
 
 @keyframes cartAnim {
-	50% {
+	/*50% {
 		opacity: 0;
 		-webkit-transform: translate3d(50px, 0, 0);
 		transform: translate3d(50px, 0, 0);
@@ -294,7 +294,16 @@
 		opacity: 1;
 		-webkit-transform: translate3d(0, 0, 0);
 		transform: translate3d(0, 0, 0);
-	}
+	}*/
+        0%{
+                transform: scale(1);  /*开始为原始大小*/
+            }
+            25%{
+                transform: scale(1.2); /*放大1.1倍*/
+            }          
+            75%{
+                transform: scale(1);
+            }
 }
 
 .cart__count {
