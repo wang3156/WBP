@@ -8,7 +8,10 @@
     <link href="~/Scripts/pbl/css/demo.css" rel="stylesheet" />
     <link href="~/Scripts/pbl/css/flickity.css" rel="stylesheet" />
     <link href="~/Scripts/pbl/css/component.css" rel="stylesheet" />
+    <link href="~/Scripts/camroll_slider/camroll_slider.css" rel="stylesheet" />
     <script src="~/Scripts/pbl/js/modernizr.custom.js"></script>
+
+
     <style>
         .el-header {
             display: flex;
@@ -50,6 +53,40 @@
         .no-touch .cart:hover {
             color: red;
         }
+
+        .el-input-number__increase, .el-input-number__decrease {
+            width: 20px !important;
+        }
+
+        .el-input-number.is-controls-right .el-input__inner {
+            padding-right: 25px !important;
+            padding-left: 5px !important;
+        }
+
+        .cut_ellink > .el-link--inner {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 177px;
+        }
+
+        .div_contentName {
+            display: flex;
+            height:350px;
+        }
+
+        #my-slider {
+            flex: 2;
+        }
+
+        .elformCl {
+            flex: 1.5;
+        }
+
+        .div_html img {
+            width: 100%;
+        }
     </style>
 
 }
@@ -83,19 +120,23 @@
             </i>
             <el-popover placement="bottom-end"
                         title="购物车"
-                        width="650"
+                        width="680"
                         trigger="click">
                 <div>
                     <el-table v-bind:data="cartData">
-                        <el-table-column width="180" prop="SPName" label="商品名称"></el-table-column>
-                        <el-table-column width="150" label="图片">
+                        <el-table-column width="180" prop="SPName" label="商品名称" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <img v-if="scope.row.SPImg.length>0" v-bind:src="scope.row.SPImg[0].base64" v-bind:alt="scope.row.SPImg[0].filename" />
+                                <el-link type="primary" class="cut_ellink" v-on:click="showContent(scope.row)">{{scope.row.SPName}}</el-link>
                             </template>
                         </el-table-column>
-                        <el-table-column width="100" label="数量">
+                        <el-table-column width="150" label="图片">
                             <template slot-scope="scope">
-                                <el-input-number style="width:90px;" v-model="scope.row.QCount" type="number" v-bind:min="1" size="mini" controls-position="right"></el-input-number>
+                                <img v-if="scope.row.SPImg.length>0" style="width:120px;height:120px;" v-bind:src="scope.row.SPImg[0].base64" v-bind:alt="scope.row.SPImg[0].filename" />
+                            </template>
+                        </el-table-column>
+                        <el-table-column width="90" label="数量">
+                            <template slot-scope="scope">
+                                <el-input-number style="width:80px;" v-on:change="onQCountChange" v-bind:precision="0" v-model="scope.row.QCount" type="number" v-bind:min="1" size="mini" controls-position="right"></el-input-number>
                             </template>
                         </el-table-column>
                         <el-table-column width="80" prop="SPUnitPrice" label="单价"></el-table-column>
@@ -111,6 +152,9 @@
                         </el-table-column>
                     </el-table>
                 </div>
+                <div style="text-align:right;padding-right:10px;padding-top:10px;">
+                    <el-button type="success" v-bind:disabled="!(userInfoForm.userInfo&&cartData.length>0)">提交订单</el-button>
+                </div>
                 <span class="cart" slot="reference">
                     <i class="cart__icon fa fa-shopping-cart"></i>
                     <span class="cart__count">0</span>
@@ -122,15 +166,13 @@
 
 
     <el-main>
-        <div class="grid">
-            <div class="grid__item" v-bind:data-row="JSON.stringify(o)">
-                <div class="action--buy">
-                    XXXXXXXXXXXXXXXX
+        @*<div class="grid">
+                <div class="grid__item" v-bind:data-row="JSON.stringify(o)">
+                    <div class="action--buy">
+                        XXXXXXXXXXXXXXXX
+                    </div>
                 </div>
-            </div>
-        </div>
-
-
+            </div>*@
         <div class="view">
             <!-- Blueprint header -->
             <!-- Grid -->
@@ -140,7 +182,7 @@
                 <!-- Grid sizer for a fluid Isotope (Masonry) layout -->
                 <div class="grid__sizer"></div>
                 <template v-for="(d,index) in MainData">
-                    <div class="grid__item dresses" v-bind:data-row="d" v-if="(index%4>0)">
+                    <div class="grid__item dresses" v-bind:data-row="JSON.stringify(d)" v-if="(index%4>0)">
                         <div class="slider">
                             <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" v-bind:alt="dimg.filename" /></div>
                         </div>
@@ -151,7 +193,7 @@
                         </div>
                         <button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i></button>
                     </div>
-                    <div class="grid__item grid__item--size-a shirts" v-else v-bind:data-row="d">
+                    <div class="grid__item grid__item--size-a shirts" v-else v-bind:data-row="JSON.stringify(d)">
                         <div class="slider">
                             <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" v-bind:alt="dimg.filename" /></div>
                         </div>
@@ -190,12 +232,50 @@
     </el-dialog>
 
 
+    <el-dialog title="商品信息"
+               v-bind:visible.sync="dialogSubmit.visible"
+               width="50%"
+                
+               v-bind:close-on-click-modal="false">
+        <div class="div_contentName">
+            <div id="my-slider" class="crs-wrap">
+                <div class="crs-screen">
+                    <div class="crs-screen-roll">
+                        <div class="crs-screen-item" v-bind:style="{'background-image': 'url('+d.base64+')'}" v-for="(d,index) in dialogSubmit.Form.SPImg">
+                            <div class="crs-screen-item-content"><h1>{{d.filename}}</h1></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="crs-bar">
+                    <div class="crs-bar-roll-current"></div>
+                    <div class="crs-bar-roll-wrap">
+                        <div class="crs-bar-roll">
+                            <div class="crs-bar-roll-item" v-bind:style="{'background-image': 'url('+d.base64+')'}" v-for="(d,index) in dialogSubmit.Form.SPImg"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <el-form label-width="80px" class="elformCl">
+                <el-form-item label="商品名称" >
+                    {{dialogSubmit.Form.SPName}}
+                </el-form-item>
+                <el-form-item label="商品简介">
+                    {{dialogSubmit.Form.SPRemark}}
+                </el-form-item>               
+            </el-form>
+
+        </div>
+        <p>商品详情</p>
+        <div v-html="dialogSubmit.Form.SPDetails" class="div_html"></div>
+    </el-dialog>
 </el-container>
 
 
 
 @section scripts{
     <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/camroll_slider/camroll_slider.js"></script>
     <script>
         /**
  ** 乘法函数，用来得到精确的乘法结果
@@ -224,7 +304,12 @@
         };
 
         $.extend(vue_data, {
-            offset: 0,
+            dialogSubmit: {
+                visible: false,
+                Form: {
+
+                }
+            },
             MainData: [],
             DialogForm: {
                 title: '登录',
@@ -247,14 +332,38 @@
                 userInfo: null
 
             },
-            cartData: [],
-            o: { sss: 'sss' }
+            cartData: []
+
 
         });
 
         $.extend(vue_methods, {
-            removeSP: function () {
+            showContent: function (rowData) {
+                var t = vue_data.dialogSubmit.Form;
+                for (var i in rowData) {
+                    t[i] = rowData[i];
+                }
+                vue_data.dialogSubmit.visible = true;
+                this.$nextTick(function () {
+                    $("#my-slider").camRollSlider();
+                });
+            },
+            onQCountChange: function (currentValue, oldValue) {
+                var cartC = $(".cart__count");
+                cartC.html((cartC.html() * 1) + currentValue - oldValue);
 
+            },
+            removeSP: function (rowData) {
+                var QCount = 0;
+                for (var i = 0; i < vue_data.cartData.length; i++) {
+                    if (vue_data.cartData[i].SPID == rowData.SPID) {
+                        QCount = vue_data.cartData[i].QCount;
+                        vue_data.cartData.splice(i, 1);
+                        break;
+                    }
+                }
+                var cartC = $(".cart__count");
+                cartC.html((cartC.html() * 1) - QCount);
             },
             onLogin: function () {
                 var self = this;
@@ -319,13 +428,12 @@
                 if (u) {
                     this.userInfoForm.userInfo = JSON.parse(u);
                 } else {
-                    this.userInfoForm.userInfo = { AccountNumber: 'ZH0001', Email: 'xx@xx.com', Address: 'xx省xx市大待' };
+                    this.userInfoForm.userInfo = null;// { AccountNumber: 'ZH0001', Email: 'xx@xx.com', Address: 'xx省xx市大待' };
                 }
 
             },
             LoadSP: function () {
-                setTimeout(loadjs, 2 * 1000);
-                return;
+
                 var self = this;
                 self.pageLoading = true;
                 $.cutPost('@Url.Action("onSearch", "AdminHome")', { SPName: '' }, function (msg) {
