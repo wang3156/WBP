@@ -61,6 +61,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "201906270863", "C:\Users\RO
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "65372"
+		SlnRelativePath = "C:\Users\ROG\Downloads\201906270863\"
 	EndProjectSection
 EndProject
 Global
