@@ -103,7 +103,7 @@
                                 title="用户信息"
                                 width="300"
                                 trigger="click">
-                        <el-form ref="formInline" v-bind:model="userInfoForm.userInfo" label-width="80px" size="mini">
+                        <el-form label-width="80px" size="mini">
                             <el-form-item label="账号：">
                                 <span>{{userInfoForm.userInfo.AccountNumber}}</span>
                             </el-form-item>
@@ -114,10 +114,16 @@
                                 <span>{{userInfoForm.userInfo.Address}}</span>
                             </el-form-item>
                         </el-form>
-                        <el-link type="danger" slot="reference">{{userInfoForm.userInfo.AccountNumber}}</el-link>
+                        <el-link type="danger" slot="reference">{{userInfoForm.userInfo.AccountNumber}}</el-link> 
+                        
                     </el-popover>
                 </template>
+                <template v-if="!!userInfoForm.userInfo">
+                    |
+                    <el-link type="danger" v-on:click="offLine">注销</el-link>
+                </template>
             </i>
+            
             <el-popover placement="bottom-end"
                         title="购物车"
                         width="680"
@@ -378,17 +384,25 @@
                         var expiresDate = new Date();
                         expiresDate.setTime(expiresDate.getTime() + (4 * 60 * 60 * 1000));
                         $.cookie("userinfo", JSON.stringify(msg.Data), { expires: expiresDate });
-                        self.$message.success({
-                            message: '登录成功...',
-                            onClose: function () {
-                                self.DialogForm.visible = false;
-                                @*window.location.href = '@Url.Content("~/AdminHome/MainPage")'*@
-                            }
-                        });
+                        self.$message.success("登录成功...");
+                        self.DialogForm.visible = false;
+                         
                     }, null, function () {
                         self.loading = false;
                     });
                 })
+            },
+            offLine: function () {
+                var self = this;
+                self.pageLoading = true;
+
+                $.cutPost('@Url.Action("offLine", "AdminHome")', null, function (msg) {
+                    self.userInfoForm.userInfo = null;
+                    $.removeCookie("userinfo")
+                    self.$message.success("注销成功!");
+                }, null, function () {
+                    self.pageLoading = false;
+                });
             }
 
         });
