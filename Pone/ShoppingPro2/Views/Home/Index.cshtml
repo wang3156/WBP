@@ -95,6 +95,12 @@
         .dialog_lo .el-dialog {
             background-color: transparent;
         }
+
+        .dialog_lo .el-dialog__headerbtn .el-dialog__close {
+            color:red;
+            font-size:18px;
+            font-weight:700;
+        }
     </style>
 
 }
@@ -135,7 +141,8 @@
             <el-popover placement="bottom-end"
                         title="购物车"
                         width="680"
-                        trigger="click">
+                        trigger="manual"
+                        v-model="cartVisible">
                 <div>
                     <el-table v-bind:data="cartData" show-summary v-bind:summary-method="getSummaries">
                         <el-table-column width="180" prop="SPName" label="商品名称" show-overflow-tooltip>
@@ -167,10 +174,10 @@
                     </el-table>
                 </div>
                 <div style="text-align:right;padding-right:10px;padding-top:10px;">
-                    <el-tag type="danger">折后金额：{{sumPrice.mul(dialogLottery.lotteryValue)}}</el-tag>
+                    <el-tag type="danger">折后金额({{dialogLottery.lotteryValue==1?"全额":dialogLottery.lotteryValue.mul(10)}}折)：{{sumPrice.mul(dialogLottery.lotteryValue)}}</el-tag>
                     <el-button type="success" v-bind:disabled="!(userInfoForm.userInfo&&cartData.length>0)">结算</el-button>
                 </div>
-                <span class="cart" slot="reference">
+                <span class="cart" slot="reference" v-on:click="cartVisible=!cartVisible">
                     <i class="cart__icon fa fa-shopping-cart"></i>
                     <span class="cart__count">0</span>
                 </span>
@@ -404,6 +411,7 @@
 
             },
             cartData: [],
+            cartVisible:false,
             sumPrice: 0,
             dialogLottery: {
                 lotteryValue: 1,
@@ -449,6 +457,7 @@
                             self.$message({
                                 message: '恭喜你，抽到' + txt,
                                 type: 'success',
+                                duration:1.5*1000,
                                 onClose: function () {
                                     self.dialogLottery.visible = false;
                                 },
@@ -458,6 +467,7 @@
                             self.$message({
                                 message: '很遗憾并未抽到折扣优惠哟!',
                                 type: 'warning',
+                                duration: 1.5 * 1000,
                                 onClose: function () {
                                     self.dialogLottery.visible = false;
                                 }
