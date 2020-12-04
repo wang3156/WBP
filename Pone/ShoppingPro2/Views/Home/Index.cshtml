@@ -87,6 +87,14 @@
         .div_html img {
             width: 100%;
         }
+
+        .Lottery-content {
+            width: 100%;
+        }
+
+        .dialog_lo .el-dialog {
+            background-color: transparent;
+        }
     </style>
 
 }
@@ -159,6 +167,7 @@
                     </el-table>
                 </div>
                 <div style="text-align:right;padding-right:10px;padding-top:10px;">
+                    <el-tag type="danger">折后金额：{{sumPrice.mul(dialogLottery.lotteryValue)}}</el-tag>
                     <el-button type="success" v-bind:disabled="!(userInfoForm.userInfo&&cartData.length>0)">结算</el-button>
                 </div>
                 <span class="cart" slot="reference">
@@ -172,13 +181,6 @@
 
 
     <el-main>
-        @*<div class="grid">
-                <div class="grid__item" v-bind:data-row="JSON.stringify(o)">
-                    <div class="action--buy">
-                        XXXXXXXXXXXXXXXX
-                    </div>
-                </div>
-            </div>*@
         <div class="view">
             <!-- Blueprint header -->
             <!-- Grid -->
@@ -274,6 +276,24 @@
         <p>商品详情</p>
         <div v-html="dialogSubmit.Form.SPDetails" class="div_html"></div>
     </el-dialog>
+
+
+    <el-dialog v-bind:visible.sync="dialogLottery.visible"
+               width="30%"
+               class="dialog_lo"
+               v-bind:close-on-click-modal="false">
+        <div class="Lottery-content">
+            <img src="~/Scripts/awardRotate/img/1.png" id="shan-img" style="display:none;" />
+            <img src="~/Scripts/awardRotate/img/2.png" id="sorry-img" style="display:none;" />
+            <div class="banner">
+                <div class="turnplate" style="background-image:url(/Scripts/awardRotate/img/turnplate-bg.png);background-size:100% 100%;">
+                    <canvas class="item" id="wheelcanvas" v-bind:width="dialogLottery.style.width+'px'" v-bind:height="dialogLottery.style.height+'px'"></canvas>
+                    <img class="pointer" src="~/Scripts/awardRotate/img/turnplate-pointer.png" />
+                </div>
+            </div>
+        </div>
+    </el-dialog>
+
 </el-container>
 
 
@@ -281,6 +301,9 @@
 @section scripts{
     <script src="~/Scripts/jquery.cookie.js"></script>
     <script src="~/Scripts/camroll_slider/camroll_slider.js"></script>
+    <link href="~/Scripts/awardRotate/css/normalize.css" rel="stylesheet" />
+    <link href="~/Scripts/awardRotate/css/style.css" rel="stylesheet" />
+    <script src="~/Scripts/awardRotate/awardRotate.js"></script>
     <script>
         /**
  ** 乘法函数，用来得到精确的乘法结果
@@ -380,14 +403,154 @@
                 userInfo: null
 
             },
-            cartData: []
+            cartData: [],
+            sumPrice: 0,
+            dialogLottery: {
+                lotteryValue: 1,
+                visible: true,
+                style: {
+                    width: 422,
+                    height: 422
+                },
+                turnplate: {
+                    restaraunts: ["9折", "8.5折", "8折", "7.5折", "7折", "6折 ", "5折", "谢谢参与"],				//大转盘奖品名称
+                    colors: ["#FFF4D6", "#FFFFFF", "#FFF4D6", "#FFFFFF", "#FFF4D6", "#FFFFFF", "#FFF4D6", "#FFFFFF", "#FFF4D6", "#FFFFFF"],					//大转盘奖品区块对应背景颜色
+                    outsideRadius: 192,			//大转盘外圆的半径
+                    textRadius: 155,				//大转盘奖品位置距离圆心的距离
+                    insideRadius: 68,			//大转盘内圆的半径
+                    startAngle: 0,				//开始角度
+                    bRotate: false				//false:停止;ture:旋转
+                }
+            }
 
 
         });
 
         $.extend(vue_methods, {
-            getSummaries: function (param) {
 
+            //旋转转盘 item:奖品位置; txt：提示语;
+            rotateFn: function (item, txt) {
+                var self = this;
+                var turnplate = self.dialogLottery.turnplate;
+                var angles = item * (360 / turnplate.restaraunts.length) - (360 / (turnplate.restaraunts.length * 2));
+                if (angles < 270) {
+                    angles = 270 - angles;
+                } else {
+                    angles = 360 - angles + 270;
+                }
+                $('#wheelcanvas').stopRotate();
+                $('#wheelcanvas').rotate({
+                    angle: 0,
+                    animateTo: angles + 1800,
+                    duration: 8000,
+                    callback: function () {
+                        if (txt.indexOf("折") > 0) {
+                            self.dialogLottery.lotteryValue = 0.1.mul(txt.replace(/[^\d]*/g, ""));
+                            self.$message({
+                                message: '恭喜你，抽到' + txt,
+                                type: 'success',
+                                onClose: function () {
+                                    self.dialogLottery.visible = false;
+                                },
+                            });
+                        } else {
+                            self.dialogLottery.lotteryValue = 1;
+                            self.$message({
+                                message: '很遗憾并未抽到折扣优惠哟!',
+                                type: 'warning',
+                                onClose: function () {
+                                    self.dialogLottery.visible = false;
+                                }
+                            });
+                        }
+
+                        turnplate.bRotate = !turnplate.bRotate;
+                    }
+                });
+            },
+            drawRouletteWheel: function () {
+                var self = this;
+                var turnplate = self.dialogLottery.turnplate;
+                var canvas = document.getElementById("wheelcanvas");
+                if (canvas.getContext) {
+                    //根据奖品个数计算圆周角度
+                    var arc = Math.PI / (turnplate.restaraunts.length / 2);
+                    var ctx = canvas.getContext("2d");
+                    //在给定矩形内清空一个矩形
+                    ctx.clearRect(0, 0, self.dialogLottery.style.width, self.dialogLottery.style.height);
+                    //strokeStyle 属性设置或返回用于笔触的颜色、渐变或模式
+                    ctx.strokeStyle = "#FFBE04";
+                    //font 属性设置或返回画布上文本内容的当前字体属性
+                    ctx.font = '16px Microsoft YaHei';
+                    for (var i = 0; i < turnplate.restaraunts.length; i++) {
+                        var angle = turnplate.startAngle + i * arc;
+                        ctx.fillStyle = turnplate.colors[i];
+                        ctx.beginPath();
+                        var wh = self.dialogLottery.style.width / 2;
+                        var hh = self.dialogLottery.style.height / 2
+                        //arc(x,y,r,起始角,结束角,绘制方向) 方法创建弧/曲线（用于创建圆或部分圆）
+                        ctx.arc(wh, hh, turnplate.outsideRadius, angle, angle + arc, false);
+                        ctx.arc(wh, hh, turnplate.insideRadius, angle + arc, angle, true);
+                        ctx.stroke();
+                        ctx.fill();
+                        //锁画布(为了保存之前的画布状态)
+                        ctx.save();
+
+                        //----绘制奖品开始----
+                        ctx.fillStyle = "#E5302F";
+                        var text = turnplate.restaraunts[i];
+                        var line_height = 17;
+                        //translate方法重新映射画布上的 (0,0) 位置
+                        ctx.translate(wh + Math.cos(angle + arc / 2) * turnplate.textRadius, hh + Math.sin(angle + arc / 2) * turnplate.textRadius);
+
+                        //rotate方法旋转当前的绘图
+                        ctx.rotate(angle + arc / 2 + Math.PI / 2);
+
+                        /** 下面代码根据奖品类型、奖品名称长度渲染不同效果，如字体、颜色、图片效果。(具体根据实际情况改变) **/
+                        if (text.indexOf("M") > 0) {//流量包
+                            var texts = text.split("M");
+                            for (var j = 0; j < texts.length; j++) {
+                                ctx.font = j == 0 ? 'bold 20px Microsoft YaHei' : '16px Microsoft YaHei';
+                                if (j == 0) {
+                                    ctx.fillText(texts[j] + "M", -ctx.measureText(texts[j] + "M").width / 2, j * line_height);
+                                } else {
+                                    ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, j * line_height);
+                                }
+                            }
+                        } else if (text.indexOf("M") == -1 && text.length > 6) {//奖品名称长度超过一定范围
+                            text = text.substring(0, 6) + "||" + text.substring(6);
+                            var texts = text.split("||");
+                            for (var j = 0; j < texts.length; j++) {
+                                ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, j * line_height);
+                            }
+                        } else {
+                            //在画布上绘制填色的文本。文本的默认颜色是黑色
+                            //measureText()方法返回包含一个对象，该对象包含以像素计的指定字体宽度
+                            ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+                        }
+
+                        //添加对应图标
+                        if (text.indexOf("折") > 0) {
+                            var img = document.getElementById("shan-img");
+                            img.onload = function () {
+                                //ctx.drawImage(img, -15, 10);
+                            };
+                            ctx.drawImage(img, -15, 10);
+                        } else if (text.indexOf("谢谢参与") >= 0) {
+                            var img = document.getElementById("sorry-img");
+                            img.onload = function () {
+                                //ctx.drawImage(img, -15, 10);
+                            };
+                            ctx.drawImage(img, -15, 10);
+                        }
+                        //把当前画布返回（调整）到上一个save()状态之前
+                        ctx.restore();
+                        //----绘制奖品结束----
+                    }
+                }
+            },
+            getSummaries: function (param) {
+                var self = this;
                 var sums = [];
                 param.columns.forEach((column, index) => {
                     if (index === 0) {
@@ -417,6 +580,10 @@
                                 return prev;
                             }
                         }, 0);
+
+                        if (column.label == '金额') {
+                            self.sumPrice = sums[index];
+                        }
                         if (column.label != '数量') {
                             sums[index] += ' 元';
                         } else {
@@ -493,6 +660,11 @@
 
         });
 
+        function rnd(n, m) {
+            var random = Math.floor(Math.random() * (m - n + 1) + n);
+            return random;
+
+        }
         function addToCartEvent(d) {
             var row = $(d).parents(".grid__item").data("row");
             if (!row && (row = JSON.parse(row))) {
@@ -523,6 +695,22 @@
         }
 
         $.extend(vue_mounted, {
+            loadLottery: function () {
+                var self = this;
+                self.$nextTick(function () {
+                    self.drawRouletteWheel();
+                    var turnplate = self.dialogLottery.turnplate;
+                    $('.pointer').click(function () {
+                        if (turnplate.bRotate) return;
+                        turnplate.bRotate = !turnplate.bRotate;
+                        //获取随机数(奖品个数范围内)
+                        var item = rnd(1, turnplate.restaraunts.length);
+                        //奖品数量等于10,指针落在对应奖品区域的中心角度[252, 216, 180, 144, 108, 72, 36, 360, 324, 288]
+                        self.rotateFn(item, turnplate.restaraunts[item - 1]);
+                        console.log(item);
+                    });
+                });
+            },
             getUserInfo: function () {
                 var u = $.cookie("userinfo");
                 if (u) {

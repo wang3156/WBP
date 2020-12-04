@@ -97,6 +97,13 @@
     <Content Include="Content\ElementUI\fonts\element-icons.woff" />
     <Content Include="Content\ElementUI\fonts\element-icons.ttf" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
+    <Content Include="Scripts\awardRotate\awardRotate.js" />
+    <Content Include="Scripts\awardRotate\css\normalize.css" />
+    <Content Include="Scripts\awardRotate\css\style.css" />
+    <Content Include="Scripts\awardRotate\img\1.png" />
+    <Content Include="Scripts\awardRotate\img\2.png" />
+    <Content Include="Scripts\awardRotate\img\turnplate-bg.png" />
+    <Content Include="Scripts\awardRotate\img\turnplate-pointer.png" />
     <Content Include="Scripts\camroll_slider\camroll_slider.css" />
     <Content Include="Scripts\camroll_slider\camroll_slider.js" />
     <Content Include="Scripts\camroll_slider\camroll_slider.min.css" />
