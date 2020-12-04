@@ -73,7 +73,7 @@
 
         .div_contentName {
             display: flex;
-            height:350px;
+            height: 350px;
         }
 
         #my-slider {
@@ -114,8 +114,8 @@
                                 <span>{{userInfoForm.userInfo.Address}}</span>
                             </el-form-item>
                         </el-form>
-                        <el-link type="danger" slot="reference">{{userInfoForm.userInfo.AccountNumber}}</el-link> 
-                        
+                        <el-link type="danger" slot="reference">{{userInfoForm.userInfo.AccountNumber}}</el-link>
+
                     </el-popover>
                 </template>
                 <template v-if="!!userInfoForm.userInfo">
@@ -123,13 +123,13 @@
                     <el-link type="danger" v-on:click="offLine">注销</el-link>
                 </template>
             </i>
-            
+
             <el-popover placement="bottom-end"
                         title="购物车"
                         width="680"
                         trigger="click">
                 <div>
-                    <el-table v-bind:data="cartData">
+                    <el-table v-bind:data="cartData" show-summary v-bind:summary-method="getSummaries">
                         <el-table-column width="180" prop="SPName" label="商品名称" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <el-link type="primary" class="cut_ellink" v-on:click="showContent(scope.row)">{{scope.row.SPName}}</el-link>
@@ -140,7 +140,7 @@
                                 <img v-if="scope.row.SPImg.length>0" style="width:120px;height:120px;" v-bind:src="scope.row.SPImg[0].base64" v-bind:alt="scope.row.SPImg[0].filename" />
                             </template>
                         </el-table-column>
-                        <el-table-column width="90" label="数量">
+                        <el-table-column width="90" label="数量" prop="QCount">
                             <template slot-scope="scope">
                                 <el-input-number style="width:80px;" v-on:change="onQCountChange" v-bind:precision="0" v-model="scope.row.QCount" type="number" v-bind:min="1" size="mini" controls-position="right"></el-input-number>
                             </template>
@@ -159,7 +159,7 @@
                     </el-table>
                 </div>
                 <div style="text-align:right;padding-right:10px;padding-top:10px;">
-                    <el-button type="success" v-bind:disabled="!(userInfoForm.userInfo&&cartData.length>0)">提交订单</el-button>
+                    <el-button type="success" v-bind:disabled="!(userInfoForm.userInfo&&cartData.length>0)">结算</el-button>
                 </div>
                 <span class="cart" slot="reference">
                     <i class="cart__icon fa fa-shopping-cart"></i>
@@ -241,7 +241,6 @@
     <el-dialog title="商品信息"
                v-bind:visible.sync="dialogSubmit.visible"
                width="50%"
-                
                v-bind:close-on-click-modal="false">
         <div class="div_contentName">
             <div id="my-slider" class="crs-wrap">
@@ -263,12 +262,12 @@
             </div>
 
             <el-form label-width="80px" class="elformCl">
-                <el-form-item label="商品名称" >
+                <el-form-item label="商品名称">
                     {{dialogSubmit.Form.SPName}}
                 </el-form-item>
                 <el-form-item label="商品简介">
                     {{dialogSubmit.Form.SPRemark}}
-                </el-form-item>               
+                </el-form-item>
             </el-form>
 
         </div>
@@ -308,6 +307,49 @@
         Number.prototype.mul = function (arg) {
             return accMul(arg, this);
         };
+        /**
+ ** 加法函数，用来得到精确的加法结果
+ ** 说明：javascript的加法结果会有误差，在两个浮点数相加的时候会比较明显。这个函数返回较为精确的加法结果。
+ ** 调用：accAdd(arg1,arg2)
+ ** 返回值：arg1加上arg2的精确结果
+ **/
+        function accAdd(arg1, arg2) {
+            var r1, r2, m, c;
+            try {
+                r1 = arg1.toString().split(".")[1].length;
+            }
+            catch (e) {
+                r1 = 0;
+            }
+            try {
+                r2 = arg2.toString().split(".")[1].length;
+            }
+            catch (e) {
+                r2 = 0;
+            }
+            c = Math.abs(r1 - r2);
+            m = Math.pow(10, Math.max(r1, r2));
+            if (c > 0) {
+                var cm = Math.pow(10, c);
+                if (r1 > r2) {
+                    arg1 = Number(arg1.toString().replace(".", ""));
+                    arg2 = Number(arg2.toString().replace(".", "")) * cm;
+                } else {
+                    arg1 = Number(arg1.toString().replace(".", "")) * cm;
+                    arg2 = Number(arg2.toString().replace(".", ""));
+                }
+            } else {
+                arg1 = Number(arg1.toString().replace(".", ""));
+                arg2 = Number(arg2.toString().replace(".", ""));
+            }
+            return (arg1 + arg2) / m;
+        }
+
+        //给Number类型增加一个add方法，调用起来更加方便。
+        Number.prototype.add = function (arg) {
+            return accAdd(arg, this);
+        };
+
 
         $.extend(vue_data, {
             dialogSubmit: {
@@ -344,6 +386,50 @@
         });
 
         $.extend(vue_methods, {
+            getSummaries: function (param) {
+
+                var sums = [];
+                param.columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '总价';
+                        return;
+                    }
+                    if (['操作', '图片', '单价'].indexOf(column.label) > -1) {
+                        sums[index] = '';
+                        return;
+                    }
+                    var values;
+                    if (column.label == '金额') {
+                        values = param.data.map(function (item) {
+                            return item.QCount.mul(item.SPUnitPrice);
+                        });
+
+                    } else {
+                        values = param.data.map(item => Number(item[column.property]));
+
+                    }
+                    if (!values.every(value => isNaN(value))) {
+                        sums[index] = values.reduce((prev, curr) => {
+                            var value = Number(curr);
+                            if (!isNaN(value)) {
+                                return prev.add(curr);
+                            } else {
+                                return prev;
+                            }
+                        }, 0);
+                        if (column.label != '数量') {
+                            sums[index] += ' 元';
+                        } else {
+                            sums[index] += ' 件';
+                        }
+                    } else {
+                        sums[index] = '';
+                    }
+
+                });
+
+                return sums;
+            },
             showContent: function (rowData) {
                 var t = vue_data.dialogSubmit.Form;
                 for (var i in rowData) {
@@ -386,7 +472,7 @@
                         $.cookie("userinfo", JSON.stringify(msg.Data), { expires: expiresDate });
                         self.$message.success("登录成功...");
                         self.DialogForm.visible = false;
-                         
+
                     }, null, function () {
                         self.loading = false;
                     });
