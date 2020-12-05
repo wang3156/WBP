@@ -91,6 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\er.png" />
     <Content Include="Content\ElementUI\element-ui.css" />
     <Content Include="Content\img\header.png" />
     <Content Include="Global.asax" />
@@ -133,6 +134,9 @@
     <Content Include="Scripts\pbl\js\isotope.pkgd.min.js" />
     <Content Include="Scripts\pbl\js\main.js" />
     <Content Include="Scripts\pbl\js\modernizr.custom.js" />
+    <Content Include="Scripts\vcode\client_captcha.js" />
+    <Content Include="Scripts\vcode\img\enter_icon.png" />
+    <Content Include="Scripts\vcode\img\refresh_icon.png" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Web.config" />

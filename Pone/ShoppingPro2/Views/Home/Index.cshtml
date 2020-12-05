@@ -3,6 +3,7 @@
 
 }
 @section styles{
+
     <link href="~/Scripts/pbl/fonts/pbl/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Scripts/pbl/fonts/pixelfabric-clothes/style.css" rel="stylesheet" />
     <link href="~/Scripts/pbl/css/demo.css" rel="stylesheet" />
@@ -97,227 +98,70 @@
         }
 
         .dialog_lo .el-dialog__headerbtn .el-dialog__close {
-            color:red;
-            font-size:18px;
-            font-weight:700;
+            color: red;
+            font-size: 18px;
+            font-weight: 700;
         }
+
+
+        #checkCode {
+            font-family: Arial;
+            font-style: italic;
+            color: blue;
+            font-size: 30px;
+            border: 0;
+            letter-spacing: 3px;
+            font-weight: bolder;
+            cursor: pointer;
+            width: 100px;
+            height: 40px;
+            line-height: 60px;
+            text-align: center;
+            vertical-align: middle;
+            background-color: #D8B7E3;
+            text-decoration: none;
+            color: #288bc4;
+        }
+
+            #checkCode:hover {
+                text-decoration: underline;
+                font-size: 32px;
+            }
     </style>
 
-}
-<el-container>
-    <el-header>
-        <div style="flex:1;align-items:center;text-align:center;">
-            XX商城
-        </div>
-        <div class="div_user">
-            <i class="el-icon-user">
-                <el-link type="danger" v-if="!userInfoForm.userInfo" v-on:click="DialogForm.visible=true">请登录</el-link>
-                <template v-else>
-                    <el-popover placement="bottom-end"
-                                title="用户信息"
-                                width="300"
-                                trigger="click">
-                        <el-form label-width="80px" size="mini">
-                            <el-form-item label="账号：">
-                                <span>{{userInfoForm.userInfo.AccountNumber}}</span>
-                            </el-form-item>
-                            <el-form-item label="邮箱：">
-                                <span>{{userInfoForm.userInfo.Email}}</span>
-                            </el-form-item>
-                            <el-form-item label="地址：">
-                                <span>{{userInfoForm.userInfo.Address}}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-link type="danger" slot="reference">{{userInfoForm.userInfo.AccountNumber}}</el-link>
-
-                    </el-popover>
-                </template>
-                <template v-if="!!userInfoForm.userInfo">
-                    |
-                    <el-link type="danger" v-on:click="offLine">注销</el-link>
-                </template>
-            </i>
-
-            <el-popover placement="bottom-end"
-                        title="购物车"
-                        width="680"
-                        trigger="manual"
-                        v-model="cartVisible">
-                <div>
-                    <el-table v-bind:data="cartData" show-summary v-bind:summary-method="getSummaries">
-                        <el-table-column width="180" prop="SPName" label="商品名称" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <el-link type="primary" class="cut_ellink" v-on:click="showContent(scope.row)">{{scope.row.SPName}}</el-link>
-                            </template>
-                        </el-table-column>
-                        <el-table-column width="150" label="图片">
-                            <template slot-scope="scope">
-                                <img v-if="scope.row.SPImg.length>0" style="width:120px;height:120px;" v-bind:src="scope.row.SPImg[0].base64" v-bind:alt="scope.row.SPImg[0].filename" />
-                            </template>
-                        </el-table-column>
-                        <el-table-column width="90" label="数量" prop="QCount">
-                            <template slot-scope="scope">
-                                <el-input-number style="width:80px;" v-on:change="onQCountChange" v-bind:precision="0" v-model="scope.row.QCount" type="number" v-bind:min="1" size="mini" controls-position="right"></el-input-number>
-                            </template>
-                        </el-table-column>
-                        <el-table-column width="80" prop="SPUnitPrice" label="单价"></el-table-column>
-                        <el-table-column width="80" label="金额">
-                            <template slot-scope="scope">
-                                {{scope.row.QCount.mul(scope.row.SPUnitPrice)}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column width="50" label="操作">
-                            <template slot-scope="scope">
-                                <el-button type="danger" size="mini" icon="el-icon-delete" circle v-on:click="removeSP(scope.row)"></el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
-                <div style="text-align:right;padding-right:10px;padding-top:10px;">
-                    <el-tag type="danger">折后金额({{dialogLottery.lotteryValue==1?"全额":dialogLottery.lotteryValue.mul(10)}}折)：{{sumPrice.mul(dialogLottery.lotteryValue)}}</el-tag>
-                    <el-button type="success" v-bind:disabled="!(userInfoForm.userInfo&&cartData.length>0)">结算</el-button>
-                </div>
-                <span class="cart" slot="reference" v-on:click="cartVisible=!cartVisible">
-                    <i class="cart__icon fa fa-shopping-cart"></i>
-                    <span class="cart__count">0</span>
-                </span>
-            </el-popover>
-        </div>
-    </el-header>
-
-
-
-    <el-main>
-        <div class="view">
-            <!-- Blueprint header -->
-            <!-- Grid -->
-            <section class="grid grid--loading">
-                <!-- Loader -->
-                <img class="grid__loader" src="~/Scripts/pbl/images/grid.svg" width="60" alt="Loader image" />
-                <!-- Grid sizer for a fluid Isotope (Masonry) layout -->
-                <div class="grid__sizer"></div>
-                <template v-for="(d,index) in MainData">
-                    <div class="grid__item dresses" v-bind:data-row="JSON.stringify(d)" v-if="(index%4>0)">
-                        <div class="slider">
-                            <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" v-bind:alt="dimg.filename" /></div>
-                        </div>
-                        <div class="meta">
-                            <h3 class="meta__title">{{d.SPName}}</h3>
-                            <span class="meta__brand">{{d.SPRemark}}</span>
-                            <span class="meta__price">￥{{d.SPUnitPrice}}</span>
-                        </div>
-                        <button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i></button>
-                    </div>
-                    <div class="grid__item grid__item--size-a shirts" v-else v-bind:data-row="JSON.stringify(d)">
-                        <div class="slider">
-                            <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" v-bind:alt="dimg.filename" /></div>
-                        </div>
-                        <div class="meta">
-                            <h3 class="meta__title">{{d.SPName}}</h3>
-                            <span class="meta__brand">{{d.SPRemark}}</span>
-                            <span class="meta__price">￥{{d.SPUnitPrice}}</span>
-                        </div>
-                        <button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i></button>
-                    </div>
-                </template>
-
-            </section>
-            <!-- /grid-->
-        </div>
-
-    </el-main>
-
-    <el-dialog v-bind:title="DialogForm.title"
-               v-bind:visible.sync="DialogForm.visible"
-               width="25%"
-               v-bind:close-on-click-modal="false">
-        <el-form ref="formInline" :model="DialogForm.formEntity" v-bind:rules="ruleInline" label-width="80px">
-            <el-form-item prop="UserID" label="账号：">
-                <el-input type="text" v-model="DialogForm.formEntity.UserID" placeholder="请输入账号" prefix-icon="el-icon-user-solid">
-                </el-input>
-            </el-form-item>
-            <el-form-item prop="PassWord" label="密码：">
-                <el-input type="password" v-model="DialogForm.formEntity.PassWord" placeholder="请输入密码" prefix-icon="el-icon-lock">
-                </el-input>
-            </el-form-item>
-            <el-form-item class="txt_right">
-                <el-button v-on:click="onLogin" v-bind:loading="loading" type="primary" size="medium">登陆</el-button>
-            </el-form-item>
-        </el-form>
-    </el-dialog>
-
-
-    <el-dialog title="商品信息"
-               v-bind:visible.sync="dialogSubmit.visible"
-               width="50%"
-               v-bind:close-on-click-modal="false">
-        <div class="div_contentName">
-            <div id="my-slider" class="crs-wrap">
-                <div class="crs-screen">
-                    <div class="crs-screen-roll">
-                        <div class="crs-screen-item" v-bind:style="{'background-image': 'url('+d.base64+')'}" v-for="(d,index) in dialogSubmit.Form.SPImg">
-                            @*<div class="crs-screen-item-content"><h1>{{d.filename}}</h1></div>*@
-                        </div>
-                    </div>
-                </div>
-                <div class="crs-bar">
-                    <div class="crs-bar-roll-current"></div>
-                    <div class="crs-bar-roll-wrap">
-                        <div class="crs-bar-roll">
-                            <div class="crs-bar-roll-item" v-bind:style="{'background-image': 'url('+d.base64+')'}" v-for="(d,index) in dialogSubmit.Form.SPImg"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <el-form label-width="80px" class="elformCl">
-                <el-form-item label="商品名称">
-                    {{dialogSubmit.Form.SPName}}
-                </el-form-item>
-                <el-form-item label="商品简介">
-                    {{dialogSubmit.Form.SPRemark}}
-                </el-form-item>
-            </el-form>
-
-        </div>
-        <p>商品详情</p>
-        <div v-html="dialogSubmit.Form.SPDetails" class="div_html"></div>
-    </el-dialog>
-
-
-    <el-dialog v-bind:visible.sync="dialogLottery.visible"
-               width="30%"
-               class="dialog_lo"
-               v-bind:close-on-click-modal="false">
-        <div class="Lottery-content">
-            <img src="~/Scripts/awardRotate/img/1.png" id="shan-img" style="display:none;" />
-            <img src="~/Scripts/awardRotate/img/2.png" id="sorry-img" style="display:none;" />
-            <div class="banner">
-                <div class="turnplate" style="background-image:url(/Scripts/awardRotate/img/turnplate-bg.png);background-size:100% 100%;">
-                    <canvas class="item" id="wheelcanvas" v-bind:width="dialogLottery.style.width+'px'" v-bind:height="dialogLottery.style.height+'px'"></canvas>
-                    <img class="pointer" src="~/Scripts/awardRotate/img/turnplate-pointer.png" />
-                </div>
-            </div>
-        </div>
-    </el-dialog>
-
-</el-container>
-
-
-
-@section scripts{
-    <script src="~/Scripts/jquery.cookie.js"></script>
-    <script src="~/Scripts/camroll_slider/camroll_slider.js"></script>
-    <link href="~/Scripts/awardRotate/css/normalize.css" rel="stylesheet" />
-    <link href="~/Scripts/awardRotate/css/style.css" rel="stylesheet" />
-    <script src="~/Scripts/awardRotate/awardRotate.js"></script>
     <script>
+
+
+        //生成验证码的方法
+        function createCode(length) {
+            var code = "";
+            var codeLength = parseInt(length); //验证码的长度
+            var checkCode = document.getElementById("checkCode");
+            ////所有候选组成验证码的字符，当然也可以用中文的
+            var codeChars = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+            //循环组成验证码的字符串
+            for (var i = 0; i < codeLength; i++) {
+                //获取随机验证码下标
+                var charNum = Math.floor(Math.random() * 62);
+                //组合成指定字符验证码
+                code += codeChars[charNum];
+            }
+            if (checkCode) {
+                //为验证码区域添加样式名
+                checkCode.className = "code";
+                //将生成验证码赋值到显示区
+                checkCode.innerHTML = code;
+            }
+        }
+
         /**
- ** 乘法函数，用来得到精确的乘法结果
- ** 说明：javascript的乘法结果会有误差，在两个浮点数相乘的时候会比较明显。这个函数返回较为精确的乘法结果。
- ** 调用：accMul(arg1,arg2)
- ** 返回值：arg1乘以 arg2的精确结果
- **/
+** 乘法函数，用来得到精确的乘法结果
+** 说明：javascript的乘法结果会有误差，在两个浮点数相乘的时候会比较明显。这个函数返回较为精确的乘法结果。
+** 调用：accMul(arg1,arg2)
+** 返回值：arg1乘以 arg2的精确结果
+**/
         function accMul(arg1, arg2) {
             var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
             try {
@@ -381,7 +225,269 @@
         };
 
 
+
+    </script>
+
+}
+<el-container>
+    <el-header>
+        <div style="flex:1;align-items:center;text-align:center;">
+            XX商城
+        </div>
+        <div class="div_user">
+            <i class="el-icon-user">
+                <template v-if="!userInfoForm.userInfo">
+                    <el-link type="danger" v-on:click="DialogForm.visible=true">请登录</el-link> |
+                    <el-link type="danger" v-on:click="DialogReg.visible=true">注册</el-link>
+                </template>
+
+                <template v-else>
+                    <el-popover placement="bottom-end"
+                                title="用户信息"
+                                width="300"
+                                trigger="click">
+                        <el-form label-width="80px" size="mini">
+                            <el-form-item label="账号：">
+                                <span>{{userInfoForm.userInfo.AccountNumber}}</span>
+                            </el-form-item>
+                            <el-form-item label="邮箱：">
+                                <span>{{userInfoForm.userInfo.Email}}</span>
+                            </el-form-item>
+                            <el-form-item label="地址：">
+                                <span>{{userInfoForm.userInfo.Address}}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-link type="danger" slot="reference">{{userInfoForm.userInfo.AccountNumber}}</el-link>
+
+                    </el-popover>
+                </template>
+                <template v-if="!!userInfoForm.userInfo">
+                    |
+                    <el-link type="danger" v-on:click="offLine">注销</el-link>
+                </template>
+            </i>
+
+            <el-popover placement="bottom-end"
+                        title="购物车"
+                        width="680"
+                        trigger="manual"
+                        v-model="cartVisible">
+                <div>
+                    <el-table v-bind:data="cartData" show-summary v-bind:summary-method="getSummaries">
+                        <el-table-column width="180" prop="SPName" label="商品名称" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <el-link type="primary" class="cut_ellink" v-on:click="showContent(scope.row)">{{scope.row.SPName}}</el-link>
+                            </template>
+                        </el-table-column>
+                        <el-table-column width="150" label="图片">
+                            <template slot-scope="scope">
+                                <img v-if="scope.row.SPImg.length>0" style="width:120px;height:120px;" v-bind:src="scope.row.SPImg[0].base64" v-bind:alt="scope.row.SPImg[0].filename" />
+                            </template>
+                        </el-table-column>
+                        <el-table-column width="90" label="数量" prop="QCount">
+                            <template slot-scope="scope">
+                                <el-input-number style="width:80px;" v-on:change="onQCountChange" v-bind:precision="0" v-model="scope.row.QCount" type="number" v-bind:min="1" size="mini" controls-position="right"></el-input-number>
+                            </template>
+                        </el-table-column>
+                        <el-table-column width="80" prop="SPUnitPrice" label="单价"></el-table-column>
+                        <el-table-column width="80" label="金额">
+                            <template slot-scope="scope">
+                                {{scope.row.QCount.mul(scope.row.SPUnitPrice)}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column width="50" label="操作">
+                            <template slot-scope="scope">
+                                <el-button type="danger" size="mini" icon="el-icon-delete" circle v-on:click="removeSP(scope.row)"></el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <div style="text-align:right;padding-right:10px;padding-top:10px;">
+                    <el-tag type="danger">折后金额({{dialogLottery.lotteryValue==1?"全额":dialogLottery.lotteryValue.mul(10)+'折'}})：{{sumPrice.mul(dialogLottery.lotteryValue).toFixed(2)}}</el-tag>
+                    <el-button type="success" v-bind:disabled="!(userInfoForm.userInfo&&cartData.length>0)" v-on:click="onCountZ">结算</el-button>
+                </div>
+                <span class="cart" slot="reference" v-on:click="cartVisible=!cartVisible">
+                    <i class="cart__icon fa fa-shopping-cart"></i>
+                    <span class="cart__count">0</span>
+                </span>
+            </el-popover>
+        </div>
+    </el-header>
+
+
+
+    <el-main>
+        <div class="view">
+            <!-- Blueprint header -->
+            <!-- Grid -->
+            <section class="grid grid--loading">
+                <!-- Loader -->
+                <img class="grid__loader" src="~/Scripts/pbl/images/grid.svg" width="60" alt="Loader image" />
+                <!-- Grid sizer for a fluid Isotope (Masonry) layout -->
+                <div class="grid__sizer"></div>
+                <template v-for="(d,index) in MainData">
+                    <div class="grid__item dresses" v-bind:data-row="JSON.stringify(d)" v-if="(index%4>0)">
+                        <div class="slider">
+                            <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" v-bind:alt="dimg.filename" /></div>
+                        </div>
+                        <div class="meta">
+                            <h3 class="meta__title">{{d.SPName}}</h3>
+                            <span class="meta__brand">{{d.SPRemark}}</span>
+                            <span class="meta__price">￥{{d.SPUnitPrice}}</span>
+                        </div>
+                        <button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i></button>
+                    </div>
+                    <div class="grid__item grid__item--size-a shirts" v-else v-bind:data-row="JSON.stringify(d)">
+                        <div class="slider">
+                            <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" v-bind:alt="dimg.filename" /></div>
+                        </div>
+                        <div class="meta">
+                            <h3 class="meta__title">{{d.SPName}}</h3>
+                            <span class="meta__brand">{{d.SPRemark}}</span>
+                            <span class="meta__price">￥{{d.SPUnitPrice}}</span>
+                        </div>
+                        <button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i></button>
+                    </div>
+                </template>
+
+            </section>
+            <!-- /grid-->
+        </div>
+
+    </el-main>
+
+
+
+
+    <el-dialog title="商品信息"
+               v-bind:visible.sync="dialogSubmit.visible"
+               width="50%"
+               v-bind:close-on-click-modal="false">
+        <div class="div_contentName">
+            <div id="my-slider" class="crs-wrap">
+                <div class="crs-screen">
+                    <div class="crs-screen-roll">
+                        <div class="crs-screen-item" v-bind:style="{'background-image': 'url('+d.base64+')'}" v-for="(d,index) in dialogSubmit.Form.SPImg">
+                            @*<div class="crs-screen-item-content"><h1>{{d.filename}}</h1></div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="crs-bar">
+                    <div class="crs-bar-roll-current"></div>
+                    <div class="crs-bar-roll-wrap">
+                        <div class="crs-bar-roll">
+                            <div class="crs-bar-roll-item" v-bind:style="{'background-image': 'url('+d.base64+')'}" v-for="(d,index) in dialogSubmit.Form.SPImg"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <el-form label-width="80px" class="elformCl">
+                <el-form-item label="商品名称">
+                    {{dialogSubmit.Form.SPName}}
+                </el-form-item>
+                <el-form-item label="商品简介">
+                    {{dialogSubmit.Form.SPRemark}}
+                </el-form-item>
+            </el-form>
+
+        </div>
+        <p>商品详情</p>
+        <div v-html="dialogSubmit.Form.SPDetails" class="div_html"></div>
+    </el-dialog>
+
+
+    <el-dialog v-bind:visible.sync="dialogLottery.visible"
+               width="30%"
+               class="dialog_lo"
+               v-bind:close-on-click-modal="false">
+        <div class="Lottery-content">
+            <img src="~/Scripts/awardRotate/img/1.png" id="shan-img" style="display:none;" />
+            <img src="~/Scripts/awardRotate/img/2.png" id="sorry-img" style="display:none;" />
+            <div class="banner">
+                <div class="turnplate" style="background-image:url(/Scripts/awardRotate/img/turnplate-bg.png);background-size:100% 100%;">
+                    <canvas class="item" id="wheelcanvas" v-bind:width="dialogLottery.style.width+'px'" v-bind:height="dialogLottery.style.height+'px'"></canvas>
+                    <img class="pointer" src="~/Scripts/awardRotate/img/turnplate-pointer.png" />
+                </div>
+            </div>
+        </div>
+    </el-dialog>
+
+    <el-dialog v-bind:visible.sync="VerificationCode.visible"
+               width="400px"
+               v-bind:close-on-click-modal="false" title="请输入验证码">
+        <div class="code">
+            <el-form label-width="80px" style="width:100%;" v-bind:model="VerificationCode">
+                <el-form-item label="验证码" prop="vcode" v-bind:rules="[{ required: true, message: '请输入验证码!', trigger: 'blur' },{ validator: checkCodeFun, message: '输入的验证码不正确!', trigger: 'change' }]">
+                    <el-input v-model="VerificationCode.vcode" maxlength="4" style="width:100px;"></el-input>
+                    <span id="checkCode">
+
+                    </span>
+                </el-form-item>
+            </el-form>
+        </div>
+    </el-dialog>
+    <el-dialog v-bind:visible.sync="erCode.visible"
+               width="400px"
+               v-bind:close-on-click-modal="false" title="扫码支付" style="text-align:center;">
+        <img src="~/Content/er.png" />
+    </el-dialog>
+
+
+    <el-dialog title="注册"
+               v-bind:visible.sync="DialogReg.visible"
+               width="40%"
+               v-bind:close-on-click-modal="false">
+        <el-form ref="regForm" :model="DialogReg.formEntity" v-bind:rules="ruleReg" label-width="80px">
+            <el-form-item prop="AccountNumber" label="账号：">
+                <el-input type="text" v-model="DialogReg.formEntity.AccountNumber" placeholder="请输入账号" prefix-icon="el-icon-user-solid">
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="Password" label="密码：">
+                <el-input type="password" v-model="DialogReg.formEntity.Password" placeholder="请输入密码" prefix-icon="el-icon-lock">
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="Email" label="邮箱：">
+                <el-input type="text" v-model="DialogReg.formEntity.Email" placeholder="请输入邮箱">
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="Address" label="地址：">
+                <el-input type="text" v-model="DialogReg.formEntity.Address" placeholder="请输入地址" >
+                </el-input>
+            </el-form-item>
+            <el-form-item class="txt_right">
+                <el-button v-on:click="onRegIn" v-bind:loading="loading" type="primary" size="medium">注册</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+
+</el-container>
+
+
+
+@section scripts{
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/camroll_slider/camroll_slider.js"></script>
+    <link href="~/Scripts/awardRotate/css/normalize.css" rel="stylesheet" />
+    <link href="~/Scripts/awardRotate/css/style.css" rel="stylesheet" />
+    <script src="~/Scripts/awardRotate/awardRotate.js"></script>
+
+
+
+    <script>
+
         $.extend(vue_data, {
+            DialogReg: {
+                visible: false,
+                formEntity: { AccountNumber: '', Email: '', Address: '', Password: '', URole: 1 }
+            },
+            erCode: {
+                visible: false
+            },
+            VerificationCode: {
+                visible: false,
+                vcode: ''
+            },
             dialogSubmit: {
                 visible: false,
                 Form: {
@@ -395,6 +501,7 @@
                 formEntity: {
                     UserID: '',
                     PassWord: ''
+                    , role: 1
                 }
             },
             ruleInline: {
@@ -405,17 +512,23 @@
 
                 ],
             },
+            ruleReg: {
+                AccountNumber: [{ required: true, message: '请输入登录账号!', trigger: 'blur' }],
+                Address: [{ required: true, message: '请输入地址!', trigger: 'blur' }],
+                Password: [{ required: true, message: '请输入密码!', trigger: 'blur' }]
+
+            },
             loading: false,
             userInfoForm: {
                 userInfo: null
 
             },
             cartData: [],
-            cartVisible:false,
+            cartVisible: false,
             sumPrice: 0,
             dialogLottery: {
                 lotteryValue: 1,
-                visible: true,
+                visible: false,
                 style: {
                     width: 422,
                     height: 422
@@ -433,9 +546,57 @@
 
 
         });
-
+        var lotteryed = false;
+        var loadlottery = false;
         $.extend(vue_methods, {
+            onRegIn: function () {
+                var self = this;
+                this.$refs.regForm.validate(function (ok) {
+                    if (!ok)
+                        return;
 
+                    self.pageLoading = true;
+                    $.cutPost('@Url.Action("RegIn", "AdminHome")', { entity: JSON.stringify(self.DialogReg.formEntity) }, function (msg) {
+                        self.$message.success("注册成功!");
+                        self.DialogReg.visible = false;
+                    }, null, function () {
+                        self.pageLoading = false;
+                    });
+                });
+            },
+            onReg: function () {
+                this.DialogReg.formEntity = { AccountNumber: '', Email: '', Address: '', Password: '', URole: 1 };
+                this.DialogReg.visible = true;
+
+
+            },
+            checkCodeFun: function (rule, value, callback) {
+                if ($("#checkCode").html().toUpperCase() == value.trim().toUpperCase()) {
+                    cartFun();
+                    callback();
+                    vue_data.VerificationCode.visible = false;
+                } else {
+                    callback(new Error("输入验证码有误"));
+                }
+
+            },
+            onCountZ: function () {
+                var self = this;
+                if (!lotteryed) {
+                    self.dialogLottery.visible = true;
+                    lotteryed = true;
+                }
+                if (!loadlottery) {
+                    self.$nextTick(function () {
+                        self.loadLottery();
+                    });
+                    loadlottery = true;
+                }
+
+
+
+
+            },
             //旋转转盘 item:奖品位置; txt：提示语;
             rotateFn: function (item, txt) {
                 var self = this;
@@ -452,12 +613,14 @@
                     animateTo: angles + 1800,
                     duration: 8000,
                     callback: function () {
+                        lotteryed = true;
                         if (txt.indexOf("折") > 0) {
-                            self.dialogLottery.lotteryValue = 0.1.mul(txt.replace(/[^\d]*/g, ""));
+
+                            self.dialogLottery.lotteryValue = 0.1.mul(txt.replace(/[^\d.]*/g, ""));
                             self.$message({
                                 message: '恭喜你，抽到' + txt,
                                 type: 'success',
-                                duration:1.5*1000,
+                                duration: 1.5 * 1000,
                                 onClose: function () {
                                     self.dialogLottery.visible = false;
                                 },
@@ -473,7 +636,21 @@
                                 }
                             });
                         }
+                        self.$nextTick(function () {
+                            setTimeout(function () {
+                                self.$confirm('商品折后总价' + self.sumPrice.mul(self.dialogLottery.lotteryValue).toFixed(2) + ',马上付款?', '提示', {
+                                    confirmButtonText: '确定',
+                                    cancelButtonText: '取消',
+                                    type: 'warning',
+                                    callback: function (action) {
+                                        if (action != 'confirm')
+                                            return;
+                                        self.erCode.visible = true;
 
+                                    }
+                                });
+                            }, 1000);
+                        });
                         turnplate.bRotate = !turnplate.bRotate;
                     }
                 });
@@ -666,45 +843,7 @@
                 }, null, function () {
                     self.pageLoading = false;
                 });
-            }
-
-        });
-
-        function rnd(n, m) {
-            var random = Math.floor(Math.random() * (m - n + 1) + n);
-            return random;
-
-        }
-        function addToCartEvent(d) {
-            var row = $(d).parents(".grid__item").data("row");
-            if (!row && (row = JSON.parse(row))) {
-                $Vue.$message.error('添加商品异常!');
-                return false;
-            }
-
-            var d = vue_data.cartData.find(function (a) { return a.SPID == row.SPID });
-            if (d) {
-                d.QCount++;
-            } else {
-                row.QCount = 1;
-                vue_data.cartData.push(row);
-            }
-            return true;
-        }
-
-        function loadjs() {
-            var sc = document.createElement("script");
-            sc.src = '@Url.Content("~/Scripts/pbl/js/isotope.pkgd.min.js")';
-            $(sc).appendTo('body');
-            sc = document.createElement("script");
-            sc.src = '@Url.Content("~/Scripts/pbl/js/flickity.pkgd.min.js")';
-            $(sc).appendTo('body');
-            sc = document.createElement("script");
-            sc.src = '@Url.Content("~/Scripts/pbl/js/main.js")';
-            $(sc).appendTo('body');
-        }
-
-        $.extend(vue_mounted, {
+            },
             loadLottery: function () {
                 var self = this;
                 self.$nextTick(function () {
@@ -720,7 +859,70 @@
                         console.log(item);
                     });
                 });
-            },
+            }
+
+        });
+
+        function rnd(n, m) {
+            var random = Math.floor(Math.random() * (m - n + 1) + n);
+            return random;
+
+        }
+
+        var codesc = false;
+        var cartFun;
+        function addToCartEvent(d, classie, cartItems, cart, onEndAnimation) {
+            var row = $(d).parents(".grid__item").data("row");
+            if (!row && (row = JSON.parse(row))) {
+                $Vue.$message.error('添加商品异常!');
+                return false;
+            }
+            vue_data.VerificationCode.vcode = '';
+            vue_data.VerificationCode.visible = true;
+            if (!codesc) {
+                $Vue.$nextTick(function () {
+                    createCode(4);
+                    $(" #checkCode").click(function () {
+                        createCode(4);
+                    });
+                });
+            } else {
+                createCode(4);
+            }
+            cartFun = function () {
+                var d = vue_data.cartData.find(function (a) { return a.SPID == row.SPID });
+                if (d) {
+                    d.QCount++;
+                } else {
+                    row.QCount = 1;
+                    vue_data.cartData.push(row);
+                }
+
+
+                classie.add(cart, 'cart--animate');
+                setTimeout(function () { cartItems.innerHTML = Number(cartItems.innerHTML) + 1; }, 200);
+                onEndAnimation(cartItems, function () {
+                    classie.remove(cart, 'cart--animate');
+                });
+            }
+
+
+        }
+
+        function loadjs() {
+            var sc = document.createElement("script");
+            sc.src = '@Url.Content("~/Scripts/pbl/js/isotope.pkgd.min.js")';
+            $(sc).appendTo('body');
+            sc = document.createElement("script");
+            sc.src = '@Url.Content("~/Scripts/pbl/js/flickity.pkgd.min.js")';
+            $(sc).appendTo('body');
+            sc = document.createElement("script");
+            sc.src = '@Url.Content("~/Scripts/pbl/js/main.js")';
+            $(sc).appendTo('body');
+        }
+        var captcha;
+        $.extend(vue_mounted, {
+
             getUserInfo: function () {
                 var u = $.cookie("userinfo");
                 if (u) {
@@ -746,7 +948,10 @@
                     });
                 }, null, function () {
                     self.pageLoading = false;
-                })
+                });
+
+
+
             }
 
         });

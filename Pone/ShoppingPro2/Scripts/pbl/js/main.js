@@ -125,15 +125,15 @@
     function addToCart(e) {
         var tar = e.target || e.currentTarget;
         if (addToCartEvent) {
-            if (!addToCartEvent(tar)) {
-                return false;
-            }
+            addToCartEvent(tar, classie, cartItems, cart, onEndAnimation);
+        } else {
+            classie.add(cart, 'cart--animate');
+            setTimeout(function () { cartItems.innerHTML = Number(cartItems.innerHTML) + 1; }, 200);
+            onEndAnimation(cartItems, function () {
+                classie.remove(cart, 'cart--animate');
+            });
         }
-        classie.add(cart, 'cart--animate');
-        setTimeout(function () { cartItems.innerHTML = Number(cartItems.innerHTML) + 1; }, 200);
-        onEndAnimation(cartItems, function () {
-            classie.remove(cart, 'cart--animate');
-        });
+
     }
 
     function recalcFlickities() {

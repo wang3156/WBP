@@ -20,12 +20,12 @@ namespace ShoppingPro2.Controllers
             return View();
         }
 
-        public ActionResult Login(string UserID, string PassWord)
+        public ActionResult Login(string UserID, string PassWord, int role)
         {
             UserInfo uif = null;
             using (DbProcess ub = new DbProcess())
             {
-                Session["UserInfo"] = uif = ub.GetData<UserInfo>(@"select * From UserInfo where AccountNumber=@an and Password=@pw", new SqlParameter("@an", UserID), new SqlParameter("@pw", PassWord));
+                Session["UserInfo"] = uif = ub.GetData<UserInfo>(@"select * From UserInfo where AccountNumber=@an and Password=@pw and URole=" + role, new SqlParameter("@an", UserID), new SqlParameter("@pw", PassWord));
             }
             ResultEntity re = new ResultEntity();
             if (uif == null)
@@ -43,7 +43,7 @@ namespace ShoppingPro2.Controllers
         }
 
         public ActionResult MainPage()
-        { 
+        {
             if (Session["UserInfo"] != null)
             {
                 ViewBag.Zh = (Session["UserInfo"] as UserInfo).AccountNumber;
@@ -125,6 +125,26 @@ namespace ShoppingPro2.Controllers
         {
             Session["UserInfo"] = null;
             ResultEntity re = new ResultEntity();
+            return Json(re);
+        }
+
+        public ActionResult RegIn(string entity)
+        {
+            Dictionary<string, string> en = JsonConvert.DeserializeObject<Dictionary<string, string>>(entity);
+            ResultEntity re = new ResultEntity();
+            string InsertInto = "Insert into UserInfo (AccountNumber,Password,URole,Email,Address) values(@p1,@p2,@p3,@p4,@p5) ;select 1";
+            DbProcess ub = new DbProcess();
+
+            if (ub.GetData<UserInfo>(@"select * From UserInfo where AccountNumber=@an", new SqlParameter("@an", en["AccountNumber"].Trim())) != null)
+            {
+                re.Success = false;
+                re.Msg = "账号已经存在 !";
+            }
+            else
+            {
+                ub.GetData<DataTable>(InsertInto, new SqlParameter("@p1", en["AccountNumber"].Trim()), new SqlParameter("@p2", en["Password"].Trim()), new SqlParameter("@p3", en["URole"].Trim())
+                    , new SqlParameter("@p4", en["Email"].Trim()), new SqlParameter("@p5", en["Address"].Trim()));
+            }
             return Json(re);
         }
 
