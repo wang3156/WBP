@@ -433,6 +433,25 @@
         <img src="~/Content/er.png" />
     </el-dialog>
 
+    <el-dialog v-bind:title="DialogForm.title"
+               v-bind:visible.sync="DialogForm.visible"
+               width="25%"
+               v-bind:close-on-click-modal="false">
+        <el-form ref="formInline" :model="DialogForm.formEntity" v-bind:rules="ruleInline" label-width="80px">
+            <el-form-item prop="UserID" label="账号：">
+                <el-input type="text" v-model="DialogForm.formEntity.UserID" placeholder="请输入账号" prefix-icon="el-icon-user-solid">
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="PassWord" label="密码：">
+                <el-input type="password" v-model="DialogForm.formEntity.PassWord" placeholder="请输入密码" prefix-icon="el-icon-lock">
+                </el-input>
+            </el-form-item>
+            <el-form-item class="txt_right">
+                <el-button v-on:click="onLogin" v-bind:loading="loading" type="primary" size="medium">登陆</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+
 
     <el-dialog title="注册"
                v-bind:visible.sync="DialogReg.visible"
@@ -591,6 +610,8 @@
                         self.loadLottery();
                     });
                     loadlottery = true;
+                } else {
+                    self.erCode.visible = true;
                 }
 
 
