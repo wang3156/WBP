@@ -845,6 +845,9 @@
                                 self.cartData.splice(0);
                                 self.sumPrice = 0;
                                 self.erCode.visible = true;
+                                self.dialogLottery.lotteryValue = 1;
+                                
+                                $(".cart__count").html(0);
                             } else {
                                 self.$message.success("保存成功!");
                             }
