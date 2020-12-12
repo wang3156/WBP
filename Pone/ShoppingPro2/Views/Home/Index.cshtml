@@ -500,7 +500,7 @@
                v-bind:visible.sync="dialogOrderConfrim.visible"
                width="50%"
                v-bind:close-on-click-modal="false">
-        <el-form ref="OrderConfrim" :model="dialogOrderConfrim.formEntity" v-bind:rules="ruleOrderConfrim" label-width="80px">
+        <el-form ref="OrderConfrim" :model="dialogOrderConfrim.formEntity" v-bind:rules="ruleOrderConfrim" label-width="120px">
             <el-form-item prop="OrderUser" label="收件人：">
                 <el-input type="text" v-model="dialogOrderConfrim.formEntity.OrderUser" placeholder="收件人" prefix-icon="el-icon-user">
                 </el-input>
