@@ -25,7 +25,7 @@
         }
 
         .div_user {
-            width: 10%;
+            width: 250px;
         }
 
         .txt_right {
@@ -260,11 +260,12 @@
                         <el-link type="danger" slot="reference">{{userInfoForm.userInfo.AccountNumber}}</el-link>
 
                     </el-popover>
-                </template>
-                <template v-if="!!userInfoForm.userInfo">
                     |
-                    <el-link type="danger" v-on:click="offLine">注销</el-link>
+                    <el-link type="danger" v-on:click="offLine(false)">注销</el-link>
+                    |
+                    <el-link type="warning" v-on:click="getMyOrder">我的订单</el-link>
                 </template>
+
             </i>
 
             <el-popover placement="bottom-end"
@@ -286,7 +287,7 @@
                         </el-table-column>
                         <el-table-column width="90" label="数量" prop="QCount">
                             <template slot-scope="scope">
-                                <el-input-number style="width:80px;" v-on:change="onQCountChange" v-bind:precision="0" v-model="scope.row.QCount" type="number" v-bind:min="1" size="mini" controls-position="right"></el-input-number>
+                                <el-input-number style="width:80px;" v-on:change="onQCountChange" v-bind:precision="0" v-model="scope.row.QCount" type="number" v-bind:min="1" size="mini" controls-position="right" v-bind:disabled="(scope.row.SPStock -scope.row.QCount)==0"></el-input-number>
                             </template>
                         </el-table-column>
                         <el-table-column width="80" prop="SPUnitPrice" label="单价"></el-table-column>
@@ -306,7 +307,7 @@
                     <el-tag type="danger">折后金额({{dialogLottery.lotteryValue==1?"全额":dialogLottery.lotteryValue.mul(10)+'折'}})：{{sumPrice.mul(dialogLottery.lotteryValue).toFixed(2)}}</el-tag>
                     <el-button type="success" v-bind:disabled="!(userInfoForm.userInfo&&cartData.length>0)" v-on:click="onCountZ">结算</el-button>
                 </div>
-                <span class="cart" slot="reference" v-on:click="cartVisible=!cartVisible">
+                <span class="cart" slot="reference" v-on:click="cartVisible=!cartVisible;">
                     <i class="cart__icon fa fa-shopping-cart"></i>
                     <span class="cart__count">0</span>
                 </span>
@@ -326,27 +327,37 @@
                 <!-- Grid sizer for a fluid Isotope (Masonry) layout -->
                 <div class="grid__sizer"></div>
                 <template v-for="(d,index) in MainData">
-                    <div class="grid__item dresses" v-bind:data-row="JSON.stringify(d)" v-if="(index%4>0)">
+                    <div class="grid__item dresses" v-bind:data-row="d.SPID" v-if="(index%4>0)">
                         <div class="slider">
                             <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" v-bind:alt="dimg.filename" /></div>
                         </div>
                         <div class="meta">
-                            <h3 class="meta__title">{{d.SPName}}</h3>
+                            <template v-if="d.SPStock>0">
+                                <h3 class="meta__title">{{d.SPName}} / 库存({{d.SPStock}})</h3>
+                            </template>
+                            <template v-else>
+                                <h3 class="meta__title" style="color:red;">暂无库存</h3>
+                            </template>
                             <span class="meta__brand">{{d.SPRemark}}</span>
                             <span class="meta__price">￥{{d.SPUnitPrice}}</span>
                         </div>
-                        <button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i></button>
+                        <button class="action action--button action--buy" v-show="(d.SPStock-d.QCount)>0"><i class="fa fa-shopping-cart"></i></button>
                     </div>
-                    <div class="grid__item grid__item--size-a shirts" v-else v-bind:data-row="JSON.stringify(d)">
+                    <div class="grid__item grid__item--size-a shirts" v-else v-bind:data-row="d.SPID">
                         <div class="slider">
                             <div class="slider__item" v-for="dimg in d.SPImg"><img v-bind:src="dimg.base64" v-bind:alt="dimg.filename" /></div>
                         </div>
                         <div class="meta">
-                            <h3 class="meta__title">{{d.SPName}}</h3>
+                            <template v-if="d.SPStock>0">
+                                <h3 class="meta__title">{{d.SPName}}  / 库存({{d.SPStock}})</h3>
+                            </template>
+                            <template v-else>
+                                <h3 class="meta__title" style="color:red;">暂无库存</h3>
+                            </template>
                             <span class="meta__brand">{{d.SPRemark}}</span>
                             <span class="meta__price">￥{{d.SPUnitPrice}}</span>
                         </div>
-                        <button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i></button>
+                        <button class="action action--button action--buy" v-show="(d.SPStock-d.QCount)>0"><i class="fa fa-shopping-cart"></i></button>
                     </div>
                 </template>
 
@@ -457,7 +468,7 @@
                v-bind:visible.sync="DialogReg.visible"
                width="40%"
                v-bind:close-on-click-modal="false">
-        <el-form ref="regForm" :model="DialogReg.formEntity" v-bind:rules="ruleReg" label-width="80px">
+        <el-form ref="regForm" :model="DialogReg.formEntity" v-bind:rules="ruleReg" label-width="100px">
             <el-form-item prop="AccountNumber" label="账号：">
                 <el-input type="text" v-model="DialogReg.formEntity.AccountNumber" placeholder="请输入账号" prefix-icon="el-icon-user-solid">
                 </el-input>
@@ -466,12 +477,16 @@
                 <el-input type="password" v-model="DialogReg.formEntity.Password" placeholder="请输入密码" prefix-icon="el-icon-lock">
                 </el-input>
             </el-form-item>
+            <el-form-item prop="Phone" label="联系电话：">
+                <el-input type="text" v-model="DialogReg.formEntity.Phone" placeholder="联系电话">
+                </el-input>
+            </el-form-item>
             <el-form-item prop="Email" label="邮箱：">
                 <el-input type="text" v-model="DialogReg.formEntity.Email" placeholder="请输入邮箱">
                 </el-input>
             </el-form-item>
             <el-form-item prop="Address" label="地址：">
-                <el-input type="text" v-model="DialogReg.formEntity.Address" placeholder="请输入地址" >
+                <el-input type="text" v-model="DialogReg.formEntity.Address" placeholder="请输入地址">
                 </el-input>
             </el-form-item>
             <el-form-item class="txt_right">
@@ -480,6 +495,128 @@
         </el-form>
     </el-dialog>
 
+    @*结算确认订单*@
+    <el-dialog title="确认收货信息"
+               v-bind:visible.sync="dialogOrderConfrim.visible"
+               width="50%"
+               v-bind:close-on-click-modal="false">
+        <el-form ref="OrderConfrim" :model="dialogOrderConfrim.formEntity" v-bind:rules="ruleOrderConfrim" label-width="80px">
+            <el-form-item prop="OrderUser" label="收件人：">
+                <el-input type="text" v-model="dialogOrderConfrim.formEntity.OrderUser" placeholder="收件人" prefix-icon="el-icon-user">
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="OrderAddress" label="收货地址：">
+                <el-input type="text" v-model="dialogOrderConfrim.formEntity.OrderAddress" placeholder="收货地址" prefix-icon="el-icon-s-promotion">
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="OrderPhone" label="联系电话：">
+                <el-input v-model="dialogOrderConfrim.formEntity.OrderPhone" placeholder="联系电话" prefix-icon="el-icon-phone-outline">
+                </el-input>
+            </el-form-item>
+        </el-form>
+        <div>
+            <el-table v-bind:data="dialogOrderConfrim.cartData" show-summary v-bind:summary-method="getSummaries">
+                <el-table-column width="180" prop="SPName" label="商品名称" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <el-link type="primary" class="cut_ellink" v-on:click="showContent(scope.row)">{{scope.row.SPName}}</el-link>
+                    </template>
+                </el-table-column>
+                <el-table-column width="150" label="图片">
+                    <template slot-scope="scope">
+                        <img v-if="scope.row.SPImg.length>0" style="width:120px;height:120px;" v-bind:src="scope.row.SPImg[0].base64" v-bind:alt="scope.row.SPImg[0].filename" />
+                    </template>
+                </el-table-column>
+                <el-table-column width="50" label="数量" prop="QCount">
+                </el-table-column>
+                <el-table-column width="80" prop="SPUnitPrice" label="单价"></el-table-column>
+                <el-table-column width="80" label="金额">
+                    <template slot-scope="scope">
+                        {{scope.row.QCount.mul(scope.row.SPUnitPrice)}}
+                    </template>
+                </el-table-column>
+                <el-table-column width="50" label="操作">
+                    <template slot-scope="scope">
+                        <el-button type="danger" size="mini" icon="el-icon-delete" circle v-on:click="removeSP(scope.row)"></el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div style="text-align:right;padding-right:10px;padding-top:10px;">
+            <el-tag type="danger">折后金额({{dialogLottery.lotteryValue==1?"全额":dialogLottery.lotteryValue.mul(10)+'折'}})：{{sumPrice.mul(dialogLottery.lotteryValue).toFixed(2)}}</el-tag>
+            <el-button v-on:click="onCreateOrder" v-bind:loading="loading" type="primary" v-bind:disabled="dialogOrderConfrim.cartData.length==0" size="medium">确认</el-button>
+        </div>
+    </el-dialog>
+
+
+    @*结算确认订单*@
+    <el-dialog title="我的订单"
+               v-bind:visible.sync="dialogOrderInfo.visible"
+               width="1024px"
+               v-bind:close-on-click-modal="false" v-on:close="onCloseOrder">
+        <el-table v-bind:data="dialogOrderInfo.Datas"
+                  style="width: 100%;"
+                  row-key="OrderId"
+                  border>
+            <el-table-column type="expand" width="50">
+                <template slot-scope="scope">
+                    <el-table v-bind:data="scope.row.Details" show-summary v-bind:summary-method="getSummaries">
+                        <el-table-column width="180" prop="SPName" label="商品名称" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <el-link type="primary" class="cut_ellink" v-on:click="showContent(scope.row)">{{scope.row.SPName}}</el-link>
+                            </template>
+                        </el-table-column>
+                        <el-table-column width="150" label="图片">
+                            <template slot-scope="scope">
+                                <img v-if="scope.row.SPImg.length>0" style="width:120px;height:120px;" v-bind:src="scope.row.SPImg[0].base64" v-bind:alt="scope.row.SPImg[0].filename" />
+                            </template>
+                        </el-table-column>
+                        <el-table-column width="50" label="数量" prop="QCount">
+                        </el-table-column>
+                        <el-table-column width="80" prop="SPUnitPrice" label="单价"></el-table-column>
+                        <el-table-column width="80" label="金额">
+                            <template slot-scope="scope">
+                                {{scope.row.QCount.mul(scope.row.SPUnitPrice)}}
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </template>
+            </el-table-column>
+            <el-table-column prop="OrderId"
+                             label="订单号"
+                             sortable
+                             width="120">
+            </el-table-column>
+            <el-table-column prop="OrderUser"
+                             label="收件人"
+                             sortable
+                             width="120">
+            </el-table-column>
+            <el-table-column prop="OrderAddress"
+                             label="收货地址"
+                             sortable
+                             width="180" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="OrderPhone"
+                             label="联系电话"
+                             sortable
+                             width="180" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="SumPrice"
+                             label="总价"
+                             width="100" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="DisPrice"
+                             label="折后价"
+                             width="100" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-button size="mini" icon="el-icon-edit" circle v-on:click="editOrder(scope.row)"></el-button>
+                    <el-button type="danger" size="mini" icon="el-icon-delete" circle v-on:click="removeOrder(scope.row)"></el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-dialog>
 </el-container>
 
 
@@ -496,9 +633,10 @@
     <script>
 
         $.extend(vue_data, {
+
             DialogReg: {
                 visible: false,
-                formEntity: { AccountNumber: '', Email: '', Address: '', Password: '', URole: 1 }
+                formEntity: { AccountNumber: '', Email: '', Address: '', Password: '', URole: 1, Phone: '' }
             },
             erCode: {
                 visible: false
@@ -561,6 +699,28 @@
                     startAngle: 0,				//开始角度
                     bRotate: false				//false:停止;ture:旋转
                 }
+            },
+
+            dialogOrderConfrim: {
+                visible: false,
+                formEntity: {
+                    OrderId: 0,
+                    OrderAddress: '',
+                    OrderPhone: '',
+                    OrderUser: ''
+                },
+                cartData: []
+
+            },
+            ruleOrderConfrim: {
+                OrderUser: [{ required: true, message: '请输入收件人!', trigger: 'blur' }],
+                OrderAddress: [{ required: true, message: '请输入收货地址!', trigger: 'blur' }],
+                OrderPhone: [{ required: true, message: '请输入联系电话!', trigger: 'blur' }]
+            },
+            dialogOrderInfo: {
+                Datas: [],
+                visible: false
+
             }
 
 
@@ -568,6 +728,135 @@
         var lotteryed = false;
         var loadlottery = false;
         $.extend(vue_methods, {
+            onCloseOrder: function () {
+                window.location = window.location;
+            },
+            editOrder: function (rowData) {
+                var self = this;
+                self.dialogOrderConfrim.formEntity.OrderId = rowData.OrderId;
+                self.dialogOrderConfrim.formEntity.OrderAddress = rowData.OrderAddress;
+                self.dialogOrderConfrim.formEntity.OrderPhone = rowData.OrderPhone;
+                self.dialogOrderConfrim.formEntity.OrderUser = rowData.OrderUser;
+                self.dialogOrderConfrim.cartData = rowData.Details;
+                self.dialogOrderConfrim.visible = true;
+                self.dialogLottery.lotteryValue = rowData.Discount;
+
+            },
+            removeOrder: function (rowData) {
+                var self = this;
+                self.$confirm('确定取消订单?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    callback: function (action) {
+                        if (action != 'confirm')
+                            return;
+                        $.cutPost('@Url.Action("CancelOrder")', { oid: rowData.OrderId }, function (msg) {
+                            if (msg.Msg) {
+                                if (msg.Msg.indexOf("未登录") > -1) {                                   
+                                    self.offLine(true);
+                                }
+                                self.$message.error(msg.Msg);
+                            } else {
+                                self.$message.success("取消成功!");
+                                self.getMyOrder();                               
+                            }
+                        });
+
+                    }
+                });
+
+
+
+            },
+            getMyOrder: function () {
+                var self = this;
+                $.cutPost('@Url.Action("GetMyOrder")', null, function (msg) {
+                    if (msg.Msg) {
+                        if (msg.Msg.indexOf("未登录") > -1) {
+                           
+                            self.offLine(true);
+                        }
+                        self.$message.error(msg.Msg);
+                    } else {
+                        var Datas = self.dialogOrderInfo.Datas = msg.Data['OrderTable'];
+
+                        var d;
+                        for (var i = 0; i < Datas.length; i++) {
+                            d = Datas[i];
+                            d.hasChildren = true;
+                            var SumPrice = 0;
+                            d.Details = msg.Data['OrderDetail'].filter(function (a) {
+                                var f = a.OrderId == d.OrderId;
+                                if (f) {
+                                    SumPrice = SumPrice.add(a.QCount.mul(a.SPUnitPrice));
+                                    a.SPImg = JSON.parse(a.SPImg);
+                                }
+                                return f;
+                            });
+                            d.SumPrice = SumPrice;
+                            d.DisPrice = SumPrice.mul(d.Discount).toFixed(2);
+                        }
+                        self.dialogOrderInfo.visible = true;
+
+                    }
+                });
+
+
+            },
+            onShowOrderConfrim: function () {
+                var self = this;
+                self.dialogOrderConfrim.formEntity.OrderAddress = self.userInfoForm.userInfo.Address;
+                self.dialogOrderConfrim.formEntity.OrderPhone = self.userInfoForm.userInfo.Phone
+                self.dialogOrderConfrim.formEntity.OrderUser = self.userInfoForm.userInfo.AccountNumber;
+                self.dialogOrderConfrim.cartData = self.cartData;
+                self.dialogOrderConfrim.visible = true;
+            },
+            onCreateOrder: function () {
+                var self = this;
+                self.$refs.OrderConfrim.validate(function (ok) {
+                    if (!ok)
+                        return;
+
+                    var card = [];
+                    for (var i = 0; i < self.cartData.length; i++) {
+                        card.push({ SPID: self.cartData[i].SPID, Qty: self.cartData[i].QCount });
+                    }
+                    var order = $.extend(true, { Discount: self.dialogLottery.lotteryValue, Data: JSON.stringify(card) }, self.dialogOrderConfrim.formEntity)
+
+                    $.cutPost('@Url.Action("CreateOrder")', { entity: JSON.stringify(order) }, function (msg) {
+                        if (msg.Msg) {
+                            if (msg.Msg.indexOf("未登录") > -1) {
+                                self.offLine(true);
+                                self.$message.error(msg.Msg);
+                            } else {
+                                self.$message.error("以下商品库存不足!" + msg.Msg);
+                            }
+                        } else {
+                            if (!self.dialogOrderInfo.visible) {
+                                self.$message.success("订单已生成!");
+                                self.dialogOrderConfrim.visible = false;
+                                for (var i = 0; i < self.cartData.length; i++) {
+                                    d = self.cartData[i]
+                                    d.SPStock = d.SPStock - d.QCount;
+                                    d.QCount = 0;
+                                }
+                                self.cartVisible = false;
+                                self.cartData.splice(0);
+                                self.sumPrice = 0;
+                                self.erCode.visible = true;
+                            } else {
+                                self.$message.success("保存成功!");
+                            }
+
+                        }
+
+
+                    }, null, function () {
+                        self.pageLoading = false;
+                    });
+                });
+            },
             onRegIn: function () {
                 var self = this;
                 this.$refs.regForm.validate(function (ok) {
@@ -611,7 +900,8 @@
                     });
                     loadlottery = true;
                 } else {
-                    self.erCode.visible = true;
+                    self.onShowOrderConfrim();
+
                 }
 
 
@@ -666,7 +956,7 @@
                                     callback: function (action) {
                                         if (action != 'confirm')
                                             return;
-                                        self.erCode.visible = true;
+                                        self.onShowOrderConfrim();
 
                                     }
                                 });
@@ -822,15 +1112,59 @@
             },
             removeSP: function (rowData) {
                 var QCount = 0;
-                for (var i = 0; i < vue_data.cartData.length; i++) {
-                    if (vue_data.cartData[i].SPID == rowData.SPID) {
-                        QCount = vue_data.cartData[i].QCount;
-                        vue_data.cartData.splice(i, 1);
-                        break;
+                var self = this;
+                if (!rowData.DId)
+                {
+                    for (var i = 0; i < vue_data.cartData.length; i++) {
+                        if (vue_data.cartData[i].SPID == rowData.SPID) {
+                            QCount = vue_data.cartData[i].QCount;
+                            vue_data.cartData[i].QCount = 0;
+                            this.sumPrice = this.sumPrice - QCount;
+                            vue_data.cartData.splice(i, 1);
+                            break;
+                        }
                     }
+                    var cartC = $(".cart__count");
+                    cartC.html((cartC.html() * 1) - QCount);
+                } else {
+                    self.pageLoading = true;
+                    $.cutPost('@Url.Action("RemoveSP")', { DId: rowData.DId }, function (msg) {
+                        if (msg.Msg) {
+                            if (msg.Msg.indexOf("未登录") > -1) {
+                                self.offLine(true);
+                            }
+                            self.$message.error(msg.Msg);
+                            vue_data.dialogOrderConfrim.visible = false;
+                            vue_data.dialogOrderInfo.visible = false;
+
+                        } else {
+
+                            for (var i = 0; i < vue_data.dialogOrderConfrim.cartData.length; i++) {
+                                if (vue_data.dialogOrderConfrim.cartData[i].SPID == rowData.SPID) {
+                                    QCount = vue_data.dialogOrderConfrim.cartData[i].QCount;
+                                    vue_data.dialogOrderConfrim.cartData[i].QCount = 0;
+                                    this.sumPrice = this.sumPrice - QCount;
+                                    vue_data.dialogOrderConfrim.cartData.splice(i, 1);
+                                    break;
+                                }
+                            }
+                            if (vue_data.dialogOrderConfrim.cartData.length==0) {
+                                for (var i = 0; i < self.dialogOrderInfo.Datas.length; i++) {
+                                    if (self.dialogOrderInfo.Datas[i].OrderId == rowData.OrderId) {
+                                        self.dialogOrderInfo.Datas.splice(i, 1);
+                                        vue_data.dialogOrderConfrim.visible = false;
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+
+                    }, null, function () {
+                        self.pageLoading = false;
+                    });
+
                 }
-                var cartC = $(".cart__count");
-                cartC.html((cartC.html() * 1) - QCount);
+                
             },
             onLogin: function () {
                 var self = this;
@@ -853,14 +1187,17 @@
                     });
                 })
             },
-            offLine: function () {
+            offLine: function (notip) {
                 var self = this;
                 self.pageLoading = true;
 
                 $.cutPost('@Url.Action("offLine", "AdminHome")', null, function (msg) {
                     self.userInfoForm.userInfo = null;
                     $.removeCookie("userinfo")
-                    self.$message.success("注销成功!");
+
+                    if (!notip)
+                        self.$message.success("注销成功!");
+
                 }, null, function () {
                     self.pageLoading = false;
                 });
@@ -894,12 +1231,13 @@
         var cartFun;
         function addToCartEvent(d, classie, cartItems, cart, onEndAnimation) {
             var row = $(d).parents(".grid__item").data("row");
-            if (!row && (row = JSON.parse(row))) {
+            if (!row) {
                 $Vue.$message.error('添加商品异常!');
                 return false;
             }
             vue_data.VerificationCode.vcode = '';
             vue_data.VerificationCode.visible = true;
+
             if (!codesc) {
                 $Vue.$nextTick(function () {
                     createCode(4);
@@ -911,10 +1249,11 @@
                 createCode(4);
             }
             cartFun = function () {
-                var d = vue_data.cartData.find(function (a) { return a.SPID == row.SPID });
+                var d = vue_data.cartData.find(function (a) { return a.SPID == row });
                 if (d) {
                     d.QCount++;
                 } else {
+                    row = $Vue.MainData.find(function (a) { return a.SPID == row });
                     row.QCount = 1;
                     vue_data.cartData.push(row);
                 }
@@ -956,6 +1295,7 @@
             LoadSP: function () {
 
                 var self = this;
+
                 self.pageLoading = true;
                 $.cutPost('@Url.Action("onSearch", "AdminHome")', { SPName: '' }, function (msg) {
                     var c;

@@ -62,7 +62,7 @@ namespace ShoppingPro2.Controllers
 
             using (DbProcess ub = new DbProcess())
             {
-                dt = ub.GetData<DataTable>("Select * From SPListDataTable where SPName like @SPName", new SqlParameter("@SPName", $"%{SPName}%"));
+                dt = ub.GetData<DataTable>("Select *,QCount=0 From SPListDataTable where SPName like @SPName", new SqlParameter("@SPName", $"%{SPName}%"));
             }
             re.Data = dt;
             return Json(re);
@@ -132,7 +132,7 @@ namespace ShoppingPro2.Controllers
         {
             Dictionary<string, string> en = JsonConvert.DeserializeObject<Dictionary<string, string>>(entity);
             ResultEntity re = new ResultEntity();
-            string InsertInto = "Insert into UserInfo (AccountNumber,Password,URole,Email,Address) values(@p1,@p2,@p3,@p4,@p5) ;select 1";
+            string InsertInto = "Insert into UserInfo (AccountNumber,Password,URole,Email,Address,Phone) values(@p1,@p2,@p3,@p4,@p5,@p6) ;select 1";
             DbProcess ub = new DbProcess();
 
             if (ub.GetData<UserInfo>(@"select * From UserInfo where AccountNumber=@an", new SqlParameter("@an", en["AccountNumber"].Trim())) != null)
@@ -143,7 +143,7 @@ namespace ShoppingPro2.Controllers
             else
             {
                 ub.GetData<DataTable>(InsertInto, new SqlParameter("@p1", en["AccountNumber"].Trim()), new SqlParameter("@p2", en["Password"].Trim()), new SqlParameter("@p3", en["URole"].Trim())
-                    , new SqlParameter("@p4", en["Email"].Trim()), new SqlParameter("@p5", en["Address"].Trim()));
+                    , new SqlParameter("@p4", en["Email"].Trim()), new SqlParameter("@p5", en["Address"].Trim()), new SqlParameter("@p6", en["Phone"].Trim()));
             }
             return Json(re);
         }

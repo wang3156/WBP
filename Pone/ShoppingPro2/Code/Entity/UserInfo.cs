@@ -10,6 +10,8 @@ namespace ShoppingPro2.Code.Entity
         public int UID { get; set; }
         public string AccountNumber { get; set; }
         public string Password { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
 
         /// <summary>
         /// 0 管理员  1 用户

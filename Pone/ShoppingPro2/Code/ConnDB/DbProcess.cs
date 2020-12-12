@@ -19,7 +19,9 @@ namespace ShoppingPro2.Code.ConnDB
 
         public T GetData<T>(string sql, params SqlParameter[] pars) where T : class
         {
-            DataTable dt = db.GetDataTable(sql, pars);
+            DataSet ds = db.GetDataSet(sql, pars);
+            DataTable dt = ds.Tables[0];
+
             string tname = typeof(T).Name;
             if (tname == typeof(List<>).Name)
             {
@@ -28,6 +30,9 @@ namespace ShoppingPro2.Code.ConnDB
             else if (tname == typeof(DataTable).Name)
             {
                 return dt as T;
+            }
+            else if (tname == typeof(DataSet).Name) {
+                return ds as T;
             }
             else if (tname == typeof(DataRow).Name)
             {
@@ -49,6 +54,21 @@ namespace ShoppingPro2.Code.ConnDB
                 return default(T);
             }
 
+        }
+
+        public void ExecSql(string sql, params SqlParameter[] pars)
+        {
+            db.ExecuteNonQuery(sql, pars: pars);
+        }
+
+        public T ExecuteScalarSql<T>(string sql, params SqlParameter[] pars) where T : IConvertible
+        {
+            return db.ExecuteScalar<T>(sql, pars: pars);
+        }
+
+        public void BulkCopyToDB(DataTable dt, string tbname)
+        {
+            db.BulkCopyToDB(dt, tbname);
         }
     }
 }
