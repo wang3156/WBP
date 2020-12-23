@@ -129,6 +129,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="js\elementui-extend\element-ui-extend-1.0.0.js" />
     <Content Include="js\jsObjectExtend.js" />
     <Content Include="Other\LogHelper\log4Config.xml" />
   </ItemGroup>

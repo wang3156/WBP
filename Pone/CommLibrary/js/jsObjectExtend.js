@@ -89,64 +89,69 @@
     //beforeSend 返回false则中断请求
     //error 返回true 表示已经在方法里处理了异常.返回false表示没有处理
     //默认为Post异步
-    $.cutPost = function (url, paras, success, error, complete, beforeSend, type, async) {
-        if (async == null) {
-            async = true;
-        }
-        if (!type) {
-            type = 'POST';
-        }
-        $.ajax({
-            url: url,
-            async: async,
-            type: type,
-            data: JSON.stringify(paras),
-            contentType: 'application/json',
-            dataType: 'json',
-            beforeSend: function (XHR) {
-
-                if (beforeSend) {
-                    n = beforeSend(XHR);
-                    if (n != null) {
-                        return n;
-                    }
-                }
-
-            },
-            complete: function (XHR, TS) {
-                if (complete)
-                    complete(XHR, TS);
-            },
-
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                var n = false;
-                if (error)
-                    n = error();
-                //方法内未处理异常则在这里提示
-                if (!n) {
-                    if (window.$Vue) {
-                        $Vue.$message.error((textStatus || errorThrown));
-                    } else {
-                        alert((textStatus || errorThrown));
-                    }
-                }
-
-            },
-            success: function (data, textStatus, jqXHR) {
-                if (data.Success) {
-                    if (success) {
-                        success(data, textStatus, jqXHR);
-                    }
-                } else {
-                    if (window.$Vue) {
-                        $Vue.$message.error(data.Msg);
-                    } else {
-                        alert(data.Msg);
-                    }
-                }
-
+    if ($)
+    {
+        $.cutPost = function (url, paras, success, error, complete, beforeSend, type, async) {
+            if (async == null) {
+                async = true;
             }
-        });
+            if (!type) {
+                type = 'POST';
+            }
+            $.ajax({
+                url: url,
+                async: async,
+                type: type,
+                data: JSON.stringify(paras),
+                contentType: 'application/json',
+                dataType: 'json',
+                beforeSend: function (XHR) {
+
+                    if (beforeSend) {
+                        n = beforeSend(XHR);
+                        if (n != null) {
+                            return n;
+                        }
+                    }
+
+                },
+                complete: function (XHR, TS) {
+                    if (complete)
+                        complete(XHR, TS);
+                },
+
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    var n = false;
+                    if (error)
+                        n = error();
+                    //方法内未处理异常则在这里提示
+                    if (!n) {
+                        if (window.$Vue) {
+                            $Vue.$message.error((textStatus || errorThrown));
+                        } else {
+                            alert((textStatus || errorThrown));
+                        }
+                    }
+
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.Success) {
+                        if (success) {
+                            success(data, textStatus, jqXHR);
+                        }
+                    } else {
+                        if (window.$Vue) {
+                            $Vue.$message.error(data.Msg);
+                        } else {
+                            alert(data.Msg);
+                        }
+                    }
+
+                }
+            });
+        }
+    } else {
+        console.info("未引用Jquery.");
     }
     //将file 控件中选择的文件转成Base64    
     //回调参数 [{fileName:'',base64:''}]
