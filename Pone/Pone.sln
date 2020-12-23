@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1267
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pone", "Pone\Pone.csproj", "{F7AF11BD-21A4-4EAA-9FCF-9E3F5702CB0E}"
 EndProject
@@ -39,30 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shopping", "Shopping", "{2BB9BE41-4807-4E54-AD99-8078DBEDAFCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingPro1", "ShoppingPro\ShoppingPro1.csproj", "{6CA41A74-E138-4380-8946-BF51B415F149}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingPro2", "ShoppingPro2\ShoppingPro2.csproj", "{06B2F29C-6EAD-4E65-A2E7-C35796A98F5F}"
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "201906270863", "C:\Users\ROG\Downloads\201906270863\", "{0C2F7338-7741-4321-9A0E-E0F9019D8770}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_65372"
-		Debug.AspNetCompiler.PhysicalPath = "C:\Users\ROG\Downloads\201906270863\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_65372\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_65372"
-		Release.AspNetCompiler.PhysicalPath = "C:\Users\ROG\Downloads\201906270863\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_65372\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "65372"
-		SlnRelativePath = "C:\Users\ROG\Downloads\201906270863\"
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -118,18 +95,10 @@ Global
 		{7E9C51A9-F64D-4D72-B500-D8AE20D29511}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E9C51A9-F64D-4D72-B500-D8AE20D29511}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E9C51A9-F64D-4D72-B500-D8AE20D29511}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6CA41A74-E138-4380-8946-BF51B415F149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CA41A74-E138-4380-8946-BF51B415F149}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CA41A74-E138-4380-8946-BF51B415F149}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CA41A74-E138-4380-8946-BF51B415F149}.Release|Any CPU.Build.0 = Release|Any CPU
 		{06B2F29C-6EAD-4E65-A2E7-C35796A98F5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{06B2F29C-6EAD-4E65-A2E7-C35796A98F5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06B2F29C-6EAD-4E65-A2E7-C35796A98F5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06B2F29C-6EAD-4E65-A2E7-C35796A98F5F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C2F7338-7741-4321-9A0E-E0F9019D8770}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C2F7338-7741-4321-9A0E-E0F9019D8770}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C2F7338-7741-4321-9A0E-E0F9019D8770}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C2F7338-7741-4321-9A0E-E0F9019D8770}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -147,7 +116,9 @@ Global
 		{85C5FDF9-8857-47D6-AB71-49BBB48DF3E0} = {9AC913CA-DBFD-4B52-B3B2-218CCF2EAEED}
 		{F894AC02-2AFA-4192-B27B-3F436613E5B2} = {0616B1B3-D2A1-4DEE-92CA-2ACA3F6DBF4E}
 		{7E9C51A9-F64D-4D72-B500-D8AE20D29511} = {0616B1B3-D2A1-4DEE-92CA-2ACA3F6DBF4E}
-		{6CA41A74-E138-4380-8946-BF51B415F149} = {2BB9BE41-4807-4E54-AD99-8078DBEDAFCF}
 		{06B2F29C-6EAD-4E65-A2E7-C35796A98F5F} = {2BB9BE41-4807-4E54-AD99-8078DBEDAFCF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {848BC218-530E-4ABE-834D-12FEC81E67D5}
 	EndGlobalSection
 EndGlobal
