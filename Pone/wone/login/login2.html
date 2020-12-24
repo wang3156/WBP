@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>login1</title>
+    <link href="../css/basecss.css" rel="stylesheet" />
+    <link href="../Scripts/element-ui/theme-chalk/index.css" rel="stylesheet" />
+    <script src="../Scripts/vue/vue.js"></script>
+    <script src="../Scripts/element-ui/index.js"></script>
+    <script src="../Scripts/jquery/jquery.min.js"></script>
+    <style>
+        #main_content {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .box-card {
+            min-width: 350px;
+            width: 22%;
+            opacity: 0.8;
+            margin-right: 30px;
+        }
+    </style>
+</head>
+<body>
+ 
+    <el-container id="main_content" v-cloak>
+        <div style="background-image:url(content/galapagos5.jpg)">
+
+        </div>
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span>登录</span>
+            </div>
+            <div>
+                <el-form ref="LoginForm" size="mini" v-bind:model="Entitys.LoginInfo" label-width="80px" v-bind:rules="Entitys.LoginRules">
+                    <el-form-item label="账号：" prop="Account">
+                        <el-input v-model="Entitys.LoginInfo.Account" prefix-icon="el-icon-user"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码：" prop="Password">
+                        <el-input v-model="Entitys.LoginInfo.Password" type="password" prefix-icon="el-icon-lock"></el-input>
+                    </el-form-item>
+                    <el-form-item label="记住我：">
+                        <el-checkbox v-model="Entitys.LoginInfo.RememberMe"></el-checkbox>
+                    </el-form-item>
+                    <el-form-item style="text-align:right;padding-right:5px;">
+                        <el-button type="success" v-on:click="onLogin">登录</el-button>
+                        <el-button type="warning" v-on:click="showReg">注册</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </el-card>
+
+
+        <el-dialog v-bind:visible.sync="DialogEntity.RegEntity.visible" v-bind:title="DialogEntity.RegEntity.title" width="30%" style="min-width:350px;" v-bind:close-on-click-modal="false">
+            <el-form ref="RegForm" size="mini" v-bind:model="DialogEntity.RegEntity.Entity" label-width="80px" v-bind:rules="DialogEntity.RegEntity.RegRules">
+                <el-form-item prop="Account" label="账号：">
+                    <el-input v-model="DialogEntity.RegEntity.Entity.Account" prefix-icon="el-icon-user"></el-input>
+                </el-form-item>
+                <el-form-item prop="Password" label="密码：">
+                    <el-input v-model="DialogEntity.RegEntity.Entity.Password" prefix-icon="el-icon-lock"></el-input>
+                </el-form-item>
+                <el-form-item prop="Email" label="Email：">
+                    <el-input v-model="DialogEntity.RegEntity.Entity.Email" prefix-icon="el-icon-eleme"></el-input>
+                </el-form-item>
+                <el-form-item style="text-align:right;padding-right:10px">
+                    <el-button type="warning" v-on:click="onReg">注册</el-button>
+                    <el-button v-on:click="DialogEntity.RegEntity.visible=false;">取消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+    </el-container>
+</body>
+</html>
+<script src="js/login.js"></script>
+<script>
+
+  let $vue= new Vue({
+         el:'#main_content',
+         data: () =>vue_data,
+         methods: vue_methods,
+         mounted: function () {
+             for (var i in vue_mounted) {
+                 i.call(this);
+             }
+         }
+  });
+
+</script>
